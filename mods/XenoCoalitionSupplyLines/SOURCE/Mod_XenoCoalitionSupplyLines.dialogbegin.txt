@@ -1,0 +1,53 @@
+dword talk_ship = GetTalkShip();
+if(talk_ship && !TalkByAI())
+{
+    int talk_id = Id(talk_ship);
+    int dialog_strike_phase = csl_phase == 13 || csl_phase == 14 || csl_phase == 15 || csl_phase == 4;
+    int dialog_is_strike_ship = 0;
+    for(int dialog_strike_index = 0; dialog_strike_index < GroupCount(SupplyStrike); dialog_strike_index = dialog_strike_index + 1)
+    {
+        dword dialog_strike_ship = GroupShip(SupplyStrike, dialog_strike_index);
+        if(!dialog_strike_ship) continue;
+        if(Id(dialog_strike_ship) == talk_id) { dialog_is_strike_ship = 1; break; }
+    }
+    if(talk_id > 1 && dialog_strike_phase && dialog_is_strike_ship && ShipInScript(talk_ship, 0))
+    {
+        AddDialogInject('CSLStrikeDialog', '', CT('XenoCoalitionSupplyLines.StrikeTalkOpen'), 50, 0, 0);
+    }
+}
+
+// ShuBounty and similar loot dialogs use private hard-coded whitelists and
+// reject script-linked quest items. Offer the Coalition cargo through our own
+// station dialog while preserving the registry needed by convoy bookkeeping.
+if(csl_initialized)
+{
+    dword csl_trade_base = GetShipRuins(Player());
+    if(csl_trade_base)
+    {
+        str csl_trade_base_type = Format(ShipType(csl_trade_base), '_licensed', '', '');
+        if(csl_trade_base_type == 'RC' || csl_trade_base_type == 'PB')
+        {
+            int csl_trade_cargo_found = 0;
+            for(int csl_trade_registry_index = ArrayDim(csl_cargo_registry) - 1; csl_trade_registry_index >= 1; csl_trade_registry_index = csl_trade_registry_index - 1)
+            {
+                dword csl_trade_cargo = IdToItem(csl_cargo_registry[csl_trade_registry_index]);
+                if(!csl_trade_cargo) continue;
+                if(FindItemInShip(Player(), csl_trade_cargo) >= 0)
+                {
+                    if(ItemInScript(csl_trade_cargo)) ReleaseItemFromScript(csl_trade_cargo);
+                    csl_trade_cargo_found = 1;
+                    break;
+                }
+                int csl_trade_storage_index = FindItemInStorage(csl_trade_cargo);
+                if(csl_trade_storage_index >= 0 && StorageItemLocation(csl_trade_storage_index) == csl_trade_base)
+                {
+                    if(ItemInScript(csl_trade_cargo)) ReleaseItemFromScript(csl_trade_cargo);
+                    csl_trade_cargo_found = 1;
+                    break;
+                }
+            }
+            if(csl_trade_cargo_found)
+                AddDialogInject('CSLCargoTradeDialog', '', CT('XenoCoalitionSupplyLines.CargoTradeOpen'), 5);
+        }
+    }
+}

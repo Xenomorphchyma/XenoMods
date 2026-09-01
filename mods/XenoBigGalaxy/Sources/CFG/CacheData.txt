@@ -1,0 +1,29 @@
+Bm ^{
+    XenoMapMarker ^{
+        ArrowImage=Mods\XenoMods\XenoBigGalaxy\DATA\MapMarker\Arrows.gi
+        leftButton_A=Mods\XenoMods\XenoBigGalaxy\DATA\MapMarker\leftButton_A.gi
+        leftButton_D=Mods\XenoMods\XenoBigGalaxy\DATA\MapMarker\leftButton_D.gi
+        leftButton_N=Mods\XenoMods\XenoBigGalaxy\DATA\MapMarker\leftButton_N.gi
+        rightButton_A=Mods\XenoMods\XenoBigGalaxy\DATA\MapMarker\rightButton_A.gi
+        rightButton_D=Mods\XenoMods\XenoBigGalaxy\DATA\MapMarker\rightButton_D.gi
+        rightButton_N=Mods\XenoMods\XenoBigGalaxy\DATA\MapMarker\rightButton_N.gi
+    }
+    XenoBigGalaxy ^{
+        GalaxyPanel=Mods\XenoMods\XenoBigGalaxy\DATA\Panel\GalaxyPanel.gi
+    }
+    FormGalaxy ^{
+        2BG=Mods\XenoMods\XenoBigGalaxy\DATA\BG\OpenedBG.gi
+        2Img=Mods\XenoMods\XenoBigGalaxy\DATA\BG\ClosedBG.png
+        2bg=Mods\XenoMods\XenoBigGalaxy\DATA\BG\OpenedBG.gi
+        2img=Mods\XenoMods\XenoBigGalaxy\DATA\BG\ClosedBG.png
+    }
+    FormGalaxy2 ^{
+        2BG=Mods\XenoMods\XenoBigGalaxy\DATA\BG\OpenedBG.gi
+        2Img=Mods\XenoMods\XenoBigGalaxy\DATA\BG\ClosedBG.png
+        2bg=Mods\XenoMods\XenoBigGalaxy\DATA\BG\OpenedBG.gi
+        2img=Mods\XenoMods\XenoBigGalaxy\DATA\BG\ClosedBG.png
+    }
+}
+Script ^{
+    Mod_BlockPirates=Mods\XenoMods\XenoBigGalaxy\DATA\Script\Mod_BlockPirates.scr
+}

@@ -1,0 +1,55 @@
+if(!eidm_runtime_ready || CurTurn() <= eidm_runtime_ready_turn) exit;
+
+function EIDM_LocalMarketStep(dword shop, int cursor)
+{
+    if(!shop) exit;
+    int count = ShopItems(shop);
+    if(count <= 0) exit;
+    dword item = ShopItems(shop, cursor - (cursor / count) * count);
+    if(!item || ObjectType(item) != 6) exit;
+    int item_type = ItemType(item);
+    int is_equipment = item_type >= t_Artefact && item_type <= t_CustomWeapon;
+    int is_extended_artefact = item_type >= t_ArtDefToEnergy && item_type <= t_ArtFastRacks;
+    if(!is_equipment && !is_extended_artefact) exit;
+
+    int same_type_count = 0;
+    for(int i = 0; i < count; i = i + 1)
+    {
+        dword test_item = ShopItems(shop, i);
+        if(test_item && ItemType(test_item) == item_type)
+            same_type_count = same_type_count + 1;
+    }
+    int market_adjust = 0;
+    if(same_type_count <= 1) market_adjust = 20;
+    else if(same_type_count == 2) market_adjust = 15;
+    else if(same_type_count <= 4) market_adjust = 10;
+    else if(same_type_count <= 8) market_adjust = 0;
+    else if(same_type_count <= 12) market_adjust = -10;
+    else market_adjust = -20;
+
+    int level_delta = ItemLevel(item) - GalaxyTechLevel();
+    if(level_delta >= 2) market_adjust = market_adjust + 10;
+    else if(level_delta == 1) market_adjust = market_adjust + 5;
+    else if(level_delta <= -3) market_adjust = market_adjust - 10;
+    else if(level_delta == -2) market_adjust = market_adjust - 5;
+    market_adjust = max(-30, min(30, market_adjust));
+    unknown native_market = ImportedFunction('XenoEquipmentInflationNative', 'XenoEquipmentInflation_SetMarket');
+    native_market(item, 100 + market_adjust);
+}
+
+dword local_shop = GetShipRuins(Player());
+if(!local_shop) local_shop = GetShipPlanet(Player());
+if(!local_shop) exit;
+int local_cursor = (CurTurn() - 1) * 12;
+EIDM_LocalMarketStep(local_shop, local_cursor);
+EIDM_LocalMarketStep(local_shop, local_cursor + 1);
+EIDM_LocalMarketStep(local_shop, local_cursor + 2);
+EIDM_LocalMarketStep(local_shop, local_cursor + 3);
+EIDM_LocalMarketStep(local_shop, local_cursor + 4);
+EIDM_LocalMarketStep(local_shop, local_cursor + 5);
+EIDM_LocalMarketStep(local_shop, local_cursor + 6);
+EIDM_LocalMarketStep(local_shop, local_cursor + 7);
+EIDM_LocalMarketStep(local_shop, local_cursor + 8);
+EIDM_LocalMarketStep(local_shop, local_cursor + 9);
+EIDM_LocalMarketStep(local_shop, local_cursor + 10);
+EIDM_LocalMarketStep(local_shop, local_cursor + 11);

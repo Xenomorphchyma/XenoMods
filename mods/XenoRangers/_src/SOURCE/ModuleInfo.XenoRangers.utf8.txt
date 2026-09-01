@@ -1,0 +1,13 @@
+Name=XenoRangers
+Author=Zelenium, Denball, Xenomorphchyma
+Conflict=ZelRangers, XenoRangersOriginalBalance
+Dependence=
+Priority=1
+Section=XenoMods
+SectionEng=XenoMods
+Languages=Rus
+SmallDescription=Сбалансированные новые рейнджеры с исправленными диалогами и защитой ГТУ 1
+FullDescription=XenoRangers - переработанная редакция ZelRangers: обновлённый русский текст, согласованные Lang.txt и Lang.dat, более строгий сбалансированный сценарий и устранённое зависание RandomWeapon при ГТУ 1. Несовместим с ZelRangers и XenoRangersOriginalBalance.
+
+SmallDescriptionEng=Rebalanced new rangers with fixed dialogs and a GTL 1 safeguard
+FullDescriptionEng=XenoRangers is a revised edition of ZelRangers with updated Russian text, synchronized Lang.txt and Lang.dat, a stricter rebalanced scenario, and a fix for the RandomWeapon hang at GTL 1. Incompatible with ZelRangers and XenoRangersOriginalBalance.

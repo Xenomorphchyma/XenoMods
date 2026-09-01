@@ -1,0 +1,3 @@
+int eidm_native_v3 = 3;
+int eidm_runtime_ready = 0;
+int eidm_runtime_ready_turn = 0;

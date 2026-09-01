@@ -1,0 +1,24 @@
+BV ^{
+    OnLoad ^{
+        XenoCoalitionSupplyLines ^{
+            01=if(!IsScriptActive('Mod_XenoCoalitionSupplyLines')) ScriptRun(ShipStar(Player()), GetShipPlanet(Player()), 'Mod_XenoCoalitionSupplyLines');
+        }
+    }
+    OnStart ^{
+        0DayScripts ^{
+            95_XenoCoalitionSupplyLines=ScriptRun(ShipStar(Player()), GetShipPlanet(Player()), 'Mod_XenoCoalitionSupplyLines');
+        }
+    }
+}
+Data ^{
+    Script ^{
+        Mod_XenoCoalitionSupplyLines=1,Script.Mod_XenoCoalitionSupplyLines
+    }
+    ScriptLibs ^{
+        XenoCoalitionSupplyLinesConfig ^{
+            Path=Mods\XenoMods\XenoCoalitionSupplyLines\Native\XenoCoalitionSupplyLines.XenoPlugin.dll
+            XenoCoalitionSupplyLines_GetConfigInt=int,XenoCoalitionSupplyLines_GetConfigInt,int
+        }
+        Mod_XenoCoalitionSupplyLines=XenoCoalitionSupplyLinesConfig
+    }
+}

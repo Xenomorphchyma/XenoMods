@@ -1,0 +1,69 @@
+name: Build XenoMods archive
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Archive version
+        required: true
+        default: preview
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+      - name: Resolve version
+        id: version
+        shell: pwsh
+        run: |
+          if ("${{ github.event_name }}" -eq "workflow_dispatch") {
+            "value=${{ inputs.version }}" >> $env:GITHUB_OUTPUT
+          } else {
+            $tag = "${{ github.ref_name }}"
+            "value=$($tag.TrimStart('v'))" >> $env:GITHUB_OUTPUT
+          }
+      - name: Build archive
+        shell: pwsh
+        run: ./packaging/build-release.ps1 -Version "${{ steps.version.outputs.value }}"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: XenoMods-${{ steps.version.outputs.value }}
+          path: |
+            dist/*.zip
+            dist/*.manifest.json
+            dist/*.sha256
+      - name: Publish GitHub release
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $tag = "${{ github.ref_name }}"
+          gh release view $tag *> $null
+          if ($LASTEXITCODE -eq 0) {
+            gh release upload $tag `
+              dist/*.zip `
+              dist/*.manifest.json `
+              dist/*.sha256 `
+              --clobber
+            gh release edit $tag `
+              --title "XenoMods ${{ steps.version.outputs.value }}" `
+              --notes-file README.md
+          } else {
+            gh release create $tag `
+              dist/*.zip `
+              dist/*.manifest.json `
+              dist/*.sha256 `
+              --verify-tag `
+              --title "XenoMods ${{ steps.version.outputs.value }}" `
+              --notes-file README.md
+          }

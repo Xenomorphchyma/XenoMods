@@ -1,0 +1,174 @@
+// Дополнительные фоны восьми исходных систем.
+StarFonImage(GalaxyStar(46), 84); // Арктур
+StarFonImage(GalaxyStar(47), 85); // Диатар
+StarFonImage(GalaxyStar(48), 86); // Элга
+StarFonImage(GalaxyStar(56), 80); // Озеум
+StarFonImage(GalaxyStar(57), 83); // Ригель
+StarFonImage(GalaxyStar(58), 82); // Тураис
+StarFonImage(GalaxyStar(61), 81); // Юфалли
+StarFonImage(GalaxyStar(62), 79); // Муррац
+
+StarSetGraph(GalaxyStar(48), 'Star.Red');
+StarSetGraph(GalaxyStar(56), 'Star.Blue');
+StarSetGraph(GalaxyStar(57), 'Star.Red');
+StarSetGraph(GalaxyStar(58), 'Star.Green');
+StarSetGraph(GalaxyStar(61), 'Star.02');
+
+dword home_star;
+str expected_name;
+int planet_exists;
+int planet_count;
+dword existing_planet;
+
+// Гархарл — домашняя система малоков.
+home_star = GalaxyStar(Maloc);
+if(home_star)
+{
+    expected_name = CT('Script.XenoPlanets.0');
+    planet_exists = 0;
+    planet_count = StarPlanets(home_star);
+    for(i = 0; i < planet_count; i = i + 1)
+    {
+        existing_planet = StarPlanets(home_star, i);
+        if(existing_planet)
+        {
+            if(lowercase(PlanetName(existing_planet)) == lowercase(expected_name)) planet_exists = 1;
+        }
+    }
+    if(!planet_exists)
+    {
+        planet = CreatePlanet(home_star);
+        if(planet)
+        {
+            SetName(planet, expected_name);
+            PlanetSetGraph(planet, 208);
+            PlanetTerrain(planet, 0, 400);
+            PlanetTerrain(planet, 1, 600);
+            PlanetTerrain(planet, 2, 0);
+            for(i = PlanetItems(planet) - 1; i >= 0; i = i - 1) AddItemToPlanet(planet, GetItemFromPlanet(planet, i));
+        }
+    }
+}
+
+// Чешилан — домашняя система пеленгов.
+home_star = GalaxyStar(Peleng);
+if(home_star)
+{
+    expected_name = CT('Script.XenoPlanets.1');
+    planet_exists = 0;
+    planet_count = StarPlanets(home_star);
+    for(i = 0; i < planet_count; i = i + 1)
+    {
+        existing_planet = StarPlanets(home_star, i);
+        if(existing_planet)
+        {
+            if(lowercase(PlanetName(existing_planet)) == lowercase(expected_name)) planet_exists = 1;
+        }
+    }
+    if(!planet_exists)
+    {
+        planet = CreatePlanet(home_star);
+        if(planet)
+        {
+            SetName(planet, expected_name);
+            PlanetSetGraph(planet, 209);
+            PlanetTerrain(planet, 0, 1000);
+            PlanetTerrain(planet, 1, 10);
+            PlanetTerrain(planet, 2, 0);
+            for(i = PlanetItems(planet) - 1; i >= 0; i = i - 1) AddItemToPlanet(planet, GetItemFromPlanet(planet, i));
+        }
+    }
+}
+
+// Нептун — восстановленная восьмая планета Солнечной системы.
+home_star = GalaxyStar(People);
+if(home_star)
+{
+    expected_name = CT('Script.XenoPlanets.2');
+    planet_exists = 0;
+    planet_count = StarPlanets(home_star);
+    for(i = 0; i < planet_count; i = i + 1)
+    {
+        existing_planet = StarPlanets(home_star, i);
+        if(existing_planet)
+        {
+            if(lowercase(PlanetName(existing_planet)) == lowercase(expected_name)) planet_exists = 1;
+        }
+    }
+    if(!planet_exists)
+    {
+        planet = CreatePlanet(home_star);
+        if(planet)
+        {
+            SetName(planet, expected_name);
+            PlanetSetGraph(planet, 207);
+            PlanetTerrain(planet, 0, 380);
+            PlanetTerrain(planet, 1, 110);
+            PlanetTerrain(planet, 2, 0);
+            PlanetOrbitalVelocity(planet, 40);
+            for(i = PlanetItems(planet) - 1; i >= 0; i = i - 1) AddItemToPlanet(planet, GetItemFromPlanet(planet, i));
+        }
+    }
+}
+
+// Тристерия — домашняя система фэян.
+home_star = GalaxyStar(Fei);
+if(home_star)
+{
+    expected_name = CT('Script.XenoPlanets.3');
+    planet_exists = 0;
+    planet_count = StarPlanets(home_star);
+    for(i = 0; i < planet_count; i = i + 1)
+    {
+        existing_planet = StarPlanets(home_star, i);
+        if(existing_planet)
+        {
+            if(lowercase(PlanetName(existing_planet)) == lowercase(expected_name)) planet_exists = 1;
+        }
+    }
+    if(!planet_exists)
+    {
+        planet = CreatePlanet(home_star);
+        if(planet)
+        {
+            SetName(planet, expected_name);
+            PlanetSetGraph(planet, 210);
+            PlanetTerrain(planet, 0, 80);
+            PlanetTerrain(planet, 1, 110);
+            PlanetTerrain(planet, 2, 900);
+            for(i = PlanetItems(planet) - 1; i >= 0; i = i - 1) AddItemToPlanet(planet, GetItemFromPlanet(planet, i));
+        }
+    }
+}
+
+// Дээва — домашняя система гаальцев.
+home_star = GalaxyStar(Gaal);
+if(home_star)
+{
+    expected_name = CT('Script.XenoPlanets.4');
+    planet_exists = 0;
+    planet_count = StarPlanets(home_star);
+    for(i = 0; i < planet_count; i = i + 1)
+    {
+        existing_planet = StarPlanets(home_star, i);
+        if(existing_planet)
+        {
+            if(lowercase(PlanetName(existing_planet)) == lowercase(expected_name)) planet_exists = 1;
+        }
+    }
+    if(!planet_exists)
+    {
+        planet = CreatePlanet(home_star);
+        if(planet)
+        {
+            SetName(planet, expected_name);
+            PlanetSetGraph(planet, 211);
+            PlanetTerrain(planet, 0, 0);
+            PlanetTerrain(planet, 1, 380);
+            PlanetTerrain(planet, 2, 110);
+            for(i = PlanetItems(planet) - 1; i >= 0; i = i - 1) AddItemToPlanet(planet, GetItemFromPlanet(planet, i));
+        }
+    }
+}
+
+ShipOut(Player());

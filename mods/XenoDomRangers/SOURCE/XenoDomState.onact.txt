@@ -1,0 +1,86 @@
+[t_OnStep,t_OnChameleonConfusion,t_OnWeaponShot,t_OnMissileShot,t_OnGettingWeaponHit,t_OnGettingMissileHit|]
+function XDR_StateSlotByShip(dword state_checked_ship)
+{
+    result = 0;
+    if(!state_checked_ship || ArrayDim(xdr_ids) != 4) exit;
+    int state_checked_id = Id(state_checked_ship);
+    if(xdr_ids[1] == state_checked_id) { result = 1; exit; }
+    if(xdr_ids[2] == state_checked_id) { result = 2; exit; }
+    if(xdr_ids[3] == state_checked_id) { result = 3; exit; }
+}
+function XDR_StateIsMasked(dword state_checked_ship)
+{
+    result = 0;
+    int state_checked_slot = XDR_StateSlotByShip(state_checked_ship);
+    if(state_checked_slot > 0 && ArrayDim(xdr_ghost_flags) == 4) result = xdr_ghost_flags[state_checked_slot];
+}
+function XDR_StateDialogMarker(dword state_checked_ship)
+{
+    result = 0;
+    int state_checked_slot = XDR_StateSlotByShip(state_checked_ship);
+    if(state_checked_slot > 0 && ArrayDim(xdr_dialog_markers) == 4) result = xdr_dialog_markers[state_checked_slot];
+}
+function XDR_StateSetDialogMarker(dword state_checked_ship, int state_marker)
+{
+    int state_checked_slot = XDR_StateSlotByShip(state_checked_ship);
+    if(state_checked_slot > 0 && ArrayDim(xdr_dialog_markers) == 4) xdr_dialog_markers[state_checked_slot] = state_marker;
+}
+function XDR_StateStopNpcOffense(dword state_npc_ship)
+{
+    if(!state_npc_ship) exit;
+    dword state_npc_bad = ShipGetBad(state_npc_ship);
+    dword state_npc_order_target = ShipOrderObj(state_npc_ship);
+    if(state_npc_bad) ShipSetBad(state_npc_ship, 0);
+    if(state_npc_bad && state_npc_order_target == state_npc_bad) OrderNone(state_npc_ship);
+    int state_npc_weapon_count = ShipCntWeapon(state_npc_ship);
+    for(int state_npc_weapon_index = 1; state_npc_weapon_index <= state_npc_weapon_count; state_npc_weapon_index = state_npc_weapon_index + 1)
+    {
+        dword state_npc_weapon = ShipWeapon(state_npc_ship, state_npc_weapon_index);
+        if(state_npc_weapon && WeaponTarget(state_npc_weapon)) WeaponTarget(state_npc_weapon, 0);
+    }
+}
+if(ScriptItemActionType(t_OnGettingWeaponHit) || ScriptItemActionType(t_OnGettingMissileHit))
+{
+    if(CurShip == Player() || !XDR_StateIsMasked(CurShip)) exit;
+    if(ScriptItemActObject1() != Player()) exit;
+    int xdr_hit_marker = XDR_StateDialogMarker(CurShip);
+    if(xdr_hit_marker == 3)
+    {
+        XDR_StateSetDialogMarker(CurShip, 1);
+        XDR_StateStopNpcOffense(CurShip);
+        exit;
+    }
+    if(xdr_hit_marker == 1 || xdr_hit_marker == 4) exit;
+    XDR_StateSetDialogMarker(CurShip, 4);
+    XDR_StateStopNpcOffense(CurShip);
+    // Marker 4 is set before opening the modal window, so synchronous state
+    // re-entry cannot open a second copy of the warning. This event fires only
+    // after the engine has applied the real player hit.
+    Dialog(CurShip);
+    exit;
+}
+if(ScriptItemActionType(t_OnStep))
+{
+    // A masked stalker is a non-combat salvage ship. This runs before it can
+    // preserve or execute a vanilla combat target, while leaving explicit
+    // OrderMove/OrderJump mission navigation untouched.
+    if(XDR_StateIsMasked(CurShip)) XDR_StateStopNpcOffense(CurShip);
+    exit;
+}
+if(ScriptItemActionType(t_OnChameleonConfusion)) exit;
+if(ScriptItemActionType(t_OnWeaponShot))
+{
+    if(!XDR_StateIsMasked(CurShip)) exit;
+    // Action objects are not type-stable in every 2.1.2500 weapon path. Cancel
+    // the event and clear the installed weapons through the proven ship API.
+    XDR_StateStopNpcOffense(CurShip);
+    ScriptItemActParam(0);
+    exit;
+}
+if(ScriptItemActionType(t_OnMissileShot))
+{
+    if(!XDR_StateIsMasked(CurShip)) exit;
+    XDR_StateStopNpcOffense(CurShip);
+    ScriptItemActParam(0);
+    exit;
+}

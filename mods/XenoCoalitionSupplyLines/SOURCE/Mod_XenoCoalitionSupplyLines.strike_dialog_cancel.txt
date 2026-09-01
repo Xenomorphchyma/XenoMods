@@ -1,0 +1,7 @@
+dword talk_ship = GetTalkShip();
+if(csl_player_joined && talk_ship && ShipOrder(Player()) == 6 && ShipOrderObj(Player()) == talk_ship)
+    OrderNone(Player());
+csl_player_joined = 0;
+csl_player_wait_ship_id = 0;
+DChange(2);
+exit;

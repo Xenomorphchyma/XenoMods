@@ -1,0 +1,74 @@
+Script ^{
+    Mod_XenoCoalitionSupplyLines ^{
+        Description=Coalition Supply Lines
+    }
+}
+UselessItems ^{
+    XenoCoalitionSupplyCargo ^{
+        Cost=Average
+        Name=Strategic resource container
+        Owner=Maloc,Peleng,People,Fei,Gaal
+        Size=1
+Text=Industrial materials, rare components and military grade fuel. The container is sealed by Coalition Supply Command.
+    }
+}
+XenoCoalitionSupplyLines ^{
+    Preparing=The industrial planet #source# has begun collecting strategic resources. A convoy to a frontline planet is expected to depart in about #turns# turns.
+Shortage=Coalition Command has suspended supply convoy assembly: only #systems# safe systems remain. The situation will be reviewed again in 30 turns.
+NoRoute=Supply Command could not find a safe route from an industrial world to the frontier. Preparation has been postponed for 30 turns.
+    NoTargets=Coalition Command found no reachable hostile systems. The hidden pirate sector is excluded; Supply Command will check again in 30 turns.
+    Assembled=A resource convoy has been assembled on #source#: #transports# transports and #escorts# escorts. After final checks it will depart for #destination#.
+    Launched=A resource convoy has departed #source#: #transports# transports and #escorts# escorts. Destination: #destination#.
+    Refuelled=The supply convoy has completed refuelling and repairs on #planet#. Its next stop is #next#.
+    RerouteDirect=<color=255,180,0>The convoy route has changed.</color> Its former stop became unsafe. The nearest commonly reachable frontline planet is now #destination#.
+    RerouteRegroup=<color=255,180,0>An emergency convoy regroup has been ordered.</color> The former route became unsafe. All surviving ships are heading for #destination#; a new frontline route will be built after the whole group lands and refuels.
+    RerouteComplete=The regrouped convoy has received a new route. Its new unloading destination is #destination#.
+    RerouteWaiting=The convoy could not immediately find a safe point reachable by every surviving ship. Supply Command will retry in 5 turns; the ships retain their cargo and defensive formation.
+Arrived=The convoy has reached #destination#. #delivered# of #total# containers were delivered. Strike group preparation has begun.
+    Lost=The convoy bound for #destination# has been lost. No strategic resources were delivered.
+    AmbushPelengLaunch=<color=255,120,80>The convoy has entered an ambush.</color> A pirate group has launched from #planet#. Ships sighted: #count#. The transports are heading for the nearest safe planet while their escorts engage.
+    AmbushBaseLaunch=<color=255,120,80>The convoy has entered an ambush.</color> A raiding group has launched from the pirate base in #system#. Ships sighted: #count#. The transports are heading for the nearest safe planet while their escorts engage.
+    AmbushCombinedLaunch=<color=255,80,80>A major pirate ambush is under way.</color> Raiders have launched at once from #planet# and the pirate base in #system#. Total ships sighted: #count#. The transports are withdrawing to a safe planet while their escorts cover them.
+    AmbushRepelled=<color=80,220,120>The pirate ambush has been repelled.</color> The surviving convoy ships are reforming and continuing their mission.
+    AmbushEscapedNoEscorts=<color=255,190,40>The transports have escaped.</color> The convoy escorts were lost, but the freighters reached a planet or left the ambush area. They must continue the journey on their own.
+    AmbushConvoyLost=<color=255,80,80>The convoy has been destroyed.</color> Every transport was lost in the pirate ambush. No strategic resources can be delivered.
+    StrikePrepared=<color=255,180,0>Ranger recruitment is open for a military operation.</color> A Coalition strike group has assembled at #destination#. The joint departure for #target# is scheduled for #date#. Contact any ship in the group to join.
+    StrikeRetargeted=The front changed while the strike group waited at #destination#. Its new target is #target# and the new joint departure date is #date#. Rangers may join by contacting any ship in the group.
+    StrikeCountdown=<color=255,180,0>Command warning.</color> The strike group at #destination# is ending its ranger assembly period. Departure for #target# is tomorrow.
+    Operation=The Coalition strike group has now departed #destination# and begun an open operation against #target#. Any ranger in the area may join the battle.
+    CargoTradeOpen=Turn in Coalition resource containers
+    CargoTradeOfferRC=The Ranger Center will accept every recovered Coalition resource container: #count# in total. The 1.5x payout is #money# cr. For each container delivered, the Center will begin preparing one independent ranger.
+    CargoTradeOfferPB=The pirate base will accept every recovered Coalition resource container: #count# in total. The 2x payout is #money# cr.
+    CargoTradeConfirm=Turn in all #count# containers for #money# cr
+    CargoTradeCancel=Keep the containers
+    CargoTradeReturn=Return to the base
+    CargoTradeUnavailable=Neither your hold nor this base's storage contains a registered Coalition resource container, or this base does not accept that cargo.
+CargoTradeComplete=The cargo is ours and the payment is already in your account. Thank you, ranger. Those containers will still be useful to their new owner.
+CargoTradeCompleteRC="Ranger, thank you. Those containers had already been written off as lost, but you brought them back to the Coalition. Your payment is in your account, and the Center has ordered the recovered resources assigned to independent ranger construction. Good work."
+CargoTradeCompletePB="Now that is good merchandise, ranger! Buyers will tear those containers from our hands, preferably without asking where they came from. The money is already in your account. Come back if you find anything else this valuable and ownerless."
+    StrikeTalkOpen=Discuss operation readiness and participation.
+    StrikeTalkJoin=I am joining. Transmit the route at joint departure.
+    StrikeTalkCancelWait=Cancel my place in the joint departure.
+    StrikeTalkCancelled="Acknowledged, ranger. You have been removed from the departure formation. Contact us again before launch if you change your mind."
+    StrikeTalkDecline=Do not join yet.
+    StrikeTalkBuilding="Ranger, it is too early to discuss departure. The shipyards are still forming the strike group: #built# of #planned# ships are ready. Monitor Coalition Command reports."
+    StrikeTalkFinalAssembling="The final ship is still approaching the rally point: #built# of #planned# are ready. You may join now; remain close to the group."
+    StrikeTalkAssembling="Construction is complete, but the ships are still taking formation and synchronising jump calculations. We will publish the target and departure time after the readiness check."
+    StrikeTalkWaitingAssembly="You are already registered with the waiting rangers. Stay close; we will transmit the target and joint departure time once formation is complete."
+    StrikeTalkInvite="The operation target is #target#. Joint departure is scheduled for #date#. Join our formation and wait for our signal? If you change your mind, simply give your ship another order."
+    StrikeTalkAccepted="Acknowledged, ranger. Stay close. Departure for #target# is scheduled for #date#; at launch we will automatically transmit the route to your navigator."
+    StrikeTalkAcceptedAssembly="Acknowledged, ranger. Stay close to the strike group. The target and exact joint departure time will be transmitted after formation is complete."
+    StrikeTalkWaiting="You are already included in the departure formation. Target: #target#; estimated departure: #date#. Stay close and we will transmit the signal and route when we jump."
+    StrikeTalkUnavailable="We cannot include your ship in the departure formation. Enter normal space and contact the group from the same system."
+StrikeTalkCannotJump="Your ship cannot make the joint direct jump to #target# at present. Check engine range, fuel tank capacity and current fuel. Correct the problem and contact us again; if that is impossible, reach the target independently by another route."
+    StrikeTalkUnderway="The operation against #target# is already under way. Proceed to the system and engage enemy forces; your contribution will be recorded automatically."
+    StrikeTalkUnknownTarget=target pending confirmation
+    StrikeTalkNoOperation="The group's current assignment is complete. Further orders will come from local command."
+    PlayerRouteSet=The strike group has transmitted a route to #target# to your navigator. Your ship is preparing for the joint jump.
+    PlayerRouteFailed=The strike group has departed for #target#, but your navigator could not plot the jump. Check your engine and fuel, then set the route manually.
+    OperationCancelled=By departure time, no reachable neighbouring enemy target remained near #destination#. The operation was cancelled and the ships joined the regular Coalition forces.
+    Victory=The #target# system has been liberated. Half of the surviving strike group, but at least three ships, is assigned to the local garrison; if fewer than three survived, all remain. The others return to regular Coalition service.
+    Failure=The operation in #target# ended without liberating the system. Surviving ships have been transferred to local command.
+    Reward=You received #money# cr for taking part in the operation. Recorded contribution: #score# points.
+    Disqualified=Command denied the reward because you fired on the strike group.
+}

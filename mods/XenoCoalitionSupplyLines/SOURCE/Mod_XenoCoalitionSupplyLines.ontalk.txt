@@ -1,0 +1,2 @@
+// Intentionally empty. Ship communication is injected by DialogBegin and
+// rendered by CSLStrikeDialog in the standard dialogue panel.

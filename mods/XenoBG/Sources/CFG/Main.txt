@@ -1,0 +1,17 @@
+ML ^{
+    PlanetNO ^{
+        Panel ^{
+            Image ^{
+                Name=PlanetBG
+                Pos=-448,-156,99
+                Size=1920,1080
+            }
+            Image ^{
+                Image=GI,Bm.FormPlanetNO.Empty
+                Name=CockpitImage
+                Pos=0,0,100
+                Size=0,0
+            }
+        }
+    }
+}

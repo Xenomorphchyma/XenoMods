@@ -1,0 +1,11 @@
+dword result_base = GetShipRuins(Player());
+str result_base_type = '';
+if(result_base) result_base_type = Format(ShipType(result_base), '_licensed', '', '');
+if(result_base_type == 'RC')
+    DText(CT('XenoCoalitionSupplyLines.CargoTradeCompleteRC'));
+else if(result_base_type == 'PB')
+    DText(CT('XenoCoalitionSupplyLines.CargoTradeCompletePB'));
+else
+    DText(CT('XenoCoalitionSupplyLines.CargoTradeComplete'));
+DAnswer('restart~' + CT('XenoCoalitionSupplyLines.CargoTradeReturn'));
+exit;

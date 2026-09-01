@@ -1,0 +1,5 @@
+LIBRARY "XenoNextDay.XenoPlugin.dll"
+EXPORTS
+    XenoPlugin_Query
+    XenoPlugin_Initialize
+    XenoNextDay_GetApi

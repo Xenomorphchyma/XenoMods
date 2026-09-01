@@ -1,0 +1,7 @@
+if(!ScriptItemActionType(t_OnEnteringForm)) exit;
+if(CurShip != Player()) exit;
+if(!xdr_ui_ready)
+{
+    xdr_ui_ready = 1;
+    xdr_ui_ready_turn = CurTurn();
+}

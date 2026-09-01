@@ -1,0 +1,2 @@
+// Intentionally empty. This object supplies a valid initial State to convoy
+// ships; all movement and combat orders are issued by the Turn operation.

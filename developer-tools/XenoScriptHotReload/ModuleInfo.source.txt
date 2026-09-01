@@ -1,0 +1,19 @@
+Name=XenoScriptHotReload
+Author=Xenomorphchyma
+Conflict=
+Dependence=
+Priority=999
+Languages=Rus
+Section=XenoMods
+SectionEng=XenoMods
+
+SmallDescription=Перезагрузка SCR, кэшированных в тестовых сохранениях
+FullDescription=Инструмент разработчика для обновления активных модовых SCR после загрузки старого SAV. F10 перезапускает разрешённые ScriptName через штатный механизм игры; изменённые во время работы .scr отслеживаются автоматически.
+FullDescription=<br>
+FullDescription=<color=230,20,0>Перезапуск сбрасывает состояние экземпляра скрипта и не заменяет явную миграцию данных. Используйте копии тестовых сохранений. Требуется XenoNativeLoader 0.6.0 или новее.</color>
+
+SmallDescriptionEng=Reload SCR instances cached in development saves
+FullDescriptionEng=Developer tool for refreshing active mod SCR instances after an old SAV is loaded. F10 restarts allowed ScriptName values through the game's native restart path; .scr files changed while the game is running are watched automatically.
+FullDescriptionEng=<br>
+FullDescriptionEng=<color=230,20,0>Restarting resets the script instance state and does not replace explicit data migration. Use copies of development saves. XenoNativeLoader 0.6.0 or newer is required.</color>
+

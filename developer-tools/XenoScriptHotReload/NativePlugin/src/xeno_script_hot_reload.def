@@ -1,0 +1,5 @@
+LIBRARY "XenoScriptHotReload.XenoPlugin.dll"
+EXPORTS
+    XenoPlugin_Query
+    XenoPlugin_Initialize
+

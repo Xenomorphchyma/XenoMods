@@ -1,0 +1,21 @@
+Bm ^{
+    City ^{
+        Fei=Mods\XenoMods\XenoCoalitionBG\DATA\CityBG\2Fei.gi
+        FeiPirate=Mods\XenoMods\XenoCoalitionBG\DATA\CityBG\FeiPirate.gi
+        Gaal=Mods\XenoMods\XenoCoalitionBG\DATA\CityBG\2Gaal.gi
+        GaalPirate=Mods\XenoMods\XenoCoalitionBG\DATA\CityBG\GaalPirate.gi
+        Maloc=Mods\XenoMods\XenoCoalitionBG\DATA\CityBG\2Maloc.gi
+        MalocPirate=Mods\XenoMods\XenoCoalitionBG\DATA\CityBG\MalocPirate.gi
+        Peleng=Mods\XenoMods\XenoCoalitionBG\DATA\CityBG\2Peleng.gi
+        PelengPirate=Mods\XenoMods\XenoCoalitionBG\DATA\CityBG\PelengPirate.gi
+        People=Mods\XenoMods\XenoCoalitionBG\DATA\CityBG\2People.gi
+        PeoplePirate=Mods\XenoMods\XenoCoalitionBG\DATA\CityBG\PeoplePirate.gi
+    }
+    Gov ^{
+        2FeiBGi=Mods\XenoMods\XenoCoalitionBG\DATA\GovBG\2FeiBG.gi
+        2GaalBGi=Mods\XenoMods\XenoCoalitionBG\DATA\GovBG\2GaalBG.gi
+        2MalocBGi=Mods\XenoMods\XenoCoalitionBG\DATA\GovBG\2MalocBG.gi
+        2PelengBGi=Mods\XenoMods\XenoCoalitionBG\DATA\GovBG\2PelengBG.gi
+        2PeopleBGi=Mods\XenoMods\XenoCoalitionBG\DATA\GovBG\2PeopleBG.gi
+    }
+}

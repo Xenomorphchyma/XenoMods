@@ -1,0 +1,336 @@
+{
+  "schema": "srhd-modkit-scr-compare-v1",
+  "verified": false,
+  "operational_failure": true,
+  "left": {
+    "source": "<workspace>\\Projects\\ModWorkspaces\\XenoRangers_Work\\Base\\ZelRangers\\DATA\\Script\\Mod_ZelRangers.scr",
+    "status": "failed",
+    "verified": false,
+    "operational_failure": true,
+    "source_sha256": "b2d57d838fc9230f35f63ee9cd9b2caa964c1719f56e2713c6542ca48a922be7",
+    "source_version": 8,
+    "lang_dat": "<workspace>\\Projects\\ModWorkspaces\\XenoRangers_Work\\Base\\ZelRangers\\CFG\\Rus\\Lang.dat",
+    "dialogs_imported": true,
+    "lang_import": {
+      "status": "failed",
+      "fallback_used": false,
+      "diagnostic": {
+        "code": "rscript-modal-error",
+        "message": "Процесс показал окно ошибки: Application Error; ОК; Exception EInOutError in module RScript.exe at 0053AB4C.\r\nI/O error 105.; Export to RSM format; Build; Dat files params (optional); Script params; RScript 4.15f; RScript; GDI+ Window (RScript.exe); CiceroUIWndFrame; TF_FloatingLangBar_WndTitle; MSCTFIME UI; Default IME",
+        "suggested_retry": "Если сбой возник при импорте Lang.dat, повторите без --lang-dat или явно разрешите --fallback-without-lang"
+      }
+    },
+    "recovered_project": null,
+    "roundtrip": null,
+    "deep_roundtrip": null,
+    "runtime_analysis": {
+      "origin": "decompiled-rson",
+      "canonicalization_sensitive_codes": [
+        "runtime-turn-direct-world-access"
+      ]
+    },
+    "runtime_issues": [],
+    "phases": [
+      {
+        "name": "inspect-source",
+        "status": "passed",
+        "seconds": 0.0
+      },
+      {
+        "name": "recover-rson",
+        "status": "failed",
+        "seconds": 6.5,
+        "error": "Процесс показал окно ошибки: Application Error; ОК; Exception EInOutError in module RScript.exe at 0053AB4C.\r\nI/O error 105.; Export to RSM format; Build; Dat files params (optional); Script params; RScript 4.15f; RScript; GDI+ Window (RScript.exe); CiceroUIWndFrame; TF_FloatingLangBar_WndTitle; MSCTFIME UI; Default IME"
+      }
+    ],
+    "error": {
+      "type": "RuntimeError",
+      "message": "Процесс показал окно ошибки: Application Error; ОК; Exception EInOutError in module RScript.exe at 0053AB4C.\r\nI/O error 105.; Export to RSM format; Build; Dat files params (optional); Script params; RScript 4.15f; RScript; GDI+ Window (RScript.exe); CiceroUIWndFrame; TF_FloatingLangBar_WndTitle; MSCTFIME UI; Default IME",
+      "diagnostic": {
+        "code": "rscript-modal-error",
+        "message": "Процесс показал окно ошибки: Application Error; ОК; Exception EInOutError in module RScript.exe at 0053AB4C.\r\nI/O error 105.; Export to RSM format; Build; Dat files params (optional); Script params; RScript 4.15f; RScript; GDI+ Window (RScript.exe); CiceroUIWndFrame; TF_FloatingLangBar_WndTitle; MSCTFIME UI; Default IME",
+        "suggested_retry": "Если сбой возник при импорте Lang.dat, повторите без --lang-dat или явно разрешите --fallback-without-lang"
+      }
+    },
+    "timeouts": {
+      "decompile": {
+        "mode": "adaptive",
+        "seconds": 600.0,
+        "hard_seconds": 600.0,
+        "adaptive_seconds": 600.0,
+        "progress_seconds": 65.305,
+        "adaptive_progress_seconds": 65.305,
+        "progress_resets_on": [
+          "expected-output",
+          "process-io",
+          "control-action"
+        ],
+        "operation": "decompile",
+        "source_size": 92720,
+        "objects": null,
+        "code_lines": null
+      },
+      "roundtrip": null
+    }
+  },
+  "right": {
+    "source": "<game>\\Mods\\XenoMods\\XenoRangers\\DATA\\Script\\Mod_ZelRangers.scr",
+    "status": "verified",
+    "verified": true,
+    "operational_failure": false,
+    "source_sha256": "b0d8a7e099f9872bd1ae70f808dc8ee452ec6cc5581d87383f68f2e7d9679616",
+    "source_version": 8,
+    "lang_dat": "<game>\\Mods\\XenoMods\\XenoRangers\\CFG\\Rus\\Lang.dat",
+    "dialogs_imported": true,
+    "lang_import": {
+      "status": "passed",
+      "fallback_used": false,
+      "diagnostic": null
+    },
+    "recovered_project": {
+      "path": null,
+      "name": "Mod_ZelRangers",
+      "file_id": 573785173,
+      "file_version": 8,
+      "objects": 155,
+      "links": 53,
+      "code_lines": 1092,
+      "types": {
+        "TDialog": 2,
+        "TDialogAnswer": 30,
+        "TDialogMsg": 19,
+        "TGroup": 1,
+        "TPlanet": 1,
+        "TStar": 1,
+        "TStarShip": 1,
+        "TState": 1,
+        "TVar": 46,
+        "Top": 53
+      },
+      "state_event_subscriptions": [],
+      "scr_output": "<temporary>\\Mod_ZelRangers.scr",
+      "lang_output": "<temporary>\\Mod_ZelRangers.txt"
+    },
+    "roundtrip": {
+      "scr_sha256": "b0d8a7e099f9872bd1ae70f808dc8ee452ec6cc5581d87383f68f2e7d9679616",
+      "exact_binary_match": true,
+      "event_signatures_match": true,
+      "compiler_exit_code": 0,
+      "compiler_seconds": 0.844,
+      "compiler_queue_seconds": 0.0,
+      "compiler_progress_updates": 1
+    },
+    "deep_roundtrip": {
+      "verified": true,
+      "project": {
+        "path": null,
+        "name": "Mod_ZelRangers",
+        "file_id": 573785173,
+        "file_version": 8,
+        "objects": 155,
+        "links": 53,
+        "code_lines": 1092,
+        "types": {
+          "TDialog": 2,
+          "TDialogAnswer": 30,
+          "TDialogMsg": 19,
+          "TGroup": 1,
+          "TPlanet": 1,
+          "TStar": 1,
+          "TStarShip": 1,
+          "TState": 1,
+          "TVar": 46,
+          "Top": 53
+        },
+        "state_event_subscriptions": [],
+        "scr_output": "<temporary>\\Mod_ZelRangers.scr",
+        "lang_output": "<temporary>\\Mod_ZelRangers.txt"
+      },
+      "canonical_graph_match": false,
+      "decompiler_exit_code": 0,
+      "decompiler_progress_updates": 1,
+      "timeout": {
+        "mode": "adaptive",
+        "seconds": 600.0,
+        "hard_seconds": 600.0,
+        "adaptive_seconds": 600.0,
+        "progress_seconds": 65.834,
+        "adaptive_progress_seconds": 65.834,
+        "progress_resets_on": [
+          "expected-output",
+          "process-io",
+          "control-action"
+        ],
+        "operation": "decompile",
+        "source_size": 101956,
+        "objects": null,
+        "code_lines": null,
+        "backend": "modern-cli"
+      }
+    },
+    "runtime_analysis": {
+      "origin": "decompiled-rson",
+      "canonicalization_sensitive_codes": [
+        "runtime-turn-direct-world-access"
+      ]
+    },
+    "runtime_issues": [
+      {
+        "severity": "error",
+        "code": "runtime-dialog-msg-eager-array-index",
+        "message": "Поле Msg заранее вычисляет 'StrLvlHullSize[branch_level-1]' с диапазоном индекса -1..-1, но strlvlhullsize=newarray(5) допускает только 0..4. Связанный обработчик ещё не успел изменить индекс; игра может завершить вызов сообщения ошибкой массива. До DChange подготовьте одну строковую переменную для Msg либо оставьте Msg пустым и сформируйте всю реплику одним DText",
+        "path": "<temporary>\\right.rson",
+        "location": "object #70 Msg",
+        "evidence": "<StrLvlHullSize[branch_level-1]>",
+        "analysis_origin": "decompiled-rson",
+        "canonicalization_sensitive": false
+      },
+      {
+        "severity": "error",
+        "code": "runtime-dialog-msg-eager-array-index",
+        "message": "Поле Msg заранее вычисляет 'StrLvlHullAcrin[branch_level-1]' с диапазоном индекса -1..-1, но strlvlhullacrin=newarray(5) допускает только 0..4. Связанный обработчик ещё не успел изменить индекс; игра может завершить вызов сообщения ошибкой массива. До DChange подготовьте одну строковую переменную для Msg либо оставьте Msg пустым и сформируйте всю реплику одним DText",
+        "path": "<temporary>\\right.rson",
+        "location": "object #71 Msg",
+        "evidence": "<StrLvlHullAcrin[branch_level-1]>",
+        "analysis_origin": "decompiled-rson",
+        "canonicalization_sensitive": false
+      },
+      {
+        "severity": "error",
+        "code": "runtime-dialog-msg-eager-array-index",
+        "message": "Поле Msg заранее вычисляет 'StrLvlEq[branch_level-1]' с диапазоном индекса -1..-1, но strlvleq=newarray(5) допускает только 0..4. Связанный обработчик ещё не успел изменить индекс; игра может завершить вызов сообщения ошибкой массива. До DChange подготовьте одну строковую переменную для Msg либо оставьте Msg пустым и сформируйте всю реплику одним DText",
+        "path": "<temporary>\\right.rson",
+        "location": "object #72 Msg",
+        "evidence": "<StrLvlEq[branch_level-1]>",
+        "analysis_origin": "decompiled-rson",
+        "canonicalization_sensitive": false
+      },
+      {
+        "severity": "info",
+        "code": "runtime-dialog-inject-delayed-persistent-gate",
+        "message": "AddDialogInject защищён persistent-флагом accepted, который устанавливается только в Turn-коде. На первом открытии интерфейса инъекция может отсутствовать или появиться на ход позже; проверьте, что задержка намеренна, либо отделите доступность UI от поздней игровой инициализации",
+        "path": "<temporary>\\right.rson",
+        "location": "object #53 Code:4",
+        "evidence": "AddDialogInject('Verbovka', '', \"Вербовка новых рейнджеров\", 0);",
+        "analysis_origin": "decompiled-rson",
+        "canonicalization_sensitive": false
+      },
+      {
+        "severity": "warning",
+        "code": "runtime-turn-before-ui",
+        "message": "Пошаговая функция BuildingTime достигает Player/Shop/Galaxy до раннего exit, связанного с t_OnEnteringForm",
+        "path": "<temporary>\\right.rson",
+        "location": "object #51 Code:365 function BuildingTime",
+        "evidence": "result = ((12.0 + ShipPilotRace(Player())) * ((1000.0 + GalaxyDiffLevels()) * (30.0 - 3.0 * LvlFreq) * (GalaxyRangers() * 100.0 / (12.0 + 2.0 * LvlFreq)) + 1000000.0 - 050000.0 * LvlFreq) / 100000.0) / 10.0;",
+        "analysis_origin": "decompiled-rson",
+        "canonicalization_sensitive": false
+      },
+      {
+        "severity": "warning",
+        "code": "runtime-ui-readiness-source-missing",
+        "message": "Есть опасная пошаговая работа, но нет обработчика t_OnEnteringForm, который может открыть защитный флаг",
+        "path": "<temporary>\\right.rson",
+        "location": null,
+        "evidence": null,
+        "analysis_origin": "decompiled-rson",
+        "canonicalization_sensitive": false
+      }
+    ],
+    "phases": [
+      {
+        "name": "inspect-source",
+        "status": "passed",
+        "seconds": 0.0
+      },
+      {
+        "name": "recover-rson",
+        "status": "passed",
+        "seconds": 0.968,
+        "exit_code": 0,
+        "queue_seconds": 0.0
+      },
+      {
+        "name": "validate-rson",
+        "status": "passed",
+        "seconds": 0.032,
+        "issues": 0
+      },
+      {
+        "name": "lint-runtime",
+        "status": "passed",
+        "seconds": 8.297,
+        "errors": 3,
+        "warnings": 2
+      },
+      {
+        "name": "compile-roundtrip",
+        "status": "passed",
+        "seconds": 0.89,
+        "exit_code": 0
+      },
+      {
+        "name": "deep-roundtrip",
+        "status": "passed",
+        "seconds": 1.047
+      },
+      {
+        "name": "publish",
+        "status": "passed",
+        "seconds": 0.0
+      }
+    ],
+    "error": null,
+    "timeouts": {
+      "decompile": {
+        "mode": "adaptive",
+        "seconds": 600.0,
+        "hard_seconds": 600.0,
+        "adaptive_seconds": 600.0,
+        "progress_seconds": 65.834,
+        "adaptive_progress_seconds": 65.834,
+        "progress_resets_on": [
+          "expected-output",
+          "process-io",
+          "control-action"
+        ],
+        "operation": "decompile",
+        "source_size": 101956,
+        "objects": null,
+        "code_lines": null,
+        "backend": "modern-cli"
+      },
+      "roundtrip": {
+        "mode": "adaptive",
+        "seconds": 799.234,
+        "hard_seconds": 799.234,
+        "adaptive_seconds": 799.234,
+        "progress_seconds": 92.101,
+        "adaptive_progress_seconds": 92.101,
+        "progress_resets_on": [
+          "expected-output",
+          "process-io",
+          "control-action"
+        ],
+        "operation": "compile",
+        "source_size": 158473,
+        "objects": 155,
+        "code_lines": 1092
+      }
+    }
+  },
+  "comparison": {
+    "metadata_match": null,
+    "event_signatures_match": null,
+    "code_changed": null,
+    "changed_blocks": [],
+    "runtime_issues": {
+      "added": [],
+      "resolved": [],
+      "unchanged": []
+    },
+    "update_issues": [],
+    "storage_compatibility": null,
+    "dialog_semantics": null,
+    "temporary_projects_persisted": false
+  }
+}

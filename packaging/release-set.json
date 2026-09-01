@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "category": "XenoMods",
+  "loader": {
+    "name": "XenoNativeLoader",
+    "version": "0.6.7",
+    "package": "runtime/XenoNativeLoader/package",
+    "bundledPlugins": [
+      {
+        "name": "XenoStable",
+        "version": "1.4.9"
+      }
+    ]
+  },
+  "mods": [
+    {
+      "name": "XenoBigGalaxy",
+      "version": "0.10.5",
+      "includeInArchive": true
+    },
+    {
+      "name": "XenoEquipmentInflation",
+      "version": "3.0.1",
+      "includeInArchive": true
+    },
+    {
+      "name": "XenoHangarPaging",
+      "version": "1.1.18",
+      "includeInArchive": true
+    },
+    {
+      "name": "XenoZeroSignalQuest",
+      "version": "1.4.0",
+      "includeInArchive": true
+    },
+    {
+      "name": "XenoBG",
+      "version": "snapshot-2026-09-01",
+      "includeInArchive": true,
+      "conflicts": ["KlaxonsBG"]
+    },
+    {
+      "name": "XenoCoalitionBG",
+      "version": "snapshot-2026-09-01",
+      "includeInArchive": true
+    },
+    {
+      "name": "XenoStationsBG",
+      "version": "snapshot-2026-09-01",
+      "includeInArchive": true
+    },
+    {
+      "name": "XenoRangers",
+      "version": "snapshot-2026-08-25",
+      "includeInArchive": true,
+      "conflicts": ["XenoRangersOriginalBalance", "ZelRangers"]
+    },
+    {
+      "name": "XenoRangersOriginalBalance",
+      "version": "snapshot-2026-08-25",
+      "includeInArchive": true,
+      "conflicts": ["XenoRangers", "ZelRangers"]
+    },
+    {
+      "name": "XenoCoalitionSupplyLines",
+      "version": "1.0.83",
+      "includeInArchive": true,
+      "dependencies": ["UtilityFunctionsPack"]
+    },
+    {
+      "name": "XenoDomRangers",
+      "version": "2.2.0-native",
+      "includeInArchive": true
+    },
+    {
+      "name": "XenoScriptHotReload",
+      "version": "0.1.0",
+      "includeInArchive": false,
+      "source": "developer-tools/XenoScriptHotReload"
+    }
+  ]
+}

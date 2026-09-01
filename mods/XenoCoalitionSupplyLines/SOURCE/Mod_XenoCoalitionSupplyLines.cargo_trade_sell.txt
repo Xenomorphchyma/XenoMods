@@ -1,0 +1,87 @@
+dword trade_player = Player();
+if(!trade_player)
+{
+    DChange(4);
+    exit;
+}
+dword trade_base = GetShipRuins(trade_player);
+if(!trade_base)
+{
+    DChange(4);
+    exit;
+}
+str trade_base_type = Format(ShipType(trade_base), '_licensed', '', '');
+int trade_multiplier = 0;
+if(trade_base_type == 'RC') trade_multiplier = 150;
+else if(trade_base_type == 'PB') trade_multiplier = 200;
+if(trade_multiplier <= 0)
+{
+    DChange(4);
+    exit;
+}
+int trade_total = 0;
+int trade_count = 0;
+for(int trade_registry_index = ArrayDim(csl_cargo_registry) - 1; trade_registry_index >= 1; trade_registry_index = trade_registry_index - 1)
+{
+    int trade_cargo_id = csl_cargo_registry[trade_registry_index];
+    dword trade_cargo = IdToItem(trade_cargo_id);
+    if(!trade_cargo) continue;
+    int trade_ship_position = FindItemInShip(trade_player, trade_cargo);
+    int trade_storage_position = -1;
+    dword removed_trade_cargo = 0;
+    if(trade_ship_position >= 0)
+        removed_trade_cargo = GetItemFromShip(trade_player, trade_ship_position);
+    else
+    {
+        trade_storage_position = FindItemInStorage(trade_cargo);
+        if(trade_storage_position >= 0 && StorageItemLocation(trade_storage_position) == trade_base)
+            removed_trade_cargo = GetItemFromStorage(trade_storage_position);
+    }
+    if(!removed_trade_cargo) continue;
+    int trade_item_price = max(1, round(1.0 * ItemCost(trade_cargo) * trade_multiplier / 100));
+    trade_total = trade_total + trade_item_price;
+    trade_count = trade_count + 1;
+    int trade_active_cargo_slot = 0;
+    for(int trade_active_cargo_index = 1; trade_active_cargo_index < ArrayDim(csl_active_cargo_ids); trade_active_cargo_index = trade_active_cargo_index + 1)
+    {
+        if(csl_active_cargo_ids[trade_active_cargo_index] != trade_cargo_id) continue;
+        trade_active_cargo_slot = trade_active_cargo_index;
+        break;
+    }
+    int trade_was_active_convoy_cargo = trade_active_cargo_slot > 0;
+    // The visible dialogue context is normally the strike operation, while
+    // active cargo can belong to any of the three convoy schedulers. Update
+    // the owning record directly instead of charging only slot one.
+    for(int trade_context_slot = 1; trade_context_slot <= 3; trade_context_slot = trade_context_slot + 1)
+    {
+        int trade_context_base = (trade_context_slot - 1) * 100;
+        for(int trade_context_cargo_index = 1; trade_context_cargo_index <= 30; trade_context_cargo_index = trade_context_cargo_index + 1)
+        {
+            int trade_context_cargo_offset = (trade_context_slot - 1) * 32 + trade_context_cargo_index;
+            if(csl_context_active_cargo_ids[trade_context_cargo_offset] != trade_cargo_id) continue;
+            trade_was_active_convoy_cargo = 1;
+            csl_context_active_cargo_ids[trade_context_cargo_offset] = 0;
+            if(csl_context_state[trade_context_base + 1] == 2)
+                csl_context_state[trade_context_base + 32] = max(csl_context_state[trade_context_base + 32], 70);
+        }
+    }
+    // Clear the actual thirty-slot cargo table before FreeItem invalidates the
+    // object. The old csl_cargo_1..9 compatibility fields are not authoritative.
+    if(trade_active_cargo_slot > 0) csl_active_cargo_ids[trade_active_cargo_slot] = 0;
+    FreeItem(removed_trade_cargo);
+    ArrayDelete(csl_cargo_registry, trade_registry_index);
+    if(trade_registry_index < ArrayDim(csl_cargo_bases)) ArrayDelete(csl_cargo_bases, trade_registry_index);
+    if(trade_base_type == 'RC')
+    {
+        int trade_ranger_difficulty = max(50, min(500, round(0.5 * (GalaxyDiffLevels(2) + GalaxyDiffLevels(4)))));
+        ArrayAdd(csl_rc_queue_base_ids, Id(trade_base));
+        ArrayAdd(csl_rc_queue_due_turns, CurTurn() + max(1, round(60.0 * trade_ranger_difficulty / 100)));
+    }
+}
+if(trade_count > 0)
+{
+    ShipMoney(trade_player, ShipMoney(trade_player) + trade_total);
+    Sound('Sound.Sell');
+}
+DChange(4);
+exit;

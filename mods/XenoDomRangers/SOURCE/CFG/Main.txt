@@ -1,0 +1,29 @@
+BV ^{
+    OnLoad ^{
+        XenoDomRangers ^{
+            01=if(!IsScriptActive('Mod_XenoDomRangers')) ScriptRun(ShipStar(Player()), GetShipPlanet(Player()), 'Mod_XenoDomRangers');
+        }
+    }
+    OnStart ^{
+        0DayScripts ^{
+            95_XenoDomRangers=ScriptRun(ShipStar(Player()), GetShipPlanet(Player()), 'Mod_XenoDomRangers');
+        }
+    }
+}
+Data ^{
+    Script ^{
+        Mod_XenoDomRangers=1,Script.Mod_XenoDomRangers
+    }
+    ScriptLibs ^{
+        XenoDomRangersNative ^{
+            Path=Mods\XenoMods\XenoDomRangers\Native\XenoDomRangers.XenoPlugin.dll
+            XenoDomRangers_IsReady=int,XenoDomRangers_IsReady
+            XenoDomRangers_SetNpcChameleon=int,XenoDomRangers_SetNpcChameleon,dword,int,int,int,int,int
+            XenoDomRangers_ClearNpcChameleon=int,XenoDomRangers_ClearNpcChameleon,dword,int,int
+            XenoDomRangers_ResetSessions=int,XenoDomRangers_ResetSessions
+            XenoDomRangers_GetConfigInt=int,XenoDomRangers_GetConfigInt,int
+            XenoDomRangers_WorldTick=int,XenoDomRangers_WorldTick,dword,int,int
+        }
+        Mod_XenoDomRangers=XenoDomRangersNative
+    }
+}

@@ -1,0 +1,115 @@
+Bm ^{
+    BGO ^{
+        bg72=Mods\\XenoMods\\XenoPlanets\\DATA\\BGObj\\bg72.gai
+        bg79=Mods\\XenoMods\\XenoPlanets\\DATA\\BGObj\\bg79.gai
+        bg80=Mods\\XenoMods\\XenoPlanets\\DATA\\BGObj\\bg80.gai
+        bg81=Mods\\XenoMods\\XenoPlanets\\DATA\\BGObj\\bg81.gai
+        bg82=Mods\\XenoMods\\XenoPlanets\\DATA\\BGObj\\bg82.gai
+        bg83=Mods\\XenoMods\\XenoPlanets\\DATA\\BGObj\\bg83.gai
+        bg84=Mods\\XenoMods\\XenoPlanets\\DATA\\BGObj\\bg84.gai
+        bg85=Mods\\XenoMods\\XenoPlanets\\DATA\\BGObj\\bg85.gai
+        bg86=Mods\\XenoMods\\XenoPlanets\\DATA\\BGObj\\bg86.gai
+    }
+    FormPlanetNO ^{
+        Empty=Mods\\XenoMods\\XenoPlanets\\DATA\\FormPlanetNO\\Empty.gi
+    }
+    PUMaps ^{
+        Cheshilan=Mods\\XenoMods\\XenoPlanets\\DATA\\PUMaps\\Cheshilan.jpg
+        Deeva=Mods\\XenoMods\\XenoPlanets\\DATA\\PUMaps\\Deeva.jpg
+        Garharl=Mods\\XenoMods\\XenoPlanets\\DATA\\PUMaps\\Garharl.jpg
+        Neptune=DATA\\PUMaps\\neptune.jpg
+        Tristeria=Mods\\XenoMods\\XenoPlanets\\DATA\\PUMaps\\Tristeria.jpg
+        Uran=Mods\\XenoMods\\XenoPlanets\\DATA\\PUMaps\\Uran.jpg
+    }
+    Planet2 ^{
+        C ^{
+            160 ^{
+                m160=Mods\\XenoMods\\XenoPlanets\\DATA\\Planet2\\160\\cloud\\m160.psd
+            }
+            200 ^{
+                m1_1=Mods\\XenoMods\\XenoPlanets\\DATA\\Planet2\\200\\cloud\\m1_1.psd
+                m1_2=Mods\\XenoMods\\XenoPlanets\\DATA\\Planet2\\200\\cloud\\m1_2.psd
+                m1_3=Mods\\XenoMods\\XenoPlanets\\DATA\\Planet2\\200\\cloud\\m1_3.psd
+            }
+        }
+        T ^{
+            120 ^{
+                Deeva=Mods\\XenoMods\\XenoPlanets\\DATA\\Planet2\\120\\Pl01x120.psd
+            }
+            180 ^{
+                Tristeria=Mods\\XenoMods\\XenoPlanets\\DATA\\Planet2\\180\\Pl01x180.psd
+            }
+            200 ^{
+                Cheshilan=Mods\\XenoMods\\XenoPlanets\\DATA\\Planet2\\200\\Pl01x200.psd
+                Garharl=Mods\\XenoMods\\XenoPlanets\\DATA\\Planet2\\200\\Pl02x200.psd
+            }
+            Solar ^{
+                Uran=Mods\\XenoMods\\XenoPlanets\\DATA\\Planet2\\Solar\\Uran.psd
+            }
+        }
+    }
+    PlanetBG ^{
+        100=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\100.gi
+        101=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\101.gi
+        102=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\102.gi
+        103=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\103.gi
+        104=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\104.gi
+        105=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\105.gi
+        106=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\106.gi
+        107=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\107.gi
+        108=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\108.gi
+        109=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\109.gi
+        110=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\110.gi
+        111=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\111.gi
+        112=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\112.gi
+        113=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\113.gi
+        114=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\114.gi
+        115=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\115.gi
+        116=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\116.gi
+        117=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\117.gi
+        118=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\118.gi
+        200=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\200.gi
+        201=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\201.gi
+        202=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\202.gi
+        203=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\203.gi
+        204=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\204.gi
+        205=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\205.gi
+        206=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\206.gi
+        207=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\207.gi
+        208=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\208.gi
+        209=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\209.gi
+        210=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\210.gi
+        211=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\211.gi
+        212=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\212.gi
+        213=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\213.gi
+        214=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\214.gi
+        300=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\300.gi
+        301=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\301.gi
+        302=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\302.gi
+        303=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\303.gi
+        304=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\304.gi
+        305=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\305.gi
+        306=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\306.gi
+        307=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\307.gi
+        308=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\308.gi
+        309=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\309.gi
+        310=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\310.gi
+        311=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\311.gi
+        312=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\312.gi
+        313=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\313.gi
+        314=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\314.gi
+        315=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\315.gi
+        316=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\316.gi
+        317=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\317.gi
+        318=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\318.gi
+        Cheshilan=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\Cheshilan.gi
+        Deeva=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\Deeva.gi
+        Garharl=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\Garharl.gi
+        None=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\None.gi
+        Tristeria=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\Tristeria.gi
+        Uran=Mods\\XenoMods\\XenoPlanets\\DATA\\PlanetBG\\Uran.gi
+    }
+}
+Script ^{
+    XenoPlanets=Mods\\XenoMods\\XenoPlanets\\DATA\\Script\\XenoPlanets.scr
+}

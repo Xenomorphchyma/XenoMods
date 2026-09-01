@@ -1,0 +1,22 @@
+PlanetQuest ~{
+    ItemForPlanetQuest ~{
+        937=none
+    }
+    List ~{
+        937 ^{
+            Access=5
+            Dif=55
+            Genre=расследование и хоррор
+            Group=2
+            Image=Bm.PQI.XZS_00
+            Length=4
+            Name=Нулевой сигнал
+        }
+    }
+    PlanetQuest ~{
+        937=Mods\XenoMods\XenoZeroSignalQuest\DATA\Quest\Rus\ZeroSignal.qmm
+    }
+    StartText ~{
+        937=Рейнджеру предстоит выяснить, почему исследовательская станция «Ностром-13» восемнадцать суток не подаёт ни штатных отчётов, ни сигнала бедствия.
+    }
+}

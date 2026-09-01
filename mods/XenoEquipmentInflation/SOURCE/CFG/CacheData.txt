@@ -1,0 +1,3 @@
+Script ^{
+    Mod_XenoEquipmentInflationNativeV1=Mods\XenoMods\XenoEquipmentInflation\DATA\Script\Mod_XenoEquipmentInflationNativeV1.scr
+}

@@ -1,0 +1,5 @@
+LIBRARY "XenoGalaxyGenerator.XenoPlugin.dll"
+EXPORTS
+    XenoPlugin_Query
+    XenoPlugin_Initialize
+    XenoGalaxyGenerator_GetApi

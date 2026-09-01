@@ -1,0 +1,4 @@
+EXPORTS
+    XenoPlugin_Query
+    XenoPlugin_Initialize
+    XenoCoalitionSupplyLines_GetConfigInt

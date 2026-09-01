@@ -1,0 +1,9 @@
+Bm ^{
+    ItemsUseless ^{
+        2XenoCoalitionSupplyCargo_s=Mods\XenoMods\XenoCoalitionSupplyLines\DATA\ItemsUseless\2XenoCoalitionSupplyCargo.gi
+    }
+}
+
+Script ^{
+    Mod_XenoCoalitionSupplyLines=Mods\XenoMods\XenoCoalitionSupplyLines\DATA\Script\Mod_XenoCoalitionSupplyLines.scr
+}

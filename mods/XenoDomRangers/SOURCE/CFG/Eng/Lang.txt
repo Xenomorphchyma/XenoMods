@@ -1,0 +1,14 @@
+Script ^{
+    Mod_XenoDomRangers ~{
+        MaskedText=[interference] Identification confirmed. This Dominator channel cannot negotiate with rangers.
+        MaskedClose=fastexit~Close channel
+        MissionText=Do not interfere. I am on an important sortie, and I cannot afford extra attention.
+        MissionClose=fastexit~Understood
+        AttackedText=What are you doing?! I am on your side! It is camouflage - do not expose me to the Dominators.
+        AttackedSorry=Sorry. I am ceasing fire.
+        AttackedHostile=I do not care. Get out of my way.
+        SorryText=Good. I am ceasing fire too. Do not draw attention to us.
+        HostileText=Then this conversation is over. I am leaving the system.
+        DialogClose=fastexit~Close channel
+    }
+}

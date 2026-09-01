@@ -1,0 +1,18 @@
+Name=XenoHangarPaging
+Author=Xenomorphchyma
+Conflict=
+Dependence=
+Priority=8
+Languages=Rus,Eng
+Section=XenoMods
+SectionEng=XenoMods
+
+SmallDescription=Листание кораблей на посадочной площадке
+FullDescription=Добавляет постоянно видимую компактную панель со стрелками и номером страницы в ангар планет и станций. Если приземлилось больше восьми чужих кораблей, их можно листать по восемь. Корабль игрока всегда остаётся на центральной площадке.
+FullDescription=<br>
+FullDescription=<color=80,220,120>Требует для работы XenoNativeLoader.</color>
+
+SmallDescriptionEng=Paged landed-ship list
+FullDescriptionEng=Adds an always-visible compact arrow panel with a live page indicator to planet and station hangars. When more than eight other ships are docked, they can be browsed in stable pages of eight. The player's ship always remains on the central pad.
+FullDescriptionEng=<br>
+FullDescriptionEng=<color=80,220,120>XenoNativeLoader is required.</color>

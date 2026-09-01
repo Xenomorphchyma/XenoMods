@@ -1,0 +1,17 @@
+Name=XenoDomRangers
+Author=Xenomorphchyma
+Conflict=XenoDomRangersTest
+Priority=8
+Section=XenoMods
+SectionEng=XenoMods
+Languages=Rus,Eng
+
+SmallDescription=Рейнджеры-сборщики в системах доминаторов
+FullDescription=До трёх обычных NPC-рейнджеров становятся редкими специалистами: покупают на пиратской базе камуфляж нужной серии и собирают безопасные обломки в системах доминаторов.
+FullDescription=<br>
+FullDescription=Они прекращают сбор при начале освобождения, используют найденное топливо и при необходимости заряжаются у звезды с настоящим риском повреждения и гибели. Если пиратских баз нет, новые специалисты не выбираются.
+
+SmallDescriptionEng=Ranger scavengers in Dominator systems
+FullDescriptionEng=Up to three ordinary NPC rangers become rare specialists, purchase series-matched camouflage at a pirate base, and recover safe debris from Dominator systems.
+FullDescriptionEng=<br>
+FullDescriptionEng=They withdraw when a liberation battle starts, use recovered fuel, and may risk solar refuelling. With no pirate bases, recruitment is skipped completely.

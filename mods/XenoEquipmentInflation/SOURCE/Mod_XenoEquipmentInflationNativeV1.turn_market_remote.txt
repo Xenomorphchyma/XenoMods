@@ -1,0 +1,70 @@
+if(!eidm_runtime_ready || CurTurn() <= eidm_runtime_ready_turn) exit;
+
+function EIDM_RemoteMarketStep(int batch_offset)
+{
+    int total_stars = GalaxyStars();
+    if(total_stars <= 0) exit;
+    int tick = ((CurTurn() - 1) / 5) * 12 + batch_offset;
+    int star_index = tick - (tick / total_stars) * total_stars;
+    dword star = GalaxyStar(star_index);
+    if(!star) exit;
+
+    int planet_count = StarPlanets(star);
+    int ruin_count = StarRuins(star);
+    int total_shops = planet_count + ruin_count;
+    if(total_shops <= 0) exit;
+    int shop_cycle = tick / total_stars;
+    int shop_index = shop_cycle - (shop_cycle / total_shops) * total_shops;
+    dword shop = 0;
+    if(shop_index < planet_count) shop = StarPlanets(star, shop_index);
+    else shop = StarRuins(star, shop_index - planet_count);
+    if(!shop) exit;
+
+    int count = ShopItems(shop);
+    if(count <= 0) exit;
+    int item_cycle = shop_cycle / total_shops;
+    dword item = ShopItems(shop, item_cycle - (item_cycle / count) * count);
+    if(!item || ObjectType(item) != 6) exit;
+    int item_type = ItemType(item);
+    int is_equipment = item_type >= t_Artefact && item_type <= t_CustomWeapon;
+    int is_extended_artefact = item_type >= t_ArtDefToEnergy && item_type <= t_ArtFastRacks;
+    if(!is_equipment && !is_extended_artefact) exit;
+
+    int same_type_count = 0;
+    for(int i = 0; i < count; i = i + 1)
+    {
+        dword test_item = ShopItems(shop, i);
+        if(test_item && ItemType(test_item) == item_type)
+            same_type_count = same_type_count + 1;
+    }
+    int market_adjust = 0;
+    if(same_type_count <= 1) market_adjust = 20;
+    else if(same_type_count == 2) market_adjust = 15;
+    else if(same_type_count <= 4) market_adjust = 10;
+    else if(same_type_count <= 8) market_adjust = 0;
+    else if(same_type_count <= 12) market_adjust = -10;
+    else market_adjust = -20;
+
+    int level_delta = ItemLevel(item) - GalaxyTechLevel();
+    if(level_delta >= 2) market_adjust = market_adjust + 10;
+    else if(level_delta == 1) market_adjust = market_adjust + 5;
+    else if(level_delta <= -3) market_adjust = market_adjust - 10;
+    else if(level_delta == -2) market_adjust = market_adjust - 5;
+    market_adjust = max(-30, min(30, market_adjust));
+    unknown native_market = ImportedFunction('XenoEquipmentInflationNative', 'XenoEquipmentInflation_SetMarket');
+    native_market(item, 100 + market_adjust);
+}
+
+if((CurTurn() - 1) % 5) exit;
+EIDM_RemoteMarketStep(0);
+EIDM_RemoteMarketStep(1);
+EIDM_RemoteMarketStep(2);
+EIDM_RemoteMarketStep(3);
+EIDM_RemoteMarketStep(4);
+EIDM_RemoteMarketStep(5);
+EIDM_RemoteMarketStep(6);
+EIDM_RemoteMarketStep(7);
+EIDM_RemoteMarketStep(8);
+EIDM_RemoteMarketStep(9);
+EIDM_RemoteMarketStep(10);
+EIDM_RemoteMarketStep(11);

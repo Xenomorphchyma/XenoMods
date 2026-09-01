@@ -1,0 +1,9 @@
+Script ^{
+    XenoPlanets ^{
+        0=Garharl
+        1=Cheshilan
+        2=Neptune
+        3=Tristeria
+        4=Deeva
+    }
+}

@@ -1,0 +1,27 @@
+BV ^{
+    OnLoad ^{
+        XenoEquipmentInflation ^{
+            01=if(!IsScriptActive('Mod_XenoEquipmentInflationNativeV1')) ScriptRun(ShipStar(Player()), GetShipPlanet(Player()), 'Mod_XenoEquipmentInflationNativeV1');
+        }
+    }
+    OnStart ^{
+        0DayScripts ^{
+            90_XenoEquipmentInflation=ScriptRun(ShipStar(Player()), GetShipPlanet(Player()), 'Mod_XenoEquipmentInflationNativeV1');
+        }
+    }
+}
+Data ^{
+    Script ^{
+        Mod_XenoEquipmentInflationNativeV1=1,Script.Mod_XenoEquipmentInflationNativeV1
+    }
+    ScriptLibs ^{
+        XenoEquipmentInflationNative ^{
+            Path=Mods\XenoMods\XenoEquipmentInflation\Native\XenoEquipmentInflation.XenoPlugin.dll
+            XenoEquipmentInflation_IsReady=int,XenoEquipmentInflation_IsReady
+            XenoEquipmentInflation_Configure=int,XenoEquipmentInflation_Configure,int,int,int,int,int,int,int,int,int,int
+            XenoEquipmentInflation_Pulse=int,XenoEquipmentInflation_Pulse,int
+            XenoEquipmentInflation_SetMarket=int,XenoEquipmentInflation_SetMarket,dword,int
+        }
+        Mod_XenoEquipmentInflationNativeV1=XenoEquipmentInflationNative
+    }
+}

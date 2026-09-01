@@ -1,0 +1,21 @@
+dword talk_target = 0;
+if(csl_target_star_id > 1)
+{
+    for(int talk_star_index = 0; talk_star_index < GalaxyStars(); talk_star_index = talk_star_index + 1)
+    {
+        dword talk_star = GalaxyStar(talk_star_index);
+        if(!talk_star) continue;
+        if(Id(talk_star) == csl_target_star_id)
+        {
+            talk_target = talk_star;
+            break;
+        }
+    }
+}
+str talk_target_name = CT('XenoCoalitionSupplyLines.StrikeTalkUnknownTarget');
+if(talk_target) talk_target_name = StarName(talk_target);
+if(csl_phase == 13 || csl_phase == 14)
+    DText(CT('XenoCoalitionSupplyLines.StrikeTalkAcceptedAssembly'));
+else
+    DText(Format(CT('XenoCoalitionSupplyLines.StrikeTalkAccepted'), '#target#', talk_target_name, '#date#', GameDateTxtByTurn(max(CurTurn() + 1, csl_strike_launch_turn))));
+DAnswer('fastexit~' + CT('Talk.Exit'));

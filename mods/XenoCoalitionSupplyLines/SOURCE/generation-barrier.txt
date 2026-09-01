@@ -1,0 +1,1 @@
+CurTurn() > 0 && csl_ui_ready

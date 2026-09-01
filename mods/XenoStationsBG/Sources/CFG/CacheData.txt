@@ -1,0 +1,11 @@
+Bm ^{
+    FormRuins ^{
+        2BKbg=Mods\XenoMods\XenoStationsBG\DATA\FormRuinsBG\2BKbg.gi
+        2MCbg=Mods\XenoMods\XenoStationsBG\DATA\FormRuinsBG\2MCbg.gi
+        2PBbg=Mods\XenoMods\XenoStationsBG\DATA\FormRuinsBG\2PBbg.gi
+        2RCbg=Mods\XenoMods\XenoStationsBG\DATA\FormRuinsBG\2RCbg.gi
+        2SBbg=Mods\XenoMods\XenoStationsBG\DATA\FormRuinsBG\2SBbg.gi
+        2WBbg=Mods\XenoMods\XenoStationsBG\DATA\FormRuinsBG\2WBbg.gi
+        2WBbg2=Mods\XenoMods\XenoStationsBG\DATA\FormRuinsBG\2WBbg2.gi
+    }
+}

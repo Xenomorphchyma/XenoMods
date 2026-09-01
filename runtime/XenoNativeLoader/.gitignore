@@ -1,0 +1,9 @@
+.build/
+bin/
+*.obj
+*.pdb
+*.ilk
+*.exp
+*.lib
+XenoNative.log
+

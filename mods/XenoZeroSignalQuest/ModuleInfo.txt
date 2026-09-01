@@ -1,0 +1,19 @@
+Name=XenoZeroSignalQuest
+Author=Xenomorphchyma
+Conflict=BlockTextQ
+Dependence=
+Priority=6
+Section=XenoMods
+SectionEng=XenoMods
+Languages=Rus
+SmallDescription=Добавляет большой текстовый квест «Нулевой сигнал»: расследование исчезновения экипажа станции «Ностром-13». <color=0,132,15>(легален)</color>
+FullDescription=Большой вариативный текстовый квест с исследованием заброшенной станции, загадками, скрытностью, необязательными боями и тремя способами побега.
+FullDescription=<clr><clrEnd>
+FullDescription=Содержит узнаваемый, но переосмысленный в духе «Космических рейнджеров» оммаж классическому космическому хоррору.
+FullDescription=<color=0,132,15>Русская версия.</color>
+
+SmallDescriptionEng=Adds the large text quest "Zero Signal": an investigation into the disappearance of the crew of the Nostrom-13 station. <color=0,132,15>(legal)</color>
+FullDescriptionEng=A large branching text quest featuring exploration of an abandoned station, puzzles, stealth, optional combat and three ways to escape.
+FullDescriptionEng=<clr><clrEnd>
+FullDescriptionEng=Contains a recognizable homage to classic space horror, reimagined in the spirit of Space Rangers.
+FullDescriptionEng=<color=0,132,15>Russian-language version.</color>

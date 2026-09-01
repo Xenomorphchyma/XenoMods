@@ -1,0 +1,9 @@
+Name=XenoRangers
+Author=Zelenium, Denball, Xenomorphchyma
+Conflict=ZelRangers, XenoRangersOriginalBalance
+Dependence=
+Priority=1
+Section=Солянка
+Languages=Rus
+SmallDescription=Сбалансированные новые рейнджеры с исправленными диалогами и защитой ГТУ 1
+FullDescription=XenoRangers — переработанная редакция ZelRangers: обновлённый русский текст, согласованные Lang.txt и Lang.dat, более строгий сбалансированный сценарий и устранённое зависание RandomWeapon при ГТУ 1. Несовместим с ZelRangers и XenoRangersOriginalBalance.

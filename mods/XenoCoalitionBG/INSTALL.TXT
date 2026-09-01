@@ -1,0 +1,3 @@
+Packages {
+    Package=Mods\XenoMods\XenoCoalitionBG\XenoCoalitionBG.pkg
+}

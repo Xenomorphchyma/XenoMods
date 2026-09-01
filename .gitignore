@@ -1,0 +1,11 @@
+dist/
+.category-audit/
+**/.srhd-build/
+**/.srhd-cache/
+**/.build/
+**/Build/
+**/TestResults/
+*.audit.json
+*.manifest.json
+*.log
+

@@ -1,0 +1,249 @@
+ML ^{
+    Galaxy ^{
+        Border=0,0,1200,800
+        Panel ^{
+            GraphBuf ^{
+                Name=BGBuf
+                Size=1024,768
+            }
+            MoveWorld=False
+            Name=MainPanel
+            Panel ^{
+                Name=PanelMain
+            }
+            Panel ^{
+                GAI ^{
+                    Active=True
+                    Frame=[50,0-6]
+                    Image=Bm.FormGalaxy2.2Anim
+                    Name=Anim
+                    Pos=562,817,-3
+                    Size=96,37
+                }
+                GraphButton ^{
+                    ImageDisable=GI,Bm.FormGalaxy2.2OkH
+                    ImageDown=GI,Bm.FormGalaxy2.2OkD
+                    ImageNormal=GI,Bm.FormGalaxy2.2OkN
+                    ImageNormalA=GI,Bm.FormGalaxy2.2OkA
+                    Kind=Disable
+                    KindHit=Rect
+                    MouseBlocking=True
+                    Name=ButJump
+                    Pos=906,831,-2
+                    Size=119,42
+                    Style=Style.GB.SoundNormal
+                }
+                GraphButton ^{
+                    ImageDown=GI,Bm.FormGalaxy2.2CancelD
+                    ImageNormal=GI,Bm.FormGalaxy2.2CancelN
+                    ImageNormalA=GI,Bm.FormGalaxy2.2CancelA
+                    Kind=Normal
+                    KindHit=Rect
+                    MouseBlocking=True
+                    Name=ButExit
+                    Pos=1061,815,-2
+                    Size=79,39
+                    Style=Style.GB.SoundNormal
+                }
+                GraphButton ^{
+                    Help=FormGalaxy.HelpButCreate
+                    ImageDown=GI,Bm.FormGalaxy2.CreateD
+                    ImageNormal=GI,Bm.FormGalaxy2.CreateN
+                    ImageNormalA=GI,Bm.FormGalaxy2.CreateA
+                    Kind=Normal
+                    KindHit=Rect
+                    MouseBlocking=True
+                    Name=ButCreate
+                    Pos=661,821,-2
+                    Size=37,37
+                    Style=Style.GB.SoundNormal
+                }
+                GraphButton ^{
+                    Help=FormGalaxy.HelpButDel
+                    ImageDown=GI,Bm.FormGalaxy2.DelD
+                    ImageNormal=GI,Bm.FormGalaxy2.DelN
+                    ImageNormalA=GI,Bm.FormGalaxy2.DelA
+                    Kind=Normal
+                    KindHit=Rect
+                    MouseBlocking=True
+                    Name=ButDel
+                    Pos=748,821,-2
+                    Size=37,37
+                    Style=Style.GB.SoundNormal
+                }
+                GraphButton ^{
+                    Help=FormGalaxy.HelpButUndo
+                    ImageDown=GI,Bm.FormGalaxy2.UndoD
+                    ImageNormal=GI,Bm.FormGalaxy2.UndoN
+                    ImageNormalA=GI,Bm.FormGalaxy2.UndoA
+                    Kind=Normal
+                    KindHit=Rect
+                    MouseBlocking=True
+                    Name=ButUndo
+                    Pos=703,821,-2
+                    Size=37,37
+                    Style=Style.GB.SoundNormal
+                }
+                GraphButton ^{
+                    ImageDown=GI,Bm.XenoMapMarker.leftButton_D
+                    ImageNormal=GI,Bm.XenoMapMarker.leftButton_N
+                    ImageNormalA=GI,Bm.XenoMapMarker.leftButton_A
+                    Kind=Normal
+                    KindHit=Rect
+                    MouseBlocking=True
+                    Name=MarkerLeftButton
+                    OnPressCode ^{
+                        00=str ObjectName=lowercase(TextBox('Введите имя системы/планеты: '));
+                        01=if(ObjectName=='')exit;
+                        02=int i=0;
+                        03=int j=0;
+                        04=int finded=-1;
+                        05=dword star;
+                        06=int galaxy_star_count=GalaxyStars(); for(i=0;i<galaxy_star_count;i=i+1)
+                        07 ^{
+                            00=star=GalaxyStar(i); if(!star)continue;
+                            01=dword star_sector=StarToCon(star); if(!star_sector)continue; if(!SectorVisible(star_sector))continue;
+                            02=if(lowercase(Name(star))==ObjectName)finded=i;
+                            04=int star_planet_count=StarPlanets(star); for(j=0;j<star_planet_count;j=j+1)
+                            05 ^{
+                                00=dword planet=StarPlanets(star,j); if(planet && lowercase(Name(planet))==ObjectName)finded=i;
+                            }
+                            06=if(finded!=-1)break;
+                        }
+                        08=if(finded<0)
+                        09 ^{
+                            00=MessageBox('Совпадений не обнаружено.');
+                            01=InterfaceState('Galaxy','TargetPos',0);
+                            02=exit;
+                        }
+                        10=float GalaxySizeX=CT('Constellations.GalaxySizeX');
+                        11=float GalaxySizeY=CT('Constellations.GalaxySizeY');
+                        12=float MapWidth=1150;
+                        13=float MapHeight=786;
+                        14=float x=CoordX(star)*MapWidth/GalaxySizeX;
+                        15=float y=CoordY(star)*MapHeight/GalaxySizeY;
+                        16=if(InterfaceState('Galaxy','TargetPos')!=1)InterfaceState('Galaxy','TargetPos',1);
+                        17=InterfacePos('Galaxy','TargetPos',-50+x,-50+y,0);
+                    }
+                    Pos=844,830,-2
+                    Size=23,35
+                    Style=Style.GB.SoundNormal
+                }
+                GraphButton ^{
+                    ImageDown=GI,Bm.XenoMapMarker.rightButton_D
+                    ImageNormal=GI,Bm.XenoMapMarker.rightButton_N
+                    ImageNormalA=GI,Bm.XenoMapMarker.rightButton_A
+                    Kind=Normal
+                    KindHit=Rect
+                    MouseBlocking=True
+                    Name=MarkerRightButton
+                    OnPressCode ^{
+                        00=if(InterfaceState('Galaxy','TargetPos')==1)
+                        01 ^{
+                            00=if(MessageBoxYesNo('Удалить метку с карты?'))InterfaceState('Galaxy','TargetPos',0);
+                        }
+                    }
+                    Pos=869,830,-2
+                    Size=23,35
+                    Style=Style.GB.SoundNormal
+                }
+                Image ^{
+                    Image=GI,Bm.XenoBigGalaxy.GalaxyPanel
+                    Name=ImagePanel
+                    Pos=0,0,-1
+                    Size=1200,895
+                }
+                Image ^{
+                    Image=GI,Bm.FormGalaxy2.2Light1
+                    Name=Light1
+                    Pos=538,821,-2
+                    Size=17,18
+                }
+                Image ^{
+                    Image=GI,Bm.FormGalaxy2.2Light2
+                    Name=Light2
+                    Pos=540,834,-2
+                    Size=17,18
+                }
+                Image ^{
+                    Image=GI,Bm.FormGalaxy2.2Light3
+                    Name=Light3
+                    Pos=545,847,-2
+                    Size=15,10
+                }
+                Label ^{
+                    AlignX=Center
+                    AlignY=CenterEx
+                    Font=Font.2Ranger
+                    Name=LabelJumpTo
+                    Pos=562,818,-3
+                    Size=96,37
+                    TextColor=55,230,255
+                    WordWrap=True
+                }
+                Panel ^{
+                    Circle ^{
+                        Name=JampMaxShr
+                        Size=1150,786
+                    }
+                    Circle ^{
+                        Name=JampMaxColor
+                        Size=1150,786
+                    }
+                    Circle ^{
+                        Name=RadarDetect
+                        Size=1150,786
+                    }
+                    GAI ^{
+                        Name=PathCurPos
+                        Pos=6,6,-23
+                        Size=1150,786
+                    }
+                    GAI ^{
+                        Name=PathDesPos
+                        Pos=6,6,-23
+                        Size=1150,786
+                    }
+                    GraphBuf ^{
+                        Name=HideBuf
+                        Pos=0,0,10
+                        Size=1150,786
+                    }
+                    Image ^{
+                        Image=GI,Bm.FormGalaxy2.2BG
+                        KindX=Center
+                        KindY=Center
+                        Pos=0,0,1000
+                        Size=1150,786
+                    }
+                    Image ^{
+                        Active=False
+                        Image=GI,Bm.XenoMapMarker.ArrowImage
+                        Name=TargetPos
+                        Pos=0,0,-10
+                        Size=100,100
+                    }
+                    Label ^{
+                        Name=Distance
+                    }
+                    Panel ^{
+                        Name=Map
+                        Pos=0,0,5
+                        Size=1150,786
+                    }
+                    Pos=24,30
+                    Size=1150,786
+                }
+                Pos=-88,-87,-2
+                Size=1200,897
+            }
+            Pos=0,0
+            Size=1300,900
+        }
+    }
+}
+Data ^{
+    Script ^{
+        Mod_BlockPirates=1,Script.Mod_BlockPirates
+    }
+}

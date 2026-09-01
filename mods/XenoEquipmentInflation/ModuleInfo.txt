@@ -1,0 +1,49 @@
+Name=XenoEquipmentInflation
+Author=Xenomorphchyma
+Conflict=XenoEquipmentInflationCleanup, EvoNoInflation
+Priority=7
+Section=XenoMods
+SectionEng=XenoMods
+Languages=Rus,Eng
+
+SmallDescription=Нативная инфляция оборудования и локальный рынок
+FullDescription=Динамически изменяет цены корпусов, систем, оружия и артефактов, сохраняя реальную базовую стоимость, заданную игрой или другим модом.
+FullDescription=<br>
+FullDescription=<color=200,0,0>Требуется XenoNativeLoader.</color>
+FullDescription=<br>
+FullDescription=<color=0,50,200>Как это работает:</color>
+FullDescription=- Нативная часть отслеживает все живые объекты оборудования, включая трюм и установленное оборудование игрока и НПС.
+FullDescription=- Магазины получают местную поправку от -30% до +30%: редкая и передовая техника дороже, избыточная и устаревшая - дешевле. После покупки местная поправка снимается сразу.
+FullDescription=- Категории реагируют на рост по-разному: корпуса 90%, оборудование 100%, оружие 110%, артефакты 80% от роста выше 100%.
+FullDescription=<br>
+FullDescription=<color=0,50,200>С EvoFreeInflation:</color>
+FullDescription=Используется его независимый индекс инфляции. Рост технологического уровня отделяется от денежного роста, поэтому техническое удорожание не начисляется дважды.
+FullDescription=<color=200,0,0>Это рекомендуемый и наиболее точный режим работы.</color>
+FullDescription=<br>
+FullDescription=<color=0,50,200>Без EvoFreeInflation:</color>
+FullDescription=Мод продолжает работать и оценивает инфляцию по капиталу рейнджеров. Режим совместим с чистой игрой, но менее точно отделяет денежную инфляцию от технологического роста.
+FullDescription=<br>
+FullDescription=<color=200,0,0>Несовместим с EvoNoInflation.</color>
+FullDescription=<br>
+FullDescription=Поддерживаются модовые корпуса, оборудование, оружие и артефакты стандартных типов.
+
+SmallDescriptionEng=Native equipment inflation and local market
+FullDescriptionEng=Dynamically prices hulls, systems, weapons and artefacts while preserving the real base cost defined by the game or another mod.
+FullDescriptionEng=<br>
+FullDescriptionEng=<color=200,0,0>XenoNativeLoader is required.</color>
+FullDescriptionEng=<br>
+FullDescriptionEng=<color=0,50,200>How it works:</color>
+FullDescriptionEng=- The native component tracks every live equipment object, including player and NPC cargo and installed equipment.
+FullDescriptionEng=- Shops apply a local adjustment from -30% to +30%: rare and advanced equipment is more expensive, while surplus and outdated equipment is cheaper. The local adjustment is removed immediately after purchase.
+FullDescriptionEng=- Categories react to growth differently: hulls 90%, equipment 100%, weapons 110%, and artefacts 80% of growth above 100%.
+FullDescriptionEng=<br>
+FullDescriptionEng=<color=0,50,200>With EvoFreeInflation:</color>
+FullDescriptionEng=Uses its independent inflation index. Technological level growth is separated from monetary growth, so technical price growth is not counted twice.
+FullDescriptionEng=<color=200,0,0>This is the recommended and most accurate mode.</color>
+FullDescriptionEng=<br>
+FullDescriptionEng=<color=0,50,200>Without EvoFreeInflation:</color>
+FullDescriptionEng=The mod continues to work and estimates inflation from ranger capital. This mode is compatible with the base game, but separates monetary inflation from technological growth less precisely.
+FullDescriptionEng=<br>
+FullDescriptionEng=<color=200,0,0>Incompatible with EvoNoInflation.</color>
+FullDescriptionEng=<br>
+FullDescriptionEng=Supports modded hulls, equipment, weapons and artefacts using standard item types.

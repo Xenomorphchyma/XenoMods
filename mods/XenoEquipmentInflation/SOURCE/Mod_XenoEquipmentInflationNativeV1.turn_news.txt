@@ -1,0 +1,31 @@
+if(!eidm_runtime_ready || CurTurn() <= eidm_runtime_ready_turn) exit;
+
+if(CurTurn() < 301 || ((CurTurn() - 301) % 300)) exit;
+int news_factor = 100;
+int news_start = 0;
+int news_capital = 0;
+if(IsScriptActive('Mod_EvoFreeInflation'))
+{
+    news_start = GetValueFromScript('Mod_EvoFreeInflation', 'start_capital_amount');
+    news_capital = GetValueFromScript('Mod_EvoFreeInflation', 'cur_capital_amount');
+    if(news_start > 0 && news_capital > 0)
+    {
+        int news_gtl = max(GalaxyTechLevel(), GetValueFromScript('Mod_EvoFreeInflation', 'max_reached_GTL'));
+        int news_tech = round(PortionInDiapason(max(1, min(8, news_gtl)), 1, 8, 100, 400));
+        int news_combined = max(100, round(100.0 * news_capital / news_start));
+        news_factor = max(100, round(100.0 * news_combined / news_tech));
+    }
+}
+else
+{
+    news_start = round(PortionInDiapason(GalaxyDiffLevels(1), 50, 500, 75000, 10000));
+    news_capital = RangersCapital();
+    if(news_start > 0 && news_capital > 0)
+        news_factor = max(100, round(100.0 * news_capital / news_start));
+}
+if(news_factor >= 300)
+    AddPlanetNews(Format(CT('XenoEquipmentInflation.InflationNewsHigh'), '#factor#', news_factor), 23);
+else if(news_factor >= 150)
+    AddPlanetNews(Format(CT('XenoEquipmentInflation.InflationNewsGrowing'), '#factor#', news_factor), 23);
+else
+    AddPlanetNews(Format(CT('XenoEquipmentInflation.InflationNewsStable'), '#factor#', news_factor), 23);

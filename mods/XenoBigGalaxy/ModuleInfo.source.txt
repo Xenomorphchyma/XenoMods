@@ -1,0 +1,28 @@
+Name=XenoBigGalaxy
+Author=Xenomorphchyma, Huk
+Conflict=RefNews, AMod_MapMarker
+Dependence=
+Priority=7
+Languages=Rus,Eng
+Section=XenoMods
+SectionEng=XenoMods
+
+SmallDescription=Большая галактика: 55 секторов
+FullDescription=XenoBigGalaxy расширяет галактику до 55 полноценных секторов. Первые 20 секторов сохраняют ванильное распределение; дополнительные сектора продолжают его.
+FullDescription=<br>
+FullDescription=Благодарность Lorki и EnaYzeR, авторам AModGalaxyLite, за идею увеличенной галактики.
+FullDescription=<br>
+FullDescription=Встроены кнопки галактической метки из AMod_MapMarker автора Huk.
+FullDescription=<br>
+FullDescription=<color=230,20,0>Для работы нужен XenoNativeLoader.</color>
+FullDescription=Интерфейс адаптирован для расширенной галактической карты.
+
+SmallDescriptionEng=Large galaxy: 55 sectors
+FullDescriptionEng=XenoBigGalaxy expands the galaxy to 55 fully generated sectors. The first 20 sectors retain their vanilla distribution, while the additional sectors continue it.
+FullDescriptionEng=<br>
+FullDescriptionEng=Special thanks to Lorki and EnaYzeR, the authors of AModGalaxyLite, for the expanded-galaxy idea.
+FullDescriptionEng=<br>
+FullDescriptionEng=Huk's AMod_MapMarker galaxy-marker controls are embedded.
+FullDescriptionEng=<br>
+FullDescriptionEng=<color=230,20,0>XenoNativeLoader is required.</color>
+FullDescriptionEng=The interface is adapted for the expanded galaxy map.

@@ -1,0 +1,9 @@
+EXPORTS
+    XenoPlugin_Query
+    XenoPlugin_Initialize
+    XenoDomRangers_IsReady
+    XenoDomRangers_GetConfigInt
+    XenoDomRangers_SetNpcChameleon
+    XenoDomRangers_ClearNpcChameleon
+    XenoDomRangers_ResetSessions
+    XenoDomRangers_WorldTick

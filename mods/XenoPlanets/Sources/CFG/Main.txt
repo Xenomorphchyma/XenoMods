@@ -1,0 +1,165 @@
+Data ^{
+    SE ^{
+        Planet ^{
+            204 ^{
+                AtmColor=107,171,204
+                BG=Uran
+                Cloud0=2.00,Bm.Planet2.C.160.m160
+                Cloud1=2.00,Bm.Planet2.C.160.m160
+                Image=Bm.Planet2.T.Solar.Uran
+                ImageMap=Bm.Planet.M.0
+                PosZ=Planet
+                Quest=0
+                Radius=80
+                SmeImage=80,80
+                SmeImageMap=4,4
+                Space=380,110,0
+                Style=1,7
+            }
+            207 ^{
+                AtmColor=107,171,204
+                BG=117
+                Cloud0=2.00,Bm.Planet2.C.Solar.c08
+                Cloud1=0.80,Bm.Planet2.C.Solar.c10
+                Image=Bm.Planet2.T.Solar.Neptune
+                ImageMap=Bm.Planet.M.0
+                PosZ=Planet
+                Quest=0
+                Radius=70
+                SmeImage=70,70
+                SmeImageMap=4,4
+                Space=380,110,0
+                Style=1,8
+            }
+            208 ^{
+                AtmColor=107,171,204
+                BG=Garharl
+                Cloud0=2.00,Bm.Planet2.C.200.m1_1
+                Cloud1=-2.00,Bm.Planet2.C.200.m1_1
+                Image=Bm.Planet2.T.200.Garharl
+                ImageMap=Bm.Planet.M.0
+                PosZ=Planet
+                Quest=0
+                Radius=100
+                SmeImage=100,100
+                SmeImageMap=4,4
+                Space=400,600,0
+                Style=1,100
+            }
+            209 ^{
+                AtmColor=107,171,204
+                BG=Cheshilan
+                Cloud0=1.00,Bm.Planet2.C.200.m1_2
+                Cloud1=-5.00,Bm.Planet2.C.200.m1_2
+                Image=Bm.Planet2.T.200.Cheshilan
+                ImageMap=Bm.Planet.M.0
+                PosZ=Planet
+                Quest=0
+                Radius=100
+                SmeImage=100,100
+                SmeImageMap=4,4
+                Space=1000,10,0
+                Style=1,100
+            }
+            210 ^{
+                AtmColor=107,171,204
+                BG=Tristeria
+                Cloud0=2.00,Bm.Planet2.C.180.c05
+                Image=Bm.Planet2.T.180.Tristeria
+                ImageMap=Bm.Planet.M.0
+                PosZ=Planet
+                Quest=0
+                Radius=90
+                SmeImage=90,90
+                SmeImageMap=4,4
+                Space=80,110,900
+                Style=1,100
+            }
+            211 ^{
+                AtmColor=107,171,204
+                BG=Deeva
+                Cloud0=2.00,Bm.Planet2.C.120.c05
+                Image=Bm.Planet2.T.120.Deeva
+                ImageMap=Bm.Planet.M.0
+                PosZ=Planet
+                Quest=0
+                Radius=60
+                SmeImage=60,60
+                SmeImageMap=4,4
+                Space=0,380,110
+                Style=1,100
+            }
+        }
+    }
+    Script ^{
+        XenoPlanets=1,Script.XenoPlanets
+    }
+    StyleAsteroid ^{
+        79=Green,15,Yellow,8
+        80=Blue,19
+        81=Blue,19
+        82=Green,15,Yellow,8
+        83=Green,15,Yellow,8
+        84=Green,15,Yellow,8
+        85=Green,15,Yellow,8
+        86=Red,14
+    }
+    StyleComet ^{
+        79=Red,4,Yellow,4
+        80=Blue,4
+        81=Blue,4
+        82=Red,4,Yellow,4
+        83=Red,4,Yellow,4
+        84=Red,4,Yellow,4
+        85=Red,4,Yellow,4
+        86=Red,4
+    }
+    StyleGarbage ^{
+        79=200,300,400,500,100
+        80=200,300,400,500,100
+        81=200,300,400,500,100
+        82=200,300,400,500,100
+        83=200,300,400,500,100
+        84=200,300,400,500,100
+        85=200,300,400,500,100
+        86=200,300,400,500,100
+    }
+    StyleNebula ^{
+        79=1,3
+        80=1,3
+        81=1,3
+        82=1,3
+        83=2
+        84=2
+        85=1
+        86=3
+    }
+    StyleStar ^{
+        79=00,02,03,04,Blue,Green
+        80=Blue
+        81=00,02,03,04,Blue,Green
+        82=00,01,02,03,04,Red
+        83=00,01,02,03,04,Red
+        84=00,01,02,03,04,Red
+        85=00,01,02,03,04,Red
+        86=Red
+    }
+}
+
+ML ^{
+    PlanetNO ^{
+        Panel ^{
+            Image ^{
+                Name=PlanetBG
+                Pos=-448,-156,99
+                Size=1920,1080
+            }
+            Image ^{
+                Image=GI,Bm.FormPlanetNO.Empty
+                Name=CockpitImage
+                Pos=0,0,100
+                Size=0,0
+            }
+        }
+    }
+}

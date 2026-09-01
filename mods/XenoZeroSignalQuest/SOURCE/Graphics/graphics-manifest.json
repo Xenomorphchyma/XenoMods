@@ -1,0 +1,1102 @@
+{
+  "schema": "xeno-zero-signal-graphics-v4",
+  "target_size": [
+    343,
+    394
+  ],
+  "jpeg_quality": 92,
+  "existing_sources_total": 26,
+  "existing_sources_selected": 24,
+  "generated_sources": 44,
+  "contact_sheet": "Reports/XenoZeroSignalQuest/v1.4.0/XenoZeroSignalQuest_contact_sheet.jpg",
+  "assets": [
+    {
+      "key": "XZS_00",
+      "source": "Assets/GraphicsWorkspace/Для квеста/ChatGPT Image 13 июн. 2026 г., 20_55_29 (1).png",
+      "source_size": [
+        1086,
+        1448
+      ],
+      "framed_source": true,
+      "focus_y": 0.46,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "63a76a4c2ed9c9f34543ec24bca50144cf40c9c77c639b0124e79d5e3c22efaa",
+      "jpg_sha256": "ab5b847455e43033b33dec66c10397360ad5fe1cb405138f77194d3021deb400"
+    },
+    {
+      "key": "XZS_01",
+      "source": "Assets/GraphicsWorkspace/Для квеста/ChatGPT Image 13 июн. 2026 г., 20_55_40 (3).png",
+      "source_size": [
+        1086,
+        1448
+      ],
+      "framed_source": true,
+      "focus_y": 0.45,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "9de6ed36a743c8fcc582256e6be0919680af0f28bc24720bf30eda23c96c934f",
+      "jpg_sha256": "bea2087d9a4e544cbe2c63a00bd134e75e8191782ed42cb7a3d0abf9895ca139"
+    },
+    {
+      "key": "XZS_02",
+      "source": "Assets/GraphicsWorkspace/Для квеста/ChatGPT Image 13 июн. 2026 г., 20_55_40 (4).png",
+      "source_size": [
+        1086,
+        1448
+      ],
+      "framed_source": true,
+      "focus_y": 0.46,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "66ccf89678ff1e161c6d911db63244f2e64e16f0996f3a8ea7575e6a0ec28e97",
+      "jpg_sha256": "132087f91f10ff8797864b6c9172b84688bff64eb2a824d401e315f3093a1083"
+    },
+    {
+      "key": "XZS_03",
+      "source": "Assets/GraphicsWorkspace/Для квеста/ChatGPT Image 13 июн. 2026 г., 20_55_40 (5).png",
+      "source_size": [
+        1086,
+        1448
+      ],
+      "framed_source": true,
+      "focus_y": 0.46,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "6f3eb56c304c66e2c3447efc46907a10d6fdeb757cb3b6cc3793d4e75a9c3740",
+      "jpg_sha256": "730de642e13c4f4c87e1aabc052c93ff83102042ed908a48bac6fa7c6c04fcd7"
+    },
+    {
+      "key": "XZS_04",
+      "source": "Assets/GraphicsWorkspace/Для квеста/ChatGPT Image 13 июн. 2026 г., 20_56_55.png",
+      "source_size": [
+        1086,
+        1448
+      ],
+      "framed_source": true,
+      "focus_y": 0.5,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "b27a884dda38986faa1698aa3d0a593b15207eedec9206be82500561c0b93acf",
+      "jpg_sha256": "a32c3e80b2faeefb824c5c2ecc088f8bd6bdcf8710f8c9bde34b738be12a1dd5"
+    },
+    {
+      "key": "XZS_05",
+      "source": "Assets/GraphicsWorkspace/Для квеста/ChatGPT Image 16 июн. 2026 г., 12_50_04.png",
+      "source_size": [
+        1086,
+        1448
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "0ed3113cc83db72ec29f1e534ada8610bc5764b52fbfe1b5218440d3d23fda97",
+      "jpg_sha256": "5f757c184b572db68d75d1311817499fce830ea0bafb03b57411425360b9c73f"
+    },
+    {
+      "key": "XZS_06",
+      "source": "Assets/GraphicsWorkspace/Для квеста/ChatGPT Image 13 июн. 2026 г., 20_57_03.png",
+      "source_size": [
+        1086,
+        1448
+      ],
+      "framed_source": true,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "f1b1a57317e1ac43fc4eb3713a2ee803342da632e4a9a00becc3198c5a85e201",
+      "jpg_sha256": "5c1c1ea2ab085eb95fff4fbca71cb95dc2f63e2040eb4e55b1eb56ab09036515"
+    },
+    {
+      "key": "XZS_08",
+      "source": "Assets/GraphicsWorkspace/Для квеста/ChatGPT Image 13 июн. 2026 г., 20_57_41 (2).png",
+      "source_size": [
+        1086,
+        1448
+      ],
+      "framed_source": true,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "958b19e37b592ea0e6e2520a05ef4feb2c04e5a448bbd8d9996fd1135ddfa894",
+      "jpg_sha256": "cb5a89a296c3eec6b5f9cc39e004f05c6647b8122e3f2fb5f17555ef5f0f2777"
+    },
+    {
+      "key": "XZS_10",
+      "source": "Assets/GraphicsWorkspace/Для квеста/ChatGPT Image 13 июн. 2026 г., 20_57_41 (4).png",
+      "source_size": [
+        1086,
+        1448
+      ],
+      "framed_source": true,
+      "focus_y": 0.47,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "b4e037e579a3598cfdb03b2ff2b932f07a684ae287e15f20dc5fcdfd0bf06fb5",
+      "jpg_sha256": "e2ec2c297f97676dc30c4ff97dc774e5c99c452ed6a7ffd420a1e0c8f13afd65"
+    },
+    {
+      "key": "XZS_11",
+      "source": "Assets/GraphicsWorkspace/Для квеста/ChatGPT Image 13 июн. 2026 г., 20_57_41 (5).png",
+      "source_size": [
+        1086,
+        1448
+      ],
+      "framed_source": true,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "87e687a81d70d7e615bea3c2e818700e88522ea81b83d7c30c5b881ac97e0be2",
+      "jpg_sha256": "4de9e0f7b74feb1ceb52d5b48a57c9aad2e676450b1c604266020cc1aaba0a34"
+    },
+    {
+      "key": "XZS_12",
+      "source": "Assets/GraphicsWorkspace/Для квеста/ChatGPT Image 13 июн. 2026 г., 20_58_16.png",
+      "source_size": [
+        1086,
+        1448
+      ],
+      "framed_source": true,
+      "focus_y": 0.47,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "cd41420f1ad4d214fff785b1ba19470177f22d637ff9bcd71b2297a0d3937a8c",
+      "jpg_sha256": "26deea99c35c22cf3092d249f12c9e03801ef1e311ff97af0aad4accd78aaf29"
+    },
+    {
+      "key": "XZS_13",
+      "source": "Assets/GraphicsWorkspace/Для квеста/ChatGPT Image 13 июн. 2026 г., 20_58_24.png",
+      "source_size": [
+        1086,
+        1448
+      ],
+      "framed_source": true,
+      "focus_y": 0.46,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "441b3b2534514e53a759582af76a420c071cc81536b8d7e7da46c39eb48ebf12",
+      "jpg_sha256": "fee7d2bb95bf3a0f04b3c6b9854de1552174a561f554befbc76d8d0b2401d4ab"
+    },
+    {
+      "key": "XZS_14",
+      "source": "Assets/GraphicsWorkspace/Для квеста/ChatGPT Image 13 июн. 2026 г., 20_58_39.png",
+      "source_size": [
+        1085,
+        1450
+      ],
+      "framed_source": true,
+      "focus_y": 0.47,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "5750aa39a0f67b5e8752306483e43cbe7a96694fcdc582c0a9d382eb727a8c09",
+      "jpg_sha256": "6d492f05bb06578c7e9584893d9d88c09cbc3813046df53a808040658ce62ec2"
+    },
+    {
+      "key": "XZS_15",
+      "source": "Assets/GraphicsWorkspace/Для квеста/ChatGPT Image 13 июн. 2026 г., 20_59_00.png",
+      "source_size": [
+        1086,
+        1448
+      ],
+      "framed_source": true,
+      "focus_y": 0.47,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "3aa27fdc24f15552599e2006904778f25709d12f90eae065ada40b943a123c31",
+      "jpg_sha256": "36894902d63ad877b98b521ec796b53e4bf871a00ab42781f0866118d057cd8e"
+    },
+    {
+      "key": "XZS_16",
+      "source": "Assets/GraphicsWorkspace/Для квеста/ChatGPT Image 13 июн. 2026 г., 20_59_09.png",
+      "source_size": [
+        1086,
+        1448
+      ],
+      "framed_source": true,
+      "focus_y": 0.47,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "ed6163f88d75f63a2a439b92e205b7bb71d00e3b6ed479ee83f93620e48c79af",
+      "jpg_sha256": "68ebfb869bcde6af9b7af84e36eda37384b5cd3c2c8d469c4e9fd7a2a0543058"
+    },
+    {
+      "key": "XZS_17",
+      "source": "Assets/GraphicsWorkspace/Для квеста/ChatGPT Image 13 июн. 2026 г., 21_02_26 (1).png",
+      "source_size": [
+        1086,
+        1448
+      ],
+      "framed_source": true,
+      "focus_y": 0.47,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "e409bcd5cbce354922e943a89065d90985be1ae04d20f0e97a65933067cbf9a4",
+      "jpg_sha256": "94ce1033b3e9f48290bf4fc49be986fef8f2e29691694d2544a63e9d0b3c4bb6"
+    },
+    {
+      "key": "XZS_18",
+      "source": "Assets/GraphicsWorkspace/Для квеста/ChatGPT Image 16 июн. 2026 г., 01_58_24.png",
+      "source_size": [
+        1086,
+        1448
+      ],
+      "framed_source": false,
+      "focus_y": 0.5,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "e5dd45059fa4f53650a08b8f8b7fd69f28da0ec40d6dde9cb6afc535f92b990e",
+      "jpg_sha256": "fceeaecaeb9781b455f5e60a73ba9e70f27db03b3d608dd9cbc4e5998e90c686"
+    },
+    {
+      "key": "XZS_19",
+      "source": "Assets/GraphicsWorkspace/Для квеста/ChatGPT Image 16 июн. 2026 г., 01_59_00.png",
+      "source_size": [
+        1086,
+        1448
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "2854700a2880d3bb06ce0a54cb275eefb549c0b828857a74b38ee595c8900414",
+      "jpg_sha256": "c15a77deda520b7c3d9884c788a0263c75fb6ae12289b584582acefd5b96a84d"
+    },
+    {
+      "key": "XZS_20",
+      "source": "Assets/GraphicsWorkspace/Для квеста/ChatGPT Image 16 июн. 2026 г., 12_49_24.png",
+      "source_size": [
+        1086,
+        1448
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "1b5a9f6d25e1c200eb42c83a8531b926f52cefc3a0701fc74bf9424a16fe1238",
+      "jpg_sha256": "c0e88986105e6863dcb72dd385069c62736a863a406c05275158bd514771b768"
+    },
+    {
+      "key": "XZS_21",
+      "source": "Assets/GraphicsWorkspace/Для квеста/ChatGPT Image 16 июн. 2026 г., 12_49_38.png",
+      "source_size": [
+        1086,
+        1449
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "08a4f4f3c524f239a3f5eeae2fa3169690d6fd839d4fa10a1c921895d5d51eab",
+      "jpg_sha256": "356df7d64dc4a3839342358a50b76fd9a26847b7fe60c7269b4b29dd64db1ee5"
+    },
+    {
+      "key": "XZS_30",
+      "source": "Assets/GraphicsWorkspace/Для квеста/ChatGPT Image 13 июн. 2026 г., 21_02_26 (2).png",
+      "source_size": [
+        1086,
+        1448
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "6802fbc21f8a2f2de05ba70fb1858180ca5a2ed845c531ec2e3677443d961584",
+      "jpg_sha256": "9e4eff4eda67ce527ae7a490333b046db9ad02092509af723b01d64ca8c282ee"
+    },
+    {
+      "key": "XZS_31",
+      "source": "Assets/GraphicsWorkspace/Для квеста/ChatGPT Image 13 июн. 2026 г., 21_02_26 (3).png",
+      "source_size": [
+        1086,
+        1448
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "3e37c6338c5bcd4092741877ba064a37d8552d6d5c33eaaeb2596afa30bf15df",
+      "jpg_sha256": "8060a860552444c3a0b1291c832f3eaaf3273d44a5ed8959d6697cd5cca44d19"
+    },
+    {
+      "key": "XZS_32",
+      "source": "Assets/GraphicsWorkspace/Для квеста/ChatGPT Image 13 июн. 2026 г., 21_02_27 (4).png",
+      "source_size": [
+        1086,
+        1448
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "43692ab8b74fa084cc2546e40c0c2b5ad298eb0c9f555f5f0de1f9cdcffe1212",
+      "jpg_sha256": "d8e379765f427b09fbb67e66ef33a05097a8c87ae3795a4da105107f0fdc6bcc"
+    },
+    {
+      "key": "XZS_33",
+      "source": "Assets/GraphicsWorkspace/Для квеста/ChatGPT Image 16 июн. 2026 г., 12_49_04.png",
+      "source_size": [
+        1086,
+        1448
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "adbfc3650a3efd1c03c335b21cade49289393bad4a18da417542dd3dcd19c56f",
+      "jpg_sha256": "386f9603b660eccfe2fb97f7f3051aacb35c9a4ff0eabe4632f6d7ddb7788021"
+    },
+    {
+      "key": "XZS_22",
+      "source": "Projects/ModWorkspaces/XenoZeroSignalQuest/SOURCE/Graphics/GeneratedRaw/XZS_22.png",
+      "source_size": [
+        1086,
+        1448
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "3b43ff9b4e03d965e1d2a673b6fb6b1d0c87ce32d01b4421840ae84e85a3cb3a",
+      "jpg_sha256": "1f1bdd489b1bc345c319fb95846950f0671914bc3ad053cfad66e79005b90abf"
+    },
+    {
+      "key": "XZS_23",
+      "source": "Projects/ModWorkspaces/XenoZeroSignalQuest/SOURCE/Graphics/GeneratedRaw/XZS_23.png",
+      "source_size": [
+        1086,
+        1448
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "606b507827a37509c5ce136741a203a2dbfa2978c508e852f372b3bcdac424d8",
+      "jpg_sha256": "c36bb0a0b13d38e6ecb93c146031521319d23cfdf8238706773290cd932dca77"
+    },
+    {
+      "key": "XZS_24",
+      "source": "Projects/ModWorkspaces/XenoZeroSignalQuest/SOURCE/Graphics/GeneratedRaw/XZS_24.png",
+      "source_size": [
+        1024,
+        1536
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "71e06544c1244ea49c4e1364a6f199e4fc079c1fb65ad966452b7e1051aec715",
+      "jpg_sha256": "84a7dda72b2ab6345bc1a6c227683c3251d6e99d6c67feb9d5d27d5ba8c3a4a0"
+    },
+    {
+      "key": "XZS_25",
+      "source": "Projects/ModWorkspaces/XenoZeroSignalQuest/SOURCE/Graphics/GeneratedRaw/XZS_25.png",
+      "source_size": [
+        1086,
+        1448
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "9615ae5ca8742b7dcaf053caaeb20e4783f79b7059f2718c204cd2d3d4d24b38",
+      "jpg_sha256": "6360fc41b99825292b7fe0be0fb1738832176ec4a0197d9465d9b5356cda7d88"
+    },
+    {
+      "key": "XZS_26",
+      "source": "Projects/ModWorkspaces/XenoZeroSignalQuest/SOURCE/Graphics/GeneratedRaw/XZS_26.png",
+      "source_size": [
+        1173,
+        1341
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "9cd699df089e6e3527339fe033fda0587c771628e34aa5b1a533b2ebf0f2b614",
+      "jpg_sha256": "682fb3ce6e24b4c5f66adca10ea94a8f38cc22bc6d4c071198d7808af6538d74"
+    },
+    {
+      "key": "XZS_27",
+      "source": "Projects/ModWorkspaces/XenoZeroSignalQuest/SOURCE/Graphics/GeneratedRaw/XZS_27.png",
+      "source_size": [
+        1173,
+        1341
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "5c6c2e25a1f10c2fd259777e7780384de8c0e09eec24ac85b6aaa9c323d7592e",
+      "jpg_sha256": "467329726074c68d68db07271ca562bf1c1d107e5ad6e262fd95a5e815a32a5b"
+    },
+    {
+      "key": "XZS_28",
+      "source": "Projects/ModWorkspaces/XenoZeroSignalQuest/SOURCE/Graphics/GeneratedRaw/XZS_28.png",
+      "source_size": [
+        1086,
+        1448
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "c616ff5d19fe45d0a6f8dbc56e436f4662451a5a078e4dc407d5663eff7661ea",
+      "jpg_sha256": "ea053908a1cfdbf4b79e12fdeb190c2c9a80457505be18d20a1d04782b322b00"
+    },
+    {
+      "key": "XZS_34",
+      "source": "Projects/ModWorkspaces/XenoZeroSignalQuest/SOURCE/Graphics/GeneratedRaw/XZS_34.png",
+      "source_size": [
+        1086,
+        1448
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "117dd80662737c6bf09cfb3caf048e731632516fe1dd3ced152fcf1666c3ff74",
+      "jpg_sha256": "220c1efc7b75cbbb8840ad9f9c0a3cb75e1f8d9f2985ab1131eaea08fc468a40"
+    },
+    {
+      "key": "XZS_35",
+      "source": "Projects/ModWorkspaces/XenoZeroSignalQuest/SOURCE/Graphics/GeneratedRaw/XZS_35.png",
+      "source_size": [
+        941,
+        1672
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "21c095a8eba21a983dbd7368a4073b61a3decf441e32518e4bc62f56a9c04e09",
+      "jpg_sha256": "d2028e6f9ea5426ff1a6289a875b4cfa09b6b7e74acad9a248e0633b4b592041"
+    },
+    {
+      "key": "XZS_36",
+      "source": "Projects/ModWorkspaces/XenoZeroSignalQuest/SOURCE/Graphics/GeneratedRaw/XZS_36.png",
+      "source_size": [
+        1055,
+        1491
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "8ae457438b32f397c3c6addbada0a3f6b95455c0bde4f8c0b3ebd519dbb3185f",
+      "jpg_sha256": "031a0d413aaddce6fd20ba950062cedc1312a1b5304baa06fc1037f754aa49a7"
+    },
+    {
+      "key": "XZS_37",
+      "source": "Projects/ModWorkspaces/XenoZeroSignalQuest/SOURCE/Graphics/GeneratedRaw/XZS_37.png",
+      "source_size": [
+        941,
+        1672
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "c1b8f65060a4174abaddbc5f87fd7d0075265c7cc05686203ce6335a0225d6e1",
+      "jpg_sha256": "847c73578cde7cec8dfbc3a65bb19ca018b283d333db36bee520e77167a64dce"
+    },
+    {
+      "key": "XZS_38",
+      "source": "Projects/ModWorkspaces/XenoZeroSignalQuest/SOURCE/Graphics/GeneratedRaw/XZS_38.png",
+      "source_size": [
+        1073,
+        1466
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "88d5e46c07cfd943e3933a954bf2e83549a26e39d7ebdeb7a0a8231ec0d68f4e",
+      "jpg_sha256": "9cb83534079b73665fa4a83b3715f9713086b1ae616b87af0063be23f1462268"
+    },
+    {
+      "key": "XZS_39",
+      "source": "Projects/ModWorkspaces/XenoZeroSignalQuest/SOURCE/Graphics/GeneratedRaw/XZS_39.png",
+      "source_size": [
+        1046,
+        1504
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "7be7aaa1e7ea25ae72766023351054c472335f029bd9f3129d684d1499800252",
+      "jpg_sha256": "7efe81e5c25ac6412327444be0c977b58523b72076cb5d5ded83adb2f369fabc"
+    },
+    {
+      "key": "XZS_40",
+      "source": "Projects/ModWorkspaces/XenoZeroSignalQuest/SOURCE/Graphics/GeneratedRaw/XZS_40.png",
+      "source_size": [
+        1072,
+        1467
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "a2ff59f0482c3232d9c75a5ad3af12917e7a1738be0a360d8a362a8317f83e5d",
+      "jpg_sha256": "7c1c666e3efce5ce9538e8c546ac396dd38185414a1d0ce8d96e0bf8de458a04"
+    },
+    {
+      "key": "XZS_41",
+      "source": "Projects/ModWorkspaces/XenoZeroSignalQuest/SOURCE/Graphics/GeneratedRaw/XZS_41.png",
+      "source_size": [
+        1070,
+        1470
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "cce912971e6d0c9c5b1ae5a3a72ecb8a6872658857217ff33e860d61cdbb4d21",
+      "jpg_sha256": "a85b7a1c9e3a6f222428a6494c7cd64c9581a0be09245625ecada1769b585768"
+    },
+    {
+      "key": "XZS_42",
+      "source": "Projects/ModWorkspaces/XenoZeroSignalQuest/SOURCE/Graphics/GeneratedRaw/XZS_42.png",
+      "source_size": [
+        1170,
+        1344
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "fa29e698712ea7c30d905169db8e2be4fd2ef62f990a01d1484681bd3a1df0b5",
+      "jpg_sha256": "61867589d1dd0d9c019b5548930a471d60ca631459630fa49004a7eeed3e5308"
+    },
+    {
+      "key": "XZS_43",
+      "source": "Projects/ModWorkspaces/XenoZeroSignalQuest/SOURCE/Graphics/GeneratedRaw/XZS_43.png",
+      "source_size": [
+        1051,
+        1496
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "b0c629eb9d15818f93a0ad5b8b32249166cb374e1eca6c66ffdf6eb8669b41f0",
+      "jpg_sha256": "8ec18cb5f208f7387c8fe19c479d24f0f13b7204fff984360ccb26ab329beb64"
+    },
+    {
+      "key": "XZS_44",
+      "source": "Projects/ModWorkspaces/XenoZeroSignalQuest/SOURCE/Graphics/GeneratedRaw/XZS_44.png",
+      "source_size": [
+        1171,
+        1343
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "f3d425c13f181a61567d7f0fc52ee93509d1f678587a2fd96ea8e37ee0ecea21",
+      "jpg_sha256": "4491eeae2f5715e810837d5bb6ed7a34f87d167cfaed3f1129b1398cc2eb19eb"
+    },
+    {
+      "key": "XZS_45",
+      "source": "Projects/ModWorkspaces/XenoZeroSignalQuest/SOURCE/Graphics/GeneratedRaw/XZS_45.png",
+      "source_size": [
+        1055,
+        1491
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "5efdcb83fdb85bb04e0719b31b64af9925fb172897e521736898a194cada9328",
+      "jpg_sha256": "135e4ff4eb01aaeaab7a2d31ad2362269b47c8aee742575f6c0bdce323cbd336"
+    },
+    {
+      "key": "XZS_46",
+      "source": "Projects/ModWorkspaces/XenoZeroSignalQuest/SOURCE/Graphics/GeneratedRaw/XZS_46.png",
+      "source_size": [
+        1033,
+        1522
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "3fdffc2bef046f250ce0e451be9fe88f50489cf8551091adae45e34cf685adc9",
+      "jpg_sha256": "7931ac3e04547d9048dc2b9221b9b3450f61798eec78b2715c5957d360730171"
+    },
+    {
+      "key": "XZS_47",
+      "source": "Projects/ModWorkspaces/XenoZeroSignalQuest/SOURCE/Graphics/GeneratedRaw/XZS_47.png",
+      "source_size": [
+        1023,
+        1537
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "81ee0526df275db02e152cbafb8b99c2885b154fc6ee3040dd5e6c4f2c830db8",
+      "jpg_sha256": "7530a874d62884026c979a491eaa14087f4f462694696001fba90313d7900569"
+    },
+    {
+      "key": "XZS_48",
+      "source": "Projects/ModWorkspaces/XenoZeroSignalQuest/SOURCE/Graphics/GeneratedRaw/XZS_48.png",
+      "source_size": [
+        1024,
+        1536
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "928a13a4f14cbf72ee5947d0f5d859b9a216d30c7dabb96b9e882ce41b3a64ff",
+      "jpg_sha256": "95607c7780df463ede63a4c5a1baac474587c0d9bfbd410fe7db88919ed45e08"
+    },
+    {
+      "key": "XZS_49",
+      "source": "Projects/ModWorkspaces/XenoZeroSignalQuest/SOURCE/Graphics/GeneratedRaw/XZS_49.png",
+      "source_size": [
+        1024,
+        1536
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "ba36f82e515bd42553cc25c58cb1e2c9a5178165e4d6bfeafee15c9d0e598617",
+      "jpg_sha256": "5985da409c2d86362a564a791048d58e904083d2e459d22b5375f62244b1bb23"
+    },
+    {
+      "key": "XZS_50",
+      "source": "Projects/ModWorkspaces/XenoZeroSignalQuest/SOURCE/Graphics/GeneratedRaw/XZS_50.png",
+      "source_size": [
+        1024,
+        1536
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "63f9271dbedbb8fc851884b68dbe755482b30445fb01c6a3c5c5f1228e6fad31",
+      "jpg_sha256": "dbb9fd0c3e0938a3a57541dc399e29e8595018b01d1049e94d128805fb4ef6c8"
+    },
+    {
+      "key": "XZS_51",
+      "source": "Projects/ModWorkspaces/XenoZeroSignalQuest/SOURCE/Graphics/GeneratedRaw/XZS_51.png",
+      "source_size": [
+        1024,
+        1536
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "e8ae3c29bb4ed3c4bb7b230459ad8f072ad5aafc2cd558ca1af31e2fb89fae74",
+      "jpg_sha256": "cbbb285d705574e7cbc6f0f0bb8abdb294a34ca190f725ae157b37cde6e3ed31"
+    },
+    {
+      "key": "XZS_52",
+      "source": "Projects/ModWorkspaces/XenoZeroSignalQuest/SOURCE/Graphics/GeneratedRaw/XZS_52.png",
+      "source_size": [
+        1023,
+        1537
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "c61cbe2cac916ef628193e4f27e1ed7f9bb0585800b71c27fe6a85db8567e83d",
+      "jpg_sha256": "a6fd85c0d9d9c618c244ff71697112a6c4b75e64d887124db5b0bea8a9a0d2e8"
+    },
+    {
+      "key": "XZS_53",
+      "source": "Projects/ModWorkspaces/XenoZeroSignalQuest/SOURCE/Graphics/GeneratedRaw/XZS_53.png",
+      "source_size": [
+        1024,
+        1536
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "185283e3d3f2c3f7584f997be2fc358b5aeadbbf1789a2fd9a429b9ac25b209f",
+      "jpg_sha256": "2e588a192336a5893357f347c346d7a1efd8a669bac9ed6b976b5fc37494930b"
+    },
+    {
+      "key": "XZS_54",
+      "source": "Projects/ModWorkspaces/XenoZeroSignalQuest/SOURCE/Graphics/GeneratedRaw/XZS_54.png",
+      "source_size": [
+        1024,
+        1536
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "50c4cd62ad323d8f6a189858959782604836ce9d8f926184b83c0ac71e137d52",
+      "jpg_sha256": "d3ef387042d3c0322d3ec35e8034082ffe642646ecdb34f215c0e7894e4bb163"
+    },
+    {
+      "key": "XZS_55",
+      "source": "Projects/ModWorkspaces/XenoZeroSignalQuest/SOURCE/Graphics/GeneratedRaw/XZS_55.png",
+      "source_size": [
+        1024,
+        1536
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "19968a29309f7942a606eb099dc5d32d2b9500eb33287ca37418121ba198fd63",
+      "jpg_sha256": "a0e7dd4583175d0ffd253612e077b1bff16ce5bb3b424f53cb103f069a142723"
+    },
+    {
+      "key": "XZS_56",
+      "source": "Projects/ModWorkspaces/XenoZeroSignalQuest/SOURCE/Graphics/GeneratedRaw/XZS_56.png",
+      "source_size": [
+        1024,
+        1536
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "e1b1d555944cc82a0454ae3b8ab4576b71f5f8ac1500b6f3f60652f4dcc455a9",
+      "jpg_sha256": "77556cb2e8b95b748eded57372c574a1b1a51ccd009ed8436b3592d00ad287a9"
+    },
+    {
+      "key": "XZS_57",
+      "source": "Projects/ModWorkspaces/XenoZeroSignalQuest/SOURCE/Graphics/GeneratedRaw/XZS_57.png",
+      "source_size": [
+        1024,
+        1536
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "a7e6002ed854ee91d41f0745faa89ac87d3e48b517e7eaab5c919d3126a059c6",
+      "jpg_sha256": "3ee550a8f7c4124c889efab81536c43ddfd7f3757ecae06ccd7f7f0fa6b3a739"
+    },
+    {
+      "key": "XZS_58",
+      "source": "Projects/ModWorkspaces/XenoZeroSignalQuest/SOURCE/Graphics/GeneratedRaw/XZS_58.png",
+      "source_size": [
+        1170,
+        1345
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "6773160f85b9b3458e01dbc6f33095203078b089b065dfa1938737c21b1c1581",
+      "jpg_sha256": "a88f0de5fe7021edcc3bf3d0396854715f2beb2a0ab5f59057a03059675be406"
+    },
+    {
+      "key": "XZS_59",
+      "source": "Projects/ModWorkspaces/XenoZeroSignalQuest/SOURCE/Graphics/GeneratedRaw/XZS_59.png",
+      "source_size": [
+        1170,
+        1344
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "6a9f53b3b3a7faa2c5aec8f2a9c7cd7f5c01e1483b5006ac13f386a9a405ebd0",
+      "jpg_sha256": "463b6bc62d76803f01da2535aea7d3325e62ff6886a3d92fd8cacb17674982ef"
+    },
+    {
+      "key": "XZS_60",
+      "source": "Projects/ModWorkspaces/XenoZeroSignalQuest/SOURCE/Graphics/GeneratedRaw/XZS_60.png",
+      "source_size": [
+        1170,
+        1344
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "ae7e8b82cb4835fa4bfb94af4724aba3d93b224be757102850e19d62d37f65f2",
+      "jpg_sha256": "5276fbc6826084f438257ef37f2f28824c56b98c859e444ed8b433715ab02579"
+    },
+    {
+      "key": "XZS_61",
+      "source": "Projects/ModWorkspaces/XenoZeroSignalQuest/SOURCE/Graphics/GeneratedRaw/XZS_61.png",
+      "source_size": [
+        1170,
+        1345
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "767418060719d3ebb7d4ebbb9d4f39bcd0900f6afeff5e2af88906132b24099e",
+      "jpg_sha256": "8af52a25e16ccec54e1d6503d583153b54811d4c6dbb368e80821483c1351774"
+    },
+    {
+      "key": "XZS_62",
+      "source": "Projects/ModWorkspaces/XenoZeroSignalQuest/SOURCE/Graphics/GeneratedRaw/XZS_62.png",
+      "source_size": [
+        1170,
+        1344
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "e62880866ffc217cb8e54528edeb8700493222eafcb87745a958e7f313e4dac4",
+      "jpg_sha256": "7679a90f3338173020e348659300984819522e43853d45807378b6e10b8ac4d8"
+    },
+    {
+      "key": "XZS_63",
+      "source": "Projects/ModWorkspaces/XenoZeroSignalQuest/SOURCE/Graphics/GeneratedRaw/XZS_63.png",
+      "source_size": [
+        1170,
+        1344
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "36a5fa7003a95b2c9d3e85055a40585bf9fd81bf187205a49c7ad18ff2a628e6",
+      "jpg_sha256": "b0f03d63a3e3311b02316fa6f1e9438ec2bb4c71bce241c5d6ee925d292f31d6"
+    },
+    {
+      "key": "XZS_64",
+      "source": "Projects/ModWorkspaces/XenoZeroSignalQuest/SOURCE/Graphics/GeneratedRaw/XZS_64.png",
+      "source_size": [
+        1024,
+        1536
+      ],
+      "framed_source": false,
+      "focus_y": 0.42,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "643848c25d57a2d720973c3c7221ca88dd3127edfc7fd7009edc16928e309883",
+      "jpg_sha256": "af0414287eadac472386ae117a10a05140d25d6043a15c77f582ea482d145e4a"
+    },
+    {
+      "key": "XZS_65",
+      "source": "Projects/ModWorkspaces/XenoZeroSignalQuest/SOURCE/Graphics/GeneratedRaw/XZS_65.png",
+      "source_size": [
+        1169,
+        1345
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "1dc7dc93e4cbf362bad83e3623f18563e691527fb8b5e44fe5e03d6a25b52649",
+      "jpg_sha256": "4cb97aaf0c5fd3f9a35a2b062054be3ffe7978f75d9b5ff99adbab7265a84cb0"
+    },
+    {
+      "key": "XZS_66",
+      "source": "Projects/ModWorkspaces/XenoZeroSignalQuest/SOURCE/Graphics/GeneratedRaw/XZS_66.png",
+      "source_size": [
+        1043,
+        1508
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "f1eacf9624131d832dbd9ec1c0f3de216d7cc8df8e5f071b70c705faff2d6ebf",
+      "jpg_sha256": "358e499f20d4082ebe557c9c92b7005ad8b8ef11939528f1ea614852c092b1dd"
+    },
+    {
+      "key": "XZS_67",
+      "source": "Projects/ModWorkspaces/XenoZeroSignalQuest/SOURCE/Graphics/GeneratedRaw/XZS_67.png",
+      "source_size": [
+        1170,
+        1344
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "ab3f3c33af38f19c388752c7a4d81a73061bb30ffd76565264991552f9a10d86",
+      "jpg_sha256": "36a84611d95002d5e5846baf95df1edc51833c60d37102d1fd308b550d6e9efe"
+    },
+    {
+      "key": "XZS_68",
+      "source": "Projects/ModWorkspaces/XenoZeroSignalQuest/SOURCE/Graphics/GeneratedRaw/XZS_68.png",
+      "source_size": [
+        946,
+        1662
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "31847720bee1c6290ad5e7dcdadd04d629491aec8e5641b14127c85adb41b575",
+      "jpg_sha256": "20ad0aac1b878b9444711eabd476b7b700f8293b813645396a54d377be4de05e"
+    },
+    {
+      "key": "XZS_69",
+      "source": "Projects/ModWorkspaces/XenoZeroSignalQuest/SOURCE/Graphics/GeneratedRaw/XZS_69.png",
+      "source_size": [
+        1170,
+        1344
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "5589228184065490c3d535afa44fc9920f0c150406f70a3ce6979d39afaddfe1",
+      "jpg_sha256": "eebf98792f61f2fa638b2075bea0eb0f3a1e32d2e785bcf893234eefed9a6bd1"
+    },
+    {
+      "key": "XZS_70",
+      "source": "Projects/ModWorkspaces/XenoZeroSignalQuest/SOURCE/Graphics/GeneratedRaw/XZS_70.png",
+      "source_size": [
+        1171,
+        1343
+      ],
+      "framed_source": false,
+      "focus_y": 0.48,
+      "output_size": [
+        343,
+        394
+      ],
+      "png_sha256": "1b31969ebb6d810a223716ae64451ada34e82f755731615949fc3bae0ac383e7",
+      "jpg_sha256": "2311194724e4489579bae6feafd1b6b142cb82ec91eafb02c33ac8b8089be054"
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+function EIDM_EventMarketItem(dword shop, int index)
+{
+    if(!shop) exit;
+    int count = ShopItems(shop);
+    if(index < 0 || index >= count) exit;
+    dword item = ShopItems(shop, index);
+    if(!item || ObjectType(item) != 6) exit;
+    int item_type = ItemType(item);
+    int is_equipment = item_type >= t_Artefact && item_type <= t_CustomWeapon;
+    int is_extended_artefact = item_type >= t_ArtDefToEnergy && item_type <= t_ArtFastRacks;
+    if(!is_equipment && !is_extended_artefact) exit;
+    int same_type_count = 0;
+    for(int i = 0; i < count; i = i + 1)
+    {
+        dword test_item = ShopItems(shop, i);
+        if(test_item && ItemType(test_item) == item_type)
+            same_type_count = same_type_count + 1;
+    }
+    int market_adjust = 0;
+    if(same_type_count <= 1) market_adjust = 20;
+    else if(same_type_count == 2) market_adjust = 15;
+    else if(same_type_count <= 4) market_adjust = 10;
+    else if(same_type_count <= 8) market_adjust = 0;
+    else if(same_type_count <= 12) market_adjust = -10;
+    else market_adjust = -20;
+    int level_delta = ItemLevel(item) - GalaxyTechLevel();
+    if(level_delta >= 2) market_adjust = market_adjust + 10;
+    else if(level_delta == 1) market_adjust = market_adjust + 5;
+    else if(level_delta <= -3) market_adjust = market_adjust - 10;
+    else if(level_delta == -2) market_adjust = market_adjust - 5;
+    market_adjust = max(-30, min(30, market_adjust));
+    unknown native_market = ImportedFunction('XenoEquipmentInflationNative', 'XenoEquipmentInflation_SetMarket');
+    native_market(item, 100 + market_adjust);
+}
+
+unknown native_market = ImportedFunction('XenoEquipmentInflationNative', 'XenoEquipmentInflation_SetMarket');
+if(ScriptItemActionType(t_OnPlayerBuyEq))
+{
+    native_market(ScriptItemActObject1(), 100);
+    exit;
+}
+if(!ScriptItemActionType(t_OnEnteringForm)) exit;
+if(!eidm_runtime_ready)
+{
+    eidm_runtime_ready = 1;
+    eidm_runtime_ready_turn = CurTurn();
+}
+dword event_shop = GetShipRuins(Player());
+if(!event_shop) event_shop = GetShipPlanet(Player());
+if(!event_shop) exit;
+EIDM_EventMarketItem(event_shop, 0);
+EIDM_EventMarketItem(event_shop, 1);
+EIDM_EventMarketItem(event_shop, 2);
+EIDM_EventMarketItem(event_shop, 3);
+EIDM_EventMarketItem(event_shop, 4);
+EIDM_EventMarketItem(event_shop, 5);
+EIDM_EventMarketItem(event_shop, 6);
+EIDM_EventMarketItem(event_shop, 7);
+EIDM_EventMarketItem(event_shop, 8);
+EIDM_EventMarketItem(event_shop, 9);
+EIDM_EventMarketItem(event_shop, 10);
+EIDM_EventMarketItem(event_shop, 11);

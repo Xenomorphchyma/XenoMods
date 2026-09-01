@@ -1,0 +1,10 @@
+Script ^{
+    Mod_XenoEquipmentInflationNativeV1 ^{
+        Description=Native equipment inflation and local market
+    }
+}
+XenoEquipmentInflation ^{
+    InflationNewsStable=Economic bulletin: experts report a calm rise in equipment prices. The current price index is #factor#%. Ordinary commodities continue to follow their own market rules.
+    InflationNewsGrowing=Economic bulletin: manufacturers warn of a noticeable rise in starship equipment prices. The current price index is #factor#%. Rangers are advised not to postpone major purchases.
+    InflationNewsHigh=Economic bulletin: the equipment market is experiencing high inflation. The current price index has reached #factor#%. Scarce systems and weapons may cost even more due to local demand.
+}

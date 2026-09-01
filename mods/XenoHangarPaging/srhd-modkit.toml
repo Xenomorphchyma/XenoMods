@@ -1,0 +1,10 @@
+schema = "srhd-modkit-project-v1"
+name = "XenoHangarPaging"
+mod_root = "XenoHangarPaging"
+prefix = "XenoMods/XenoHangarPaging"
+default_variant = "release"
+build_root = ".srhd-build"
+cache_root = ".srhd-cache"
+
+[variants.release]
+exclude = ["XenoHangarPaging.exe"]

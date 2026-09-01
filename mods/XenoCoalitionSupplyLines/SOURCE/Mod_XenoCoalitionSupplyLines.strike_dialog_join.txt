@@ -1,0 +1,89 @@
+dword talk_ship = GetTalkShip();
+if(!talk_ship)
+{
+    DChange(0);
+    exit;
+}
+int talk_id = Id(talk_ship);
+int valid_strike = 0;
+if(talk_id > 1)
+{
+    int talk_is_strike_ship = 0;
+    for(int talk_strike_index = 0; talk_strike_index < GroupCount(SupplyStrike); talk_strike_index = talk_strike_index + 1)
+    {
+        dword talk_strike_ship = GroupShip(SupplyStrike, talk_strike_index);
+        if(!talk_strike_ship) continue;
+        if(Id(talk_strike_ship) == talk_id) { talk_is_strike_ship = 1; break; }
+    }
+    if((csl_phase == 13 || csl_phase == 14 || csl_phase == 15 || csl_phase == 4) && talk_is_strike_ship && ShipInScript(talk_ship, 0)) valid_strike = 1;
+}
+if(!valid_strike)
+{
+    DChange(0);
+    exit;
+}
+int early_assembly_join = 0;
+if(csl_phase == 13 && csl_strike_planned_count > 0 && csl_strike_slots_started >= csl_strike_planned_count) early_assembly_join = 1;
+else if(csl_phase == 14) early_assembly_join = 1;
+int scheduled_join = csl_phase == 15 || (csl_phase == 4 && !csl_strike_departed);
+if(!early_assembly_join && !scheduled_join)
+{
+    DChange(0);
+    exit;
+}
+dword joining_player = Player();
+if(!joining_player)
+{
+    DChange(0);
+    exit;
+}
+if(!ShipInNormalSpace(joining_player) || ShipInHyperSpace(joining_player, 1) || ShipIsTakeoff(joining_player))
+{
+    DChange(0);
+    exit;
+}
+if(!ShipInNormalSpace(talk_ship) || ShipInHyperSpace(talk_ship, 1) || ShipIsTakeoff(talk_ship))
+{
+    DChange(0);
+    exit;
+}
+dword joining_player_star = ShipStar(joining_player);
+dword joining_talk_star = ShipStar(talk_ship);
+if(!joining_player_star || !joining_talk_star || joining_player_star != joining_talk_star)
+{
+    DChange(0);
+    exit;
+}
+if(scheduled_join)
+{
+    dword talk_target = 0;
+    if(csl_target_star_id > 1)
+    {
+        for(int talk_star_index = 0; talk_star_index < GalaxyStars(); talk_star_index = talk_star_index + 1)
+        {
+            dword talk_star = GalaxyStar(talk_star_index);
+            if(!talk_star) continue;
+            if(Id(talk_star) == csl_target_star_id)
+            {
+                talk_target = talk_star;
+                break;
+            }
+        }
+    }
+    if(!talk_target)
+    {
+        DChange(0);
+        exit;
+    }
+    int talk_target_owner = StarOwner(talk_target);
+    if((talk_target_owner != 1 && talk_target_owner != 2) || talk_target == joining_player_star)
+    {
+        DChange(0);
+        exit;
+    }
+}
+OrderFollowShip(joining_player, talk_ship, 1);
+csl_player_joined = 1;
+csl_player_wait_ship_id = Id(talk_ship);
+DChange(1);
+exit;

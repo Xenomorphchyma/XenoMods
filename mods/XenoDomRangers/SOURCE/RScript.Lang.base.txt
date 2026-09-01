@@ -1,0 +1,6 @@
+Script ^{
+    Mod_XenoDomRangers ~{
+        1=Ой, извини
+        2=Мне всё равно
+    }
+}

@@ -1,0 +1,55 @@
+dword trade_player = Player();
+if(!trade_player)
+{
+    DText(CT('XenoCoalitionSupplyLines.CargoTradeUnavailable'));
+    DAnswer('restart~' + CT('Talk.Exit'));
+    exit;
+}
+dword trade_base = GetShipRuins(trade_player);
+if(!trade_base)
+{
+    DText(CT('XenoCoalitionSupplyLines.CargoTradeUnavailable'));
+    DAnswer('restart~' + CT('Talk.Exit'));
+    exit;
+}
+str trade_base_type = Format(ShipType(trade_base), '_licensed', '', '');
+int trade_multiplier = 0;
+if(trade_base_type == 'RC') trade_multiplier = 150;
+else if(trade_base_type == 'PB') trade_multiplier = 200;
+if(trade_multiplier <= 0)
+{
+    DText(CT('XenoCoalitionSupplyLines.CargoTradeUnavailable'));
+    DAnswer('restart~' + CT('Talk.Exit'));
+    exit;
+}
+int trade_count = 0;
+int trade_total = 0;
+for(int trade_registry_index = ArrayDim(csl_cargo_registry) - 1; trade_registry_index >= 1; trade_registry_index = trade_registry_index - 1)
+{
+    dword trade_cargo = IdToItem(csl_cargo_registry[trade_registry_index]);
+    if(!trade_cargo) continue;
+    int trade_cargo_available = 0;
+    if(FindItemInShip(trade_player, trade_cargo) >= 0) trade_cargo_available = 1;
+    else
+    {
+        int trade_storage_index = FindItemInStorage(trade_cargo);
+        if(trade_storage_index >= 0 && StorageItemLocation(trade_storage_index) == trade_base)
+            trade_cargo_available = 1;
+    }
+    if(!trade_cargo_available) continue;
+    trade_count = trade_count + 1;
+    trade_total = trade_total + max(1, round(1.0 * ItemCost(trade_cargo) * trade_multiplier / 100));
+}
+if(trade_count <= 0)
+{
+    DText(CT('XenoCoalitionSupplyLines.CargoTradeUnavailable'));
+    DAnswer('restart~' + CT('Talk.Exit'));
+    exit;
+}
+if(trade_base_type == 'RC')
+    DText(Format(CT('XenoCoalitionSupplyLines.CargoTradeOfferRC'), '#count#', trade_count, '#money#', trade_total));
+else
+    DText(Format(CT('XenoCoalitionSupplyLines.CargoTradeOfferPB'), '#count#', trade_count, '#money#', trade_total));
+InjectAnswer('CSLCargoTradeExecuteDialog', Format(CT('XenoCoalitionSupplyLines.CargoTradeConfirm'), '#count#', trade_count, '#money#', trade_total), 0);
+DAnswer('restart~' + CT('XenoCoalitionSupplyLines.CargoTradeCancel'));
+exit;

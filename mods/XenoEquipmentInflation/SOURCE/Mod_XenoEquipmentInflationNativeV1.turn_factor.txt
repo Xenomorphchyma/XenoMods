@@ -1,0 +1,42 @@
+if(CurTurn() <= 0) exit;
+
+int start_capital = 0;
+int current_capital = 0;
+int factor = 0;
+if(IsScriptActive('Mod_EvoFreeInflation'))
+{
+    start_capital = GetValueFromScript('Mod_EvoFreeInflation', 'start_capital_amount');
+    current_capital = GetValueFromScript('Mod_EvoFreeInflation', 'cur_capital_amount');
+    if(start_capital > 0 && current_capital > 0)
+    {
+        int evo_gtl = max(GalaxyTechLevel(), GetValueFromScript('Mod_EvoFreeInflation', 'max_reached_GTL'));
+        int tech_factor = round(PortionInDiapason(max(1, min(8, evo_gtl)), 1, 8, 100, 400));
+        int combined_factor = max(100, round(100.0 * current_capital / start_capital));
+        factor = max(100, round(100.0 * combined_factor / tech_factor));
+    }
+}
+else
+{
+    start_capital = round(PortionInDiapason(GalaxyDiffLevels(1), 50, 500, 75000, 10000));
+    current_capital = RangersCapital();
+    if(start_capital > 0 && current_capital > 0)
+        factor = max(100, round(100.0 * current_capital / start_capital));
+}
+
+unknown native_ready = ImportedFunction('XenoEquipmentInflationNative', 'XenoEquipmentInflation_IsReady');
+if(!native_ready()) exit;
+unknown native_configure = ImportedFunction('XenoEquipmentInflationNative', 'XenoEquipmentInflation_Configure');
+int configured = native_configure(
+    t_Artefact,
+    t_Hull,
+    t_Weapon1,
+    t_CustomWeapon,
+    t_ArtDefToEnergy,
+    t_ArtFastRacks,
+    80,
+    90,
+    100,
+    110);
+if(!configured || factor < 100) exit;
+unknown native_pulse = ImportedFunction('XenoEquipmentInflationNative', 'XenoEquipmentInflation_Pulse');
+native_pulse(factor);

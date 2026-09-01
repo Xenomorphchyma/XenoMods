@@ -1,0 +1,2 @@
+DText(CT('XenoCoalitionSupplyLines.StrikeTalkCancelled'));
+DAnswer('fastexit~' + CT('Talk.Exit'));

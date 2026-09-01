@@ -1,0 +1,314 @@
+ML ^{
+    Hangar ^{
+        Panel ^{
+            // Repeated BlockPar children are merged by ordinal. Keep the six
+            // stock root panels in place, then append the paging lip as panel 7.
+            Panel ^{
+                Name=PanelMain
+            }
+            Panel ^{
+                Name=PanelPlanet
+            }
+            Panel ^{
+                Name=PanelRuins
+            }
+            Panel ^{
+                Name=PanelLoad
+            }
+            Panel ^{
+                Name=PanelUp
+            }
+            Panel ^{
+                Name=PanelDown
+            }
+            Panel ^{
+                GraphButton ^{
+                    Active=True
+                    ImageDisable=GI,Bm.FormUnknown2.2LeftH
+                    ImageDown=GI,Bm.FormUnknown2.2LeftD
+                    ImageNormal=GI,Bm.FormUnknown2.2LeftN
+                    ImageNormalA=GI,Bm.FormUnknown2.2LeftA
+                    Kind=Normal
+                    KindHit=Rect
+                    MouseBlocking=True
+                    Name=HangarPagePrev
+                    Pos=69,5,8
+                    Size=21,36
+                    Style=Style.GB.SoundNormal
+                }
+                GraphButton ^{
+                    Active=True
+                    ImageDisable=GI,Bm.FormUnknown2.2RightH
+                    ImageDown=GI,Bm.FormUnknown2.2RightD
+                    ImageNormal=GI,Bm.FormUnknown2.2RightN
+                    ImageNormalA=GI,Bm.FormUnknown2.2RightA
+                    Kind=Normal
+                    KindHit=Rect
+                    MouseBlocking=True
+                    Name=HangarPageNext
+                    Pos=130,5,8
+                    Size=20,36
+                    Style=Style.GB.SoundNormal
+                }
+                Image ^{
+                    Active=True
+                    Image=GI,Bm.FormShop2.2SlotN
+                    Name=HangarPageIndicator
+                    Pos=70,0,10
+                    Size=80,46
+                }
+                // Separate immutable labels avoid writing into undocumented
+                // Delphi Label.Text memory. The native runtime activates one.
+                Label ^{
+                    Active=False
+                    AlignX=Center
+                    AlignY=CenterEx
+                    Font=Font.2SmallBold
+                    MVUpdate=True
+                    Name=HangarPageNumber1
+                    Pos=68,7,7
+                    Size=80,36
+                    Text=1
+                    TextColor=200,240,255
+                    TextShadow=1
+                    TextShadowColor=0,25,35
+                    WordWrap=False
+                }
+                Label ^{
+                    Active=False
+                    AlignX=Center
+                    AlignY=CenterEx
+                    Font=Font.2SmallBold
+                    MVUpdate=True
+                    Name=HangarPageNumber2
+                    Pos=68,7,7
+                    Size=80,36
+                    Text=2
+                    TextColor=200,240,255
+                    TextShadow=1
+                    TextShadowColor=0,25,35
+                    WordWrap=False
+                }
+                Label ^{
+                    Active=False
+                    AlignX=Center
+                    AlignY=CenterEx
+                    Font=Font.2SmallBold
+                    MVUpdate=True
+                    Name=HangarPageNumber3
+                    Pos=68,7,7
+                    Size=80,36
+                    Text=3
+                    TextColor=200,240,255
+                    TextShadow=1
+                    TextShadowColor=0,25,35
+                    WordWrap=False
+                }
+                Label ^{
+                    Active=False
+                    AlignX=Center
+                    AlignY=CenterEx
+                    Font=Font.2SmallBold
+                    MVUpdate=True
+                    Name=HangarPageNumber4
+                    Pos=68,7,7
+                    Size=80,36
+                    Text=4
+                    TextColor=200,240,255
+                    TextShadow=1
+                    TextShadowColor=0,25,35
+                    WordWrap=False
+                }
+                Label ^{
+                    Active=False
+                    AlignX=Center
+                    AlignY=CenterEx
+                    Font=Font.2SmallBold
+                    MVUpdate=True
+                    Name=HangarPageNumber5
+                    Pos=68,7,7
+                    Size=80,36
+                    Text=5
+                    TextColor=200,240,255
+                    TextShadow=1
+                    TextShadowColor=0,25,35
+                    WordWrap=False
+                }
+                Label ^{
+                    Active=False
+                    AlignX=Center
+                    AlignY=CenterEx
+                    Font=Font.2SmallBold
+                    MVUpdate=True
+                    Name=HangarPageNumber6
+                    Pos=68,7,7
+                    Size=80,36
+                    Text=6
+                    TextColor=200,240,255
+                    TextShadow=1
+                    TextShadowColor=0,25,35
+                    WordWrap=False
+                }
+                Label ^{
+                    Active=False
+                    AlignX=Center
+                    AlignY=CenterEx
+                    Font=Font.2SmallBold
+                    MVUpdate=True
+                    Name=HangarPageNumber7
+                    Pos=68,7,7
+                    Size=80,36
+                    Text=7
+                    TextColor=200,240,255
+                    TextShadow=1
+                    TextShadowColor=0,25,35
+                    WordWrap=False
+                }
+                Label ^{
+                    Active=False
+                    AlignX=Center
+                    AlignY=CenterEx
+                    Font=Font.2SmallBold
+                    MVUpdate=True
+                    Name=HangarPageNumber8
+                    Pos=68,7,7
+                    Size=80,36
+                    Text=8
+                    TextColor=200,240,255
+                    TextShadow=1
+                    TextShadowColor=0,25,35
+                    WordWrap=False
+                }
+                Label ^{
+                    Active=False
+                    AlignX=Center
+                    AlignY=CenterEx
+                    Font=Font.2SmallBold
+                    MVUpdate=True
+                    Name=HangarPageNumber9
+                    Pos=68,7,7
+                    Size=80,36
+                    Text=9
+                    TextColor=200,240,255
+                    TextShadow=1
+                    TextShadowColor=0,25,35
+                    WordWrap=False
+                }
+                Label ^{
+                    Active=False
+                    AlignX=Center
+                    AlignY=CenterEx
+                    Font=Font.2SmallBold
+                    MVUpdate=True
+                    Name=HangarPageNumber10
+                    Pos=68,7,7
+                    Size=80,36
+                    Text=10
+                    TextColor=200,240,255
+                    TextShadow=1
+                    TextShadowColor=0,25,35
+                    WordWrap=False
+                }
+                Label ^{
+                    Active=False
+                    AlignX=Center
+                    AlignY=CenterEx
+                    Font=Font.2SmallBold
+                    MVUpdate=True
+                    Name=HangarPageNumber11
+                    Pos=68,7,7
+                    Size=80,36
+                    Text=11
+                    TextColor=200,240,255
+                    TextShadow=1
+                    TextShadowColor=0,25,35
+                    WordWrap=False
+                }
+                Label ^{
+                    Active=False
+                    AlignX=Center
+                    AlignY=CenterEx
+                    Font=Font.2SmallBold
+                    MVUpdate=True
+                    Name=HangarPageNumber12
+                    Pos=68,7,7
+                    Size=80,36
+                    Text=12
+                    TextColor=200,240,255
+                    TextShadow=1
+                    TextShadowColor=0,25,35
+                    WordWrap=False
+                }
+                Label ^{
+                    Active=False
+                    AlignX=Center
+                    AlignY=CenterEx
+                    Font=Font.2SmallBold
+                    MVUpdate=True
+                    Name=HangarPageNumber13
+                    Pos=68,7,7
+                    Size=80,36
+                    Text=13
+                    TextColor=200,240,255
+                    TextShadow=1
+                    TextShadowColor=0,25,35
+                    WordWrap=False
+                }
+                Label ^{
+                    Active=False
+                    AlignX=Center
+                    AlignY=CenterEx
+                    Font=Font.2SmallBold
+                    MVUpdate=True
+                    Name=HangarPageNumber14
+                    Pos=68,7,7
+                    Size=80,36
+                    Text=14
+                    TextColor=200,240,255
+                    TextShadow=1
+                    TextShadowColor=0,25,35
+                    WordWrap=False
+                }
+                Label ^{
+                    Active=False
+                    AlignX=Center
+                    AlignY=CenterEx
+                    Font=Font.2SmallBold
+                    MVUpdate=True
+                    Name=HangarPageNumber15
+                    Pos=68,7,7
+                    Size=80,36
+                    Text=15
+                    TextColor=200,240,255
+                    TextShadow=1
+                    TextShadowColor=0,25,35
+                    WordWrap=False
+                }
+                Label ^{
+                    Active=False
+                    AlignX=Center
+                    AlignY=CenterEx
+                    Font=Font.2SmallBold
+                    MVUpdate=True
+                    Name=HangarPageNumber16
+                    Pos=68,7,7
+                    Size=80,36
+                    Text=16
+                    TextColor=200,240,255
+                    TextShadow=1
+                    TextShadowColor=0,25,35
+                    WordWrap=False
+                }
+                MouseBlocking=False
+                Name=HangarPagingPanel
+                // InfoShip uses layer InfoPanel=-14. Keep paging one layer
+                // behind it, while still above the stock PanelDown=-10.
+                Pos=402,514,-13
+                PosAutoCorrection=True
+                PosAutoCorrectionXCoef=0.5
+                PosAutoCorrectionYCoef=0.5
+                Size=220,41
+            }
+        }
+    }
+}

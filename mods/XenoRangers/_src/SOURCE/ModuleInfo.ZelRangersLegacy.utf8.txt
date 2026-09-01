@@ -1,0 +1,9 @@
+Name=ZelRangers
+Author=Zelenium, Denball, Xenomorphchyma
+Conflict=XenoRangers
+Dependence=
+Priority=1
+Section=Солянка
+Languages=Rus
+SmallDescription=Версия для сохранений с ZelRangers: исправленные диалоги и защита от зависания при ГТУ 1
+FullDescription=Совместимая по имени версия обновлённого ZelRangers для старых сохранений. Содержит переработанный русский текст и исправление зависания RandomWeapon при ГТУ 1. Несовместима с XenoRangers.

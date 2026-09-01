@@ -1,0 +1,18 @@
+Name=XenoCoalitionSupplyLines
+Author=Xenomorphchyma
+Conflict=XenoCoalitionSupplyLinesEarthTest
+Dependence=UtilityFunctionsPack
+Priority=8
+Section=XenoMods
+SectionEng=XenoMods
+Languages=Rus,Eng
+
+SmallDescription=Линии снабжения Коалиции
+FullDescription=Промышленные планеты формируют охраняемые ресурсные конвои для прифронтовых систем. Доставленные ресурсы превращаются в ударные группы, а частота и состав конвоев зависят от сложности и числа свободных систем Коалиции.
+FullDescription=<br>
+FullDescription=Транспортники без оружия совершают многоэтапные перелёты с дозаправкой. Их дорогостоящий груз можно захватить и сдать на пиратской базе или в центре рейнджеров, но нападение на конвой ухудшает отношения с Коалицией.
+
+SmallDescriptionEng=Coalition Supply Lines
+FullDescriptionEng=Industrial planets assemble guarded resource convoys for frontier systems. Delivered cargo is converted into strike groups, while convoy pacing and composition scale with difficulty and the number of safe Coalition systems.
+FullDescriptionEng=<br>
+FullDescriptionEng=Unarmed transports use routes with multiple jumps and refuel on the way. Their valuable cargo can be captured and sold at a pirate base or ranger center, but attacking a convoy damages Coalition relations.

@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "category": "XenoMods",
+  "loaderPackage": "runtime/XenoNativeLoader/package",
+  "loaderEntries": [
+    { "from": "dsound.dll", "to": "dsound.dll" },
+    { "from": "XenoCore.dll", "to": "XenoCore.dll" },
+    { "from": "XenoNative.ini", "to": "XenoNative.ini" },
+    { "from": "XenoNative/Plugins/XenoStable/XenoStable.Runtime.dll", "to": "XenoNative/Plugins/XenoStable/XenoStable.Runtime.dll" },
+    { "from": "XenoNative/Plugins/XenoStable/XenoNativePlugin.ini", "to": "XenoNative/Plugins/XenoStable/XenoNativePlugin.ini" },
+    { "from": "XenoNative/Plugins/XenoStable/XenoStable.ini", "to": "XenoNative/Plugins/XenoStable/XenoStable.ini" }
+  ],
+  "mods": [
+    {
+      "name": "XenoBigGalaxy",
+      "runtimeEntries": ["ModuleInfo.txt", "CFG", "DATA", "Native"]
+    },
+    {
+      "name": "XenoEquipmentInflation",
+      "runtimeEntries": ["ModuleInfo.txt", "CFG", "DATA", "Native"]
+    },
+    {
+      "name": "XenoHangarPaging",
+      "runtimeEntries": ["ModuleInfo.txt", "CFG", "XenoHangarPaging.Runtime.dll", "XenoNativePlugin.ini"]
+    },
+    {
+      "name": "XenoZeroSignalQuest",
+      "runtimeEntries": ["ModuleInfo.txt", "CFG", "DATA"]
+    },
+    {
+      "name": "XenoBG",
+      "runtimeEntries": ["ModuleInfo.txt", "XenoBG.pkg", "CFG"]
+    },
+    {
+      "name": "XenoCoalitionBG",
+      "runtimeEntries": ["ModuleInfo.txt", "XenoCoalitionBG.pkg", "CFG"]
+    },
+    {
+      "name": "XenoStationsBG",
+      "runtimeEntries": ["ModuleInfo.txt", "XenoStationsBG.pkg", "CFG"]
+    },
+    {
+      "name": "XenoRangers",
+      "runtimeEntries": ["ModuleInfo.txt", "CFG", "DATA"],
+      "runtimeExcludes": ["CFG/Rus/Lang.txt"]
+    },
+    {
+      "name": "XenoRangersOriginalBalance",
+      "runtimeEntries": ["ModuleInfo.txt", "CFG", "DATA"],
+      "runtimeExcludes": ["CFG/Rus/Lang.txt"]
+    },
+    {
+      "name": "XenoCoalitionSupplyLines",
+      "runtimeEntries": ["ModuleInfo.txt", "CFG", "DATA", "Native"]
+    },
+    {
+      "name": "XenoDomRangers",
+      "runtimeEntries": ["ModuleInfo.txt", "CFG", "DATA", "Native"]
+    }
+  ]
+}

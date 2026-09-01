@@ -1,0 +1,28 @@
+Name=XenoPlanets
+Author=Klaxons, Обер, Mik, Людмила Токмакова, Xeno
+Conflict=KlaxonsBG, XenoBG, ExpPlanets, EvoBG, EvoBG2, RefPhaeton
+Dependence=
+Priority=6
+Section=XenoMods
+SectionEng=XenoMods
+Languages=Rus,Eng
+
+SmallDescription=[Xeno] Новые домашние планеты, системные фоны и широкоформатные 4К-фоны незаселённых планет
+FullDescription=XenoPlanets заменяет XenoBG, ExpPlanets и EvoBG одним самостоятельным модом.
+FullDescription=<br>
+FullDescription=Добавляет ровно по одной необитаемой планете в домашние системы пяти рас: Гархарл, Чешилан, Нептун, Тристерию и Дээву. Перед созданием скрипт проверяет, нет ли планеты с таким именем в нужной системе.
+FullDescription=<br>
+FullDescription=Также включает девять дополнительных фонов звёздных систем и все широкоформатные 4К-фоны XenoBG.
+FullDescription=<br>
+FullDescription=<color=230,20,0>Не включайте одновременно ExpPlanets, EvoBG, EvoBG2 или RefPhaeton: они содержат собственные скрипты добавления тех же планет.</color>
+FullDescription=<color=0,132,15>Мод не изменяет Rangers.exe и не требует нативного загрузчика.</color>
+
+SmallDescriptionEng=[Xeno] New home-system planets, system backgrounds and widescreen 4K uninhabited-planet backgrounds
+FullDescriptionEng=XenoPlanets replaces XenoBG, ExpPlanets and EvoBG with one standalone mod.
+FullDescriptionEng=<br>
+FullDescriptionEng=Adds exactly one uninhabited planet to each race home system: Garharl, Cheshilan, Neptune, Tristeria and Deeva. The script checks the target system for an existing planet with the same name before creating it.
+FullDescriptionEng=<br>
+FullDescriptionEng=Also includes nine additional star-system backgrounds and all widescreen 4K backgrounds from XenoBG.
+FullDescriptionEng=<br>
+FullDescriptionEng=<color=230,20,0>Do not enable ExpPlanets, EvoBG, EvoBG2 or RefPhaeton at the same time: they contain their own scripts that add the same planets.</color>
+FullDescriptionEng=<color=0,132,15>The mod does not modify Rangers.exe and does not require a native loader.</color>

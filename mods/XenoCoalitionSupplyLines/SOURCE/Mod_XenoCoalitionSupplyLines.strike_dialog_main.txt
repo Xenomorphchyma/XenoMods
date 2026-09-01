@@ -1,0 +1,186 @@
+dword talk_ship = GetTalkShip();
+int valid_strike = 0;
+if(talk_ship)
+{
+    int talk_id = Id(talk_ship);
+    int talk_is_strike_ship = 0;
+    for(int talk_strike_index = 0; talk_strike_index < GroupCount(SupplyStrike); talk_strike_index = talk_strike_index + 1)
+    {
+        dword talk_strike_ship = GroupShip(SupplyStrike, talk_strike_index);
+        if(!talk_strike_ship) continue;
+        if(Id(talk_strike_ship) == talk_id) { talk_is_strike_ship = 1; break; }
+    }
+    if((csl_phase == 13 || csl_phase == 14 || csl_phase == 15 || csl_phase == 4) && talk_is_strike_ship && ShipInScript(talk_ship, 0)) valid_strike = 1;
+}
+if(!valid_strike)
+{
+    DText(CT('XenoCoalitionSupplyLines.StrikeTalkNoOperation'));
+    DAnswer('fastexit~' + CT('Talk.Exit'));
+    exit;
+}
+
+if(csl_phase == 13)
+{
+    int ready_strike_count = csl_strike_slots_started;
+    if(csl_strike_current_id > 1) ready_strike_count = ready_strike_count - 1;
+    ready_strike_count = max(0, min(ready_strike_count, GroupCount(SupplyStrike)));
+    int final_hull_started = csl_strike_planned_count > 0 && csl_strike_slots_started >= csl_strike_planned_count;
+    if(csl_player_joined)
+    {
+        dword formation_wait_ship = 0;
+        if(csl_player_wait_ship_id > 1) formation_wait_ship = IdToShip(csl_player_wait_ship_id);
+        int formation_wait_valid = 0;
+        if(formation_wait_ship)
+        {
+            int formation_ship_ready = ShipInNormalSpace(formation_wait_ship) && !ShipInHyperSpace(formation_wait_ship, 1) && !ShipIsTakeoff(formation_wait_ship);
+            int formation_player_ready = ShipInNormalSpace(Player()) && !ShipInHyperSpace(Player(), 1) && !ShipIsTakeoff(Player());
+            if(formation_ship_ready && formation_player_ready)
+            {
+                dword formation_player_star = ShipStar(Player());
+                dword formation_ship_star = ShipStar(formation_wait_ship);
+                if(formation_player_star == formation_ship_star) formation_wait_valid = 1;
+            }
+        }
+        if(formation_wait_valid && !csl_strike_defense_active)
+            formation_wait_valid = ShipOrder(Player()) == 6 && ShipOrderObj(Player()) == formation_wait_ship;
+        if(!formation_wait_valid) { csl_player_joined = 0; csl_player_wait_ship_id = 0; }
+    }
+    if(csl_player_joined)
+    {
+        DText(CT('XenoCoalitionSupplyLines.StrikeTalkWaitingAssembly'));
+        InjectAnswer('CSLStrikeCancelDialog', CT('XenoCoalitionSupplyLines.StrikeTalkCancelWait'), 0);
+        DAnswer('fastexit~' + CT('Talk.Exit'));
+        exit;
+    }
+    if(final_hull_started)
+    {
+        DText(Format(CT('XenoCoalitionSupplyLines.StrikeTalkFinalAssembling'), '#built#', ready_strike_count, '#planned#', csl_strike_planned_count));
+        InjectAnswer('CSLStrikeJoinDialog', CT('XenoCoalitionSupplyLines.StrikeTalkJoin'), 0);
+        DAnswer('fastexit~' + CT('XenoCoalitionSupplyLines.StrikeTalkDecline'));
+        exit;
+    }
+    DText(Format(CT('XenoCoalitionSupplyLines.StrikeTalkBuilding'), '#built#', ready_strike_count, '#planned#', csl_strike_planned_count));
+    DAnswer('fastexit~' + CT('Talk.Exit'));
+    exit;
+}
+if(csl_phase == 14)
+{
+    if(csl_player_joined)
+    {
+        dword assembly_wait_ship = 0;
+        if(csl_player_wait_ship_id > 1) assembly_wait_ship = IdToShip(csl_player_wait_ship_id);
+        int assembly_wait_valid = 0;
+        if(assembly_wait_ship)
+        {
+            int assembly_ship_ready = ShipInNormalSpace(assembly_wait_ship) && !ShipInHyperSpace(assembly_wait_ship, 1) && !ShipIsTakeoff(assembly_wait_ship);
+            int assembly_player_ready = ShipInNormalSpace(Player()) && !ShipInHyperSpace(Player(), 1) && !ShipIsTakeoff(Player());
+            if(assembly_ship_ready && assembly_player_ready)
+            {
+                dword assembly_player_star = ShipStar(Player());
+                dword assembly_ship_star = ShipStar(assembly_wait_ship);
+                if(assembly_player_star == assembly_ship_star) assembly_wait_valid = 1;
+            }
+        }
+        if(assembly_wait_valid && !csl_strike_defense_active)
+            assembly_wait_valid = ShipOrder(Player()) == 6 && ShipOrderObj(Player()) == assembly_wait_ship;
+        if(!assembly_wait_valid) { csl_player_joined = 0; csl_player_wait_ship_id = 0; }
+    }
+    if(csl_player_joined)
+    {
+        DText(CT('XenoCoalitionSupplyLines.StrikeTalkWaitingAssembly'));
+        InjectAnswer('CSLStrikeCancelDialog', CT('XenoCoalitionSupplyLines.StrikeTalkCancelWait'), 0);
+        DAnswer('fastexit~' + CT('Talk.Exit'));
+        exit;
+    }
+    DText(CT('XenoCoalitionSupplyLines.StrikeTalkAssembling'));
+    InjectAnswer('CSLStrikeJoinDialog', CT('XenoCoalitionSupplyLines.StrikeTalkJoin'), 0);
+    DAnswer('fastexit~' + CT('XenoCoalitionSupplyLines.StrikeTalkDecline'));
+    exit;
+}
+
+dword talk_target = 0;
+if(csl_target_star_id > 1)
+{
+    for(int talk_star_index = 0; talk_star_index < GalaxyStars(); talk_star_index = talk_star_index + 1)
+    {
+        dword talk_star = GalaxyStar(talk_star_index);
+        if(!talk_star) continue;
+        if(Id(talk_star) == csl_target_star_id)
+        {
+            talk_target = talk_star;
+            break;
+        }
+    }
+}
+str talk_target_name = CT('XenoCoalitionSupplyLines.StrikeTalkUnknownTarget');
+if(talk_target) talk_target_name = StarName(talk_target);
+
+if(csl_phase == 15 || (csl_phase == 4 && !csl_strike_departed))
+{
+    int talk_launch_turn = max(CurTurn() + 1, csl_strike_launch_turn);
+    if(csl_player_joined)
+    {
+        dword registered_ship = 0;
+        if(csl_player_wait_ship_id > 1) registered_ship = IdToShip(csl_player_wait_ship_id);
+        int still_waiting = 0;
+        if(registered_ship)
+        {
+            if(ShipInNormalSpace(registered_ship) && !ShipInHyperSpace(registered_ship, 1) && !ShipIsTakeoff(registered_ship) &&
+               ShipInNormalSpace(Player()) && !ShipInHyperSpace(Player(), 1) && !ShipIsTakeoff(Player()))
+                still_waiting = 1;
+        }
+        if(still_waiting && csl_strike_defense_active)
+            still_waiting = ShipStar(Player()) == ShipStar(registered_ship);
+        if(still_waiting && !csl_strike_defense_active)
+            still_waiting = ShipOrder(Player()) == 6 && ShipOrderObj(Player()) == registered_ship;
+        if(!still_waiting)
+        {
+            csl_player_joined = 0;
+            csl_player_wait_ship_id = 0;
+        }
+    }
+    if(csl_player_joined)
+    {
+        DText(Format(CT('XenoCoalitionSupplyLines.StrikeTalkWaiting'), '#target#', talk_target_name, '#date#', GameDateTxtByTurn(talk_launch_turn)));
+        InjectAnswer('CSLStrikeCancelDialog', CT('XenoCoalitionSupplyLines.StrikeTalkCancelWait'), 0);
+        DAnswer('fastexit~' + CT('Talk.Exit'));
+        exit;
+    }
+    if(!talk_target)
+    {
+        DText(CT('XenoCoalitionSupplyLines.StrikeTalkUnknownTarget'));
+        DAnswer('fastexit~' + CT('Talk.Exit'));
+        exit;
+    }
+    if(!ShipInNormalSpace(Player()) || ShipInHyperSpace(Player(), 1) || ShipIsTakeoff(Player()) ||
+       !ShipInNormalSpace(talk_ship) || ShipInHyperSpace(talk_ship, 1) || ShipIsTakeoff(talk_ship) ||
+       ShipStar(Player()) != ShipStar(talk_ship))
+    {
+        DText(CT('XenoCoalitionSupplyLines.StrikeTalkUnavailable'));
+        DAnswer('fastexit~' + CT('Talk.Exit'));
+        exit;
+    }
+    dword talk_player_star = ShipStar(Player());
+    if(!talk_player_star)
+    {
+        DText(Format(CT('XenoCoalitionSupplyLines.StrikeTalkCannotJump'), '#target#', talk_target_name));
+        DAnswer('fastexit~' + CT('Talk.Exit'));
+        exit;
+    }
+    if(!ShipCanJump(Player(), talk_player_star, talk_target, 1))
+    {
+        DText(Format(CT('XenoCoalitionSupplyLines.StrikeTalkCannotJump'), '#target#', talk_target_name));
+        DAnswer('fastexit~' + CT('Talk.Exit'));
+        exit;
+    }
+    DText(Format(CT('XenoCoalitionSupplyLines.StrikeTalkInvite'), '#target#', talk_target_name, '#date#', GameDateTxtByTurn(talk_launch_turn)));
+    InjectAnswer('CSLStrikeJoinDialog', CT('XenoCoalitionSupplyLines.StrikeTalkJoin'), 0);
+    DAnswer('fastexit~' + CT('XenoCoalitionSupplyLines.StrikeTalkDecline'));
+    exit;
+}
+
+if(csl_phase == 4)
+    DText(Format(CT('XenoCoalitionSupplyLines.StrikeTalkUnderway'), '#target#', talk_target_name));
+else
+    DText(CT('XenoCoalitionSupplyLines.StrikeTalkNoOperation'));
+DAnswer('fastexit~' + CT('Talk.Exit'));

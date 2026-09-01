@@ -1,0 +1,10 @@
+Name=XenoRangersOriginalBalance
+Author=Zelenium, Denball, Xenomorphchyma
+Conflict=XenoRangers, ZelRangers
+Dependence=
+Priority=1
+Section=XenoMods
+SectionEng=XenoMods
+Languages=Rus
+SmallDescription=XenoRangers с исходным балансом ZelRangers, исправленными диалогами и защитой ГТУ 1
+FullDescription=Редакция XenoRangers с оригинальными коэффициентами автора ZelRangers: пять уровней развития, исходные цены, денежные бонусы, темп набора, размеры корпусов и сила улучшений. Исправленные диалоги, новый текст и защита RandomWeapon от зависания при ГТУ 1 сохранены. Несовместим с XenoRangers и ZelRangers.
