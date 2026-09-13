@@ -1,6 +1,6 @@
 Name=XenoBigGalaxy
 Author=Xenomorphchyma, Huk
-Conflict=RefNews, AMod_MapMarker
+Conflict=AMod_MapMarker
 Dependence=
 Priority=7
 Languages=Rus,Eng
@@ -16,6 +16,7 @@ FullDescription=Встроены кнопки галактической мет�
 FullDescription=<br>
 FullDescription=<color=230,20,0>Для работы нужен XenoNativeLoader.</color>
 FullDescription=Интерфейс адаптирован для расширенной галактической карты.
+FullDescription=Совместим с RefNews: моды используют отдельные скрипты и узлы ресурсов.
 
 SmallDescriptionEng=Large galaxy: 55 sectors
 FullDescriptionEng=XenoBigGalaxy expands the galaxy to 55 fully generated sectors. The first 20 sectors retain their vanilla distribution, while the additional sectors continue it.
@@ -26,3 +27,4 @@ FullDescriptionEng=Huk's AMod_MapMarker galaxy-marker controls are embedded.
 FullDescriptionEng=<br>
 FullDescriptionEng=<color=230,20,0>XenoNativeLoader is required.</color>
 FullDescriptionEng=The interface is adapted for the expanded galaxy map.
+FullDescriptionEng=Compatible with RefNews: the mods use separate scripts and resource nodes.
