@@ -109,8 +109,7 @@ HD на основе графики из КР2:ДП, улучшенной ней
 Благодарность Lorki и EnaYzeR, авторам `AModGalaxyLite`, за идею увеличенной
 галактики.
 
-Требует XenoNativeLoader. Не включайте отдельно `AMod_MapMarker`; мод также
-конфликтует с `RefNews`. Параметры обработки дальних систем настраиваются в
+Требует XenoNativeLoader. Не включайте отдельно `AMod_MapMarker`; Параметры обработки дальних систем настраиваются в
 `Native\XenoNextDay.XenoPlugin.ini`.
 
 ### XenoEquipmentInflation
