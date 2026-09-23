@@ -83,11 +83,6 @@
       "includeInArchive": true
     },
     {
-      "name": "XenoSystemZoom",
-      "version": "0.3.0-native",
-      "includeInArchive": true
-    },
-    {
       "name": "XenoScriptHotReload",
       "version": "0.1.0",
       "includeInArchive": false,

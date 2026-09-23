@@ -56,10 +56,6 @@
     {
       "name": "XenoDomRangers",
       "runtimeEntries": ["ModuleInfo.txt", "CFG", "DATA", "Native"]
-    },
-    {
-      "name": "XenoSystemZoom",
-      "runtimeEntries": ["ModuleInfo.txt", "CFG", "Native"]
     }
   ]
 }

@@ -14,7 +14,7 @@
 3. Запускайте обычный `Rangers.exe` или игру через Steam.
 
 Нативные моды с DLL (`XenoBigGalaxy`, `XenoDomRangers`, `XenoCoalitionSupplyLines`,
-`XenoEquipmentInflation`, `XenoSystemZoom` и `XenoHangarPaging`) подключаются
+`XenoEquipmentInflation` и `XenoHangarPaging`) подключаются
 один раз при старте процесса. Их включение или выключение уже после запуска
 игры нельзя безопасно перемержить в том же процессе: игровые скрипты могут
 обновиться, а установленные в память хуки DLL остаются прежними. XenoNativeLoader
@@ -179,15 +179,6 @@ HD на основе графики из КР2:ДП, улучшенной ней
 обломки в системах доминаторов.
 
 ![Рейнджер-специалист XenoDomRangers](docs/images/mods/XenoDomRangers/preview.png)
-
-Требует XenoNativeLoader.
-
-### XenoSystemZoom
-
-Добавляет зум карты космоса в системах. Колесо мыши и клавиши `+`/`-` меняют
-масштаб мирового слоя, а `Home`, `R` или `NumPad 0` возвращают исходный вид.
-Панели управления и радар не масштабируются. Диапазон и шаг можно изменить в
-`Mods\XenoMods\XenoSystemZoom\Native\XenoSystemZoom.XenoPlugin.ini`.
 
 Требует XenoNativeLoader.
 
