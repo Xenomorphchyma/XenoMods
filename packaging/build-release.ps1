@@ -4,14 +4,17 @@ param(
     [string]$Version = 'preview',
 
     [Parameter()]
-    [switch]$Force
+    [switch]$Force,
+
+    [Parameter()]
+    [string]$OutputDirectory = 'dist'
 )
 
 $ErrorActionPreference = 'Stop'
 $repoRoot = Split-Path -Parent $PSScriptRoot
 $configPath = Join-Path $PSScriptRoot 'release-set.json'
 $config = Get-Content -LiteralPath $configPath -Raw -Encoding UTF8 | ConvertFrom-Json
-$distRoot = Join-Path $repoRoot 'dist'
+$distRoot = Join-Path $repoRoot $OutputDirectory
 $workRoot = Join-Path $distRoot ('.staging-' + $Version)
 $bundleRoot = Join-Path $workRoot ('XenoMods-' + $Version)
 $archivePath = Join-Path $distRoot ('XenoMods-' + $Version + '.zip')
