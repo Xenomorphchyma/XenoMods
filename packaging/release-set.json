@@ -3,7 +3,7 @@
   "category": "XenoMods",
   "loader": {
     "name": "XenoNativeLoader",
-    "version": "0.6.7",
+    "version": "0.6.8",
     "package": "runtime/XenoNativeLoader/package",
     "bundledPlugins": [
       {
@@ -37,7 +37,9 @@
       "name": "XenoBG",
       "version": "snapshot-2026-09-01",
       "includeInArchive": true,
-      "conflicts": ["KlaxonsBG"]
+      "conflicts": [
+        "KlaxonsBG"
+      ]
     },
     {
       "name": "XenoCoalitionBG",
@@ -53,23 +55,36 @@
       "name": "XenoRangers",
       "version": "snapshot-2026-08-25",
       "includeInArchive": true,
-      "conflicts": ["XenoRangersOriginalBalance", "ZelRangers"]
+      "conflicts": [
+        "XenoRangersOriginalBalance",
+        "ZelRangers"
+      ]
     },
     {
       "name": "XenoRangersOriginalBalance",
       "version": "snapshot-2026-08-25",
       "includeInArchive": true,
-      "conflicts": ["XenoRangers", "ZelRangers"]
+      "conflicts": [
+        "XenoRangers",
+        "ZelRangers"
+      ]
     },
     {
       "name": "XenoCoalitionSupplyLines",
       "version": "1.0.83",
       "includeInArchive": true,
-      "dependencies": ["UtilityFunctionsPack"]
+      "dependencies": [
+        "UtilityFunctionsPack"
+      ]
     },
     {
       "name": "XenoDomRangers",
       "version": "2.2.0-native",
+      "includeInArchive": true
+    },
+    {
+      "name": "XenoSystemZoom",
+      "version": "0.3.0-native",
       "includeInArchive": true
     },
     {

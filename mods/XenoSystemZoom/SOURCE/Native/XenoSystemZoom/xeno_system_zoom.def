@@ -1,0 +1,4 @@
+LIBRARY "XenoSystemZoom.XenoPlugin.dll"
+EXPORTS
+    XenoPlugin_Query
+    XenoPlugin_Initialize
