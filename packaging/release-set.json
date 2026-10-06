@@ -3,7 +3,7 @@
   "category": "XenoMods",
   "loader": {
     "name": "XenoNativeLoader",
-    "version": "0.6.8",
+    "version": "0.7.2",
     "package": "runtime/XenoNativeLoader/package",
     "bundledPlugins": [
       {
@@ -20,7 +20,7 @@
     },
     {
       "name": "XenoEquipmentInflation",
-      "version": "3.0.1",
+      "version": "3.0.2",
       "includeInArchive": true
     },
     {

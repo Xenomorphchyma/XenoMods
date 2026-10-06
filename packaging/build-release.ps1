@@ -57,8 +57,8 @@ $included = @($releaseMods | ForEach-Object {
     [ordered]@{
         name = $_.name
         version = $_.version
-        dependencies = @($_.dependencies)
-        conflicts = @($_.conflicts)
+        dependencies = @($_.dependencies | Where-Object { -not [string]::IsNullOrWhiteSpace([string]$_) })
+        conflicts = @($_.conflicts | Where-Object { -not [string]::IsNullOrWhiteSpace([string]$_) })
     }
 })
 
@@ -88,7 +88,9 @@ try {
         $false,
         [Text.Encoding]::UTF8)
     try {
-        $fixedTimestamp = [DateTimeOffset]::new(1980, 1, 1, 0, 0, 0, [TimeSpan]::Zero)
+        # Keep archives reproducible while avoiding the DOS/ZIP epoch that
+        # some extractors display as 1899 or 1980.
+        $fixedTimestamp = [DateTimeOffset]::new(2026, 9, 23, 0, 0, 0, [TimeSpan]::Zero)
         foreach ($file in $files) {
             $relativePath = $file.FullName.Substring($bundleRoot.Length + 1).Replace('\', '/')
             $entry = $archive.CreateEntry($relativePath, [IO.Compression.CompressionLevel]::Optimal)
