@@ -27,7 +27,7 @@ namespace
     const wchar_t* kPluginDescription =
         L"Native NPC chameleon runtime for XenoDomRangers";
 #endif
-    const wchar_t* kPluginVersion = L"2.2.0";
+    const wchar_t* kPluginVersion = L"2.2.1";
 
     constexpr size_t kHookLength = 6;
     constexpr size_t kMaxSessions = 8;
@@ -38,6 +38,48 @@ namespace
     constexpr size_t kKlingSeriesOffset = 0x4D1;
     constexpr size_t kChameleonLogicOffset = 0xDEC;
     constexpr size_t kRequiredShipBytes = kChameleonLogicOffset + 3;
+
+    // Optional SolHook event bridge.  The record is deliberately a small C
+    // ABI payload: SolHook raises events with two pointer-sized arguments and
+    // keeps no ownership of the payload.  SolEngine is the sole machine-hook
+    // owner; XenoDomRangers only fills this query when the bridge is active.
+#pragma pack(push, 1)
+    struct SolChameleonQueryV1
+    {
+        void* attacker;
+        void* target;
+        std::int32_t result;
+        std::int32_t handled;
+    };
+#pragma pack(pop)
+
+    using SolEventProc = void (__cdecl*)(std::uintptr_t, std::uintptr_t);
+    using SolHookEnsureInitFn = std::int32_t (__cdecl*)(const XenoPluginHostV1*);
+    using SolHookEventIdFn = std::int32_t (__cdecl*)(const char*);
+    using SolHookHasSubscribersFn = std::int32_t (__cdecl*)(std::int32_t);
+    using SolHookSubscribeFn = std::int32_t (__cdecl*)(const char*, SolEventProc, const char*);
+    using SolHookRaiseFn = void (__cdecl*)(std::int32_t, std::uintptr_t, std::uintptr_t);
+    using SolHookGetApiFn = const void* (__cdecl*)();
+
+    struct SolHookApiV2
+    {
+        std::uint32_t size;
+        std::uint32_t version;
+        void* install;
+        void* owner;
+        void* log;
+        void* report;
+        void* resolve;
+        void* buildExact;
+        SolHookSubscribeFn subscribe;
+        void* unsubscribe;
+        SolHookEventIdFn eventId;
+        SolHookRaiseFn raiseEvent;
+        SolHookHasSubscribersFn hasSubscribers;
+    };
+
+    constexpr std::uint32_t kSolHookV2Size = sizeof(SolHookApiV2);
+    constexpr char kChameleonEventName[] = "Chameleon.NpcCheck";
 
     struct MaskSession
     {
@@ -68,6 +110,8 @@ namespace
     int g_worldPlayerId = 0;
     int g_worldTurn = -1;
     std::uint64_t g_sessionSerial = 0;
+    bool g_solBridge = false;
+    bool g_solUtilitiesPresent = false;
 
     void Log(const std::wstring& message)
     {
@@ -303,6 +347,78 @@ namespace
         return result;
     }
 
+    void __cdecl SolChameleonEvent(std::uintptr_t arg1, std::uintptr_t)
+    {
+        auto* query = reinterpret_cast<SolChameleonQueryV1*>(arg1);
+        if (!query || !g_solBridge)
+        {
+            return;
+        }
+        __try
+        {
+            const int result = TryNpcChameleon(query->attacker, query->target);
+            if (result != -1)
+            {
+                query->result = result;
+                query->handled = 1;
+            }
+        }
+        __except (EXCEPTION_EXECUTE_HANDLER)
+        {
+            // A third-party event callback must never take the game down.
+        }
+    }
+
+    // Returns true when an optional SolUtilities installation was noticed.
+    // In that case the direct XenoDomRangers patch is never attempted: either
+    // the event bridge is active, or the plugin remains script-only.  This is
+    // intentionally fail-closed for old SolHook builds.
+    bool TryConnectSolBridge(
+        const XenoPluginHostV1* host,
+        std::wstring& detail)
+    {
+        const HMODULE solHook = GetModuleHandleW(L"SolHook.XenoPlugin.dll");
+        const HMODULE solEngine = GetModuleHandleW(L"SolEngine.XenoPlugin.dll");
+        g_solUtilitiesPresent = solHook != nullptr || solEngine != nullptr;
+        if (!g_solUtilitiesPresent)
+        {
+            return false;
+        }
+        if (!solHook)
+        {
+            detail = L"SolEngine present but SolHook is unavailable; direct hook disabled";
+            return true;
+        }
+        const auto ensure = reinterpret_cast<SolHookEnsureInitFn>(
+            GetProcAddress(solHook, "SolHook_EnsureInit"));
+        const auto getApi = reinterpret_cast<SolHookGetApiFn>(
+            GetProcAddress(solHook, "SolHook_GetApi"));
+        if (!ensure || !getApi || ensure(host) != 0)
+        {
+            detail = L"SolHook bridge unavailable; direct hook disabled";
+            return true;
+        }
+        const auto* api = reinterpret_cast<const SolHookApiV2*>(getApi());
+        if (!api || api->version < 2 || api->size < kSolHookV2Size ||
+            !api->subscribe || !api->eventId)
+        {
+            detail = L"SolHook API v2 is unavailable; direct hook disabled";
+            return true;
+        }
+        const std::int32_t eventId = api->eventId(kChameleonEventName);
+        if (eventId < 0 || api->subscribe(
+                kChameleonEventName,
+                &SolChameleonEvent,
+                "XenoDomRangers") != 1)
+        {
+            detail = L"SolHook Chameleon event subscription failed; direct hook disabled";
+            return true;
+        }
+        g_solBridge = true;
+        detail = L"SolHook Chameleon event bridge active";
+        return true;
+    }
+
     __declspec(naked) void ChameleonConfusionStub()
     {
         __asm {
@@ -440,18 +556,28 @@ extern "C" DWORD WINAPI XenoPlugin_Initialize(const XenoPluginHostV1* host)
         return 2;
     }
 
+    std::wstring error;
+    const bool solUtilities = TryConnectSolBridge(host, error);
+    if (solUtilities)
+    {
+        InterlockedExchange(&g_ready, 1);
+        Log(L"runtime=ready mode=" + error +
+            L" max_specialists=" + std::to_wstring(g_userConfig.maximumSpecialists) +
+            L" recruit_chance=" + std::to_wstring(g_userConfig.recruitmentChancePercent) +
+            L" salvage_turns=" + std::to_wstring(g_userConfig.maximumSalvageTurns));
+        return 0;
+    }
+
+    if (!xdr::DiscoverRuntimePoints(host->gameModule, g_points, error))
+    {
+        Log(L"runtime=failed " + error);
+        return 4;
+    }
     g_hookOwner = CreateMutexW(nullptr, FALSE, L"Local\\XenoDomRangersNpcChameleonV1");
     if (!g_hookOwner || GetLastError() == ERROR_ALREADY_EXISTS)
     {
         Log(L"runtime=failed hook already owned by another XenoDomRangers module");
         return 3;
-    }
-
-    std::wstring error;
-    if (!xdr::DiscoverRuntimePoints(host->gameModule, g_points, error))
-    {
-        Log(L"runtime=failed " + error);
-        return 4;
     }
     if (!BuildAndInstallHook(error))
     {
@@ -459,7 +585,7 @@ extern "C" DWORD WINAPI XenoPlugin_Initialize(const XenoPluginHostV1* host)
         return 5;
     }
     InterlockedExchange(&g_ready, 1);
-    Log(L"runtime=installed version=2.2.0 chameleon_check=" +
+    Log(L"runtime=installed version=2.2.1 chameleon_check=" +
         Hex(g_points.chameleonConfusion) +
         L" max_specialists=" + std::to_wstring(g_userConfig.maximumSpecialists) +
         L" recruit_chance=" + std::to_wstring(g_userConfig.recruitmentChancePercent) +

@@ -8,7 +8,7 @@
     "bundledPlugins": [
       {
         "name": "XenoStable",
-        "version": "1.4.9"
+        "version": "1.4.12"
       }
     ]
   },
@@ -79,7 +79,7 @@
     },
     {
       "name": "XenoDomRangers",
-      "version": "2.2.0-native",
+      "version": "2.2.1-native",
       "includeInArchive": true
     },
     {

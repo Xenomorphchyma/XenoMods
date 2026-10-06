@@ -5,6 +5,8 @@
 
 #include <string>
 
+#include "../include/xeno_plugin_api.h"
+
 namespace xgg
 {
     struct RuntimePoints
@@ -19,6 +21,7 @@ namespace xgg
         unsigned char* geometryCall = nullptr;
         unsigned char* geometryOriginalTarget = nullptr;
         unsigned char* fullGenerator = nullptr;
+        bool fullGeneratorForeign = false;
         void*** configRootSlot = nullptr;
         int** mapWidthSlot = nullptr;
         int** mapHeightSlot = nullptr;
@@ -35,7 +38,8 @@ namespace xgg
     bool DiscoverRuntimePoints(
         void* imageBase,
         RuntimePoints& points,
-        std::wstring& error);
+        std::wstring& error,
+        const XenoPluginHostV1* host = nullptr);
 
     bool DiscoverRuntimeBaseSchedulerPoint(
         void* imageBase,

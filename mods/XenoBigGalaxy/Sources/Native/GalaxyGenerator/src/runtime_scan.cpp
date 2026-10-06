@@ -135,6 +135,92 @@ namespace xgg
         const unsigned char kGeometryCallOriginal[] = { 0xE8 };
         const unsigned char kNearCallOriginal[] = { 0xE8 };
 
+        struct SolHookApiBridgeV1
+        {
+            std::uint32_t size;
+            std::uint32_t version;
+            void* install;
+            void* owner;
+            void* log;
+            void* report;
+            void* resolve;
+            void* buildExact;
+        };
+        using SolHookEnsureInitFn = std::int32_t (__cdecl*)(const XenoPluginHostV1*);
+        using SolHookGetApiFn = const SolHookApiBridgeV1* (__cdecl*)();
+        using SolHookResolveFn = std::uintptr_t (__cdecl*)(const char*);
+
+        unsigned char* ResolveSolEngineGenerator(
+            void* imageBase,
+            const XenoPluginHostV1* host)
+        {
+            const HMODULE solHook = GetModuleHandleW(L"SolHook.XenoPlugin.dll");
+            if (!solHook)
+            {
+                return nullptr;
+            }
+            const auto ensure = reinterpret_cast<SolHookEnsureInitFn>(
+                GetProcAddress(solHook, "SolHook_EnsureInit"));
+            const auto getApi = reinterpret_cast<SolHookGetApiFn>(
+                GetProcAddress(solHook, "SolHook_GetApi"));
+            if (!ensure || !getApi || !host || ensure(host) != 0)
+            {
+                return nullptr;
+            }
+            const SolHookApiBridgeV1* api = getApi();
+            if (!api || api->version < 1 || api->size < sizeof(SolHookApiBridgeV1) ||
+                !api->resolve)
+            {
+                return nullptr;
+            }
+            const auto resolve = reinterpret_cast<SolHookResolveFn>(api->resolve);
+            const std::uintptr_t address = resolve("ADDR_GenerateConstellationsAndStars");
+            const auto image = reinterpret_cast<std::uintptr_t>(imageBase);
+            const auto* imageBytes = reinterpret_cast<const unsigned char*>(imageBase);
+            const auto* dos = reinterpret_cast<const IMAGE_DOS_HEADER*>(imageBytes);
+            if (!address || address < image || dos->e_magic != IMAGE_DOS_SIGNATURE)
+            {
+                return nullptr;
+            }
+            const auto* nt = reinterpret_cast<const IMAGE_NT_HEADERS32*>(
+                imageBytes + dos->e_lfanew);
+            if (nt->Signature != IMAGE_NT_SIGNATURE ||
+                address >= image + nt->OptionalHeader.SizeOfImage)
+            {
+                return nullptr;
+            }
+            return reinterpret_cast<unsigned char*>(address);
+        }
+
+        bool IsSolEngineDetour(const unsigned char* address)
+        {
+            if (!address || address[0] != 0xE9)
+            {
+                return false;
+            }
+            const std::int32_t relative = *reinterpret_cast<const std::int32_t*>(address + 1);
+            const auto target = reinterpret_cast<std::uintptr_t>(address + 5) + relative;
+            const HMODULE solEngine = GetModuleHandleW(L"SolEngine.XenoPlugin.dll");
+            if (!solEngine)
+            {
+                return false;
+            }
+            const auto image = reinterpret_cast<const unsigned char*>(solEngine);
+            const auto dos = reinterpret_cast<const IMAGE_DOS_HEADER*>(image);
+            if (dos->e_magic != IMAGE_DOS_SIGNATURE)
+            {
+                return false;
+            }
+            const auto nt = reinterpret_cast<const IMAGE_NT_HEADERS32*>(
+                image + dos->e_lfanew);
+            if (nt->Signature != IMAGE_NT_SIGNATURE)
+            {
+                return false;
+            }
+            const auto base = reinterpret_cast<std::uintptr_t>(image);
+            return target >= base && target < base + nt->OptionalHeader.SizeOfImage;
+        }
+
         bool ParseImage(
             const void* imageBase,
             const IMAGE_NT_HEADERS32*& nt,
@@ -285,7 +371,8 @@ namespace xgg
     bool DiscoverRuntimePoints(
         void* imageBase,
         RuntimePoints& points,
-        std::wstring& error)
+        std::wstring& error,
+        const XenoPluginHostV1* host)
     {
         if (HasSection(imageBase, ".xbg"))
         {
@@ -304,6 +391,11 @@ namespace xgg
             imageBase, kConfigPattern, _countof(kConfigPattern), error);
         const auto full = FindMatches(
             imageBase, kFullGeneratorPattern, _countof(kFullGeneratorPattern), error);
+        unsigned char* foreignFull = nullptr;
+        if (full.empty())
+        {
+            foreignFull = ResolveSolEngineGenerator(imageBase, host);
+        }
         const auto geometry = FindMatches(
             imageBase, kGeometryPattern, _countof(kGeometryPattern), error);
         const auto dimensions = FindMatches(
@@ -332,7 +424,8 @@ namespace xgg
             }
         }
         if (sector.size() != 1 || contour.size() != 1 || distribution.size() != 1 ||
-            retry.size() != 1 || config.size() != 1 || full.size() != 1 ||
+            retry.size() != 1 || config.size() != 1 ||
+            (full.size() != 1 && foreignFull == nullptr) ||
             geometry.size() != 1 || dimensions.size() != 1)
         {
             std::wostringstream message;
@@ -360,7 +453,8 @@ namespace xgg
         points.retry = retry[0] + 6;
         points.geometryCall = geometry[0] + 9;
         points.geometryOriginalTarget = RelativeTarget(points.geometryCall, 5);
-        points.fullGenerator = full[0];
+        points.fullGenerator = full.size() == 1 ? full[0] : foreignFull;
+        points.fullGeneratorForeign = full.empty();
 
         const std::uint32_t rootA = *reinterpret_cast<std::uint32_t*>(config[0] + 1);
         const std::uint32_t rootB = *reinterpret_cast<std::uint32_t*>(config[0] + 25);
@@ -399,8 +493,12 @@ namespace xgg
                 L"retry hook", error) &&
             RequireOriginal(points.geometryCall, kGeometryCallOriginal,
                 sizeof(kGeometryCallOriginal), L"geometry call", error) &&
-            RequireOriginal(points.fullGenerator, kFullGeneratorOriginal,
-                sizeof(kFullGeneratorOriginal), L"full generator entry", error);
+            (points.fullGeneratorForeign
+                ? (IsSolEngineDetour(points.fullGenerator)
+                    ? true
+                    : (error = L"unexpected foreign hook at full generator entry", false))
+                : RequireOriginal(points.fullGenerator, kFullGeneratorOriginal,
+                    sizeof(kFullGeneratorOriginal), L"full generator entry", error));
     }
 
     bool DiscoverRuntimeBaseSchedulerPoint(

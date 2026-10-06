@@ -225,8 +225,8 @@ namespace
         info.size = sizeof(info);
         Require(XenoPlugin_Query(&info) != FALSE, "full plugin query failed");
         Require(
-            info.exclusiveCapabilities == XENO_PLUGIN_CAP_GALAXY_GENERATOR,
-            "galaxy capability was not declared");
+            info.exclusiveCapabilities == 0,
+            "galaxy plugin must not claim an order-dependent exclusive capability");
         Require(wcscmp(info.id, L"XenoGalaxyGenerator") == 0, "plugin id mismatch");
         Require(wcscmp(info.version, L"1.4.0") == 0, "plugin version mismatch");
 

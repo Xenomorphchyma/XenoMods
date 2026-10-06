@@ -939,8 +939,12 @@ namespace
         XggFullGeneratorV1 callback,
         void* userData)
     {
-        if (!callback || !g_points.fullGenerator)
+        if (!callback || !g_points.fullGenerator || g_points.fullGeneratorForeign)
         {
+            if (g_points.fullGeneratorForeign)
+            {
+                Log(L"external_full_generator=refused reason=SolEngine owns entry");
+            }
             return FALSE;
         }
         AcquireSRWLockExclusive(&g_registrationLock);
@@ -1006,7 +1010,14 @@ extern "C" BOOL WINAPI XenoPlugin_Query(XenoPluginInfoV1* info)
         static_cast<int>(_countof(info->description)));
     if (info->size >= sizeof(XenoPluginInfoV1))
     {
-        info->exclusiveCapabilities = XENO_PLUGIN_CAP_GALAXY_GENERATOR;
+        // SolEngine owns the single top-level generator detour when it is
+        // present, then passes through to the original entry.  BigGalaxy's
+        // Query is called while plugins are discovered one by one.  Do not
+        // inspect neighbouring DLLs here: the result would depend on ModCFG
+        // order.  Runtime scan/ownership below is fail-closed and accepts
+        // only a verified SolEngine detour, so this plugin stays non-exclusive
+        // and can coexist with SolEngine in either order.
+        info->exclusiveCapabilities = 0;
     }
     return TRUE;
 }
@@ -1022,10 +1033,14 @@ extern "C" DWORD WINAPI XenoPlugin_Initialize(const XenoPluginHostV1* host)
     g_gameModule = host->gameModule;
     LoadPluginConfiguration();
     std::wstring error;
-    if (!xgg::DiscoverRuntimePoints(host->gameModule, g_points, error))
+    if (!xgg::DiscoverRuntimePoints(host->gameModule, g_points, error, host))
     {
         Log(L"runtime=failed " + error);
         return 2;
+    }
+    if (g_points.fullGeneratorForeign)
+    {
+        Log(L"bridge=SolEngine foreign_generator=accepted stages_only=true");
     }
     Log(L"full_generator=" + Hex(g_points.fullGenerator));
     Log(L"config_root_slot=" + Hex(g_points.configRootSlot));
@@ -1071,7 +1086,9 @@ extern "C" BOOL WINAPI XenoGalaxyGenerator_GetApi(XggApiTableV1* api)
     }
     api->version = XGG_API_V1;
     api->gameModule = g_gameModule;
-    api->originalFullGenerator = g_points.fullGenerator;
+    api->originalFullGenerator = g_points.fullGeneratorForeign
+        ? nullptr
+        : g_points.fullGenerator;
     api->registerSectorSelector = &RegisterSectorSelector;
     api->registerFullGenerator = &RegisterFullGenerator;
     api->getSectorCount = &GetSectorCount;
