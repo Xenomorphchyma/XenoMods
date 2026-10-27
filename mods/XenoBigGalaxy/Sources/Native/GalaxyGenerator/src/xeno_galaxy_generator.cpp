@@ -5,6 +5,7 @@
 
 #include "generator_plan.h"
 #include "hex_sector_layout.h"
+#include "layout_geometry.h"
 #include "runtime_base_throttle.h"
 #include "runtime_scan.h"
 #include "../include/xeno_galaxy_generator_api.h"
@@ -38,6 +39,12 @@ namespace
     volatile LONG g_hexLogPending = 0;
     DWORD g_sectorCount = 20;
     DWORD g_retryLimit = 1;
+    // Past RetryLimit the stock area/axis criteria are waived, but layouts
+    // whose sector borders cross are still regenerated within these bounds.
+    DWORD g_geometryRetryLimit = 1000;
+    DWORD g_geometryRetryBudgetMs = 20000;
+    ULONGLONG g_layoutStartTick = 0;
+    DWORD g_layoutGeometryRejects = 0;
     DWORD g_contourFallback = 1;
     int g_starCount = 73;
     int g_hexColumns = 0;
@@ -51,6 +58,10 @@ namespace
     uintptr_t g_geometryOriginalTarget = 0;
     uintptr_t g_runtimeBaseSchedulerOriginalTarget = 0;
     uintptr_t g_fullTrampoline = 0;
+    int g_frameSelf = -0x04;
+    int g_frameStarIndex = -0x0C;
+    int g_frameSector = -0x64;
+    int g_frameRetryCount = -0xB0;
     volatile LONG g_runtimeBaseSchedulerDecision = 1;
     XggSectorSelectorV1 g_sectorSelector = nullptr;
     void* g_sectorSelectorUser = nullptr;
@@ -429,6 +440,14 @@ namespace
                 ReadInt(config, L"Constellations.Generator.RetryLimit", 1),
                 1,
                 100000));
+            g_geometryRetryLimit = static_cast<DWORD>(std::clamp(
+                ReadInt(config, L"Constellations.Generator.GeometryRetryLimit", 1000),
+                0,
+                1000));
+            g_geometryRetryBudgetMs = static_cast<DWORD>(std::clamp(
+                ReadInt(config, L"Constellations.Generator.GeometryRetryBudgetMs", 20000),
+                0,
+                600000));
             g_contourFallback = ReadBool(
                 config, L"Constellations.Generator.ContourFallback", true) ? 1u : 0u;
             g_hexColumns = std::clamp(ReadInt(
@@ -447,6 +466,8 @@ namespace
             settings.preserveVanillaStars = true;
             settings.sectors.resize(20);
             g_retryLimit = 1;
+            g_geometryRetryLimit = 1000;
+            g_geometryRetryBudgetMs = 20000;
             g_contourFallback = 1;
             g_hexColumns = 0;
             g_hexEdgeInset = 8.0f;
@@ -470,6 +491,8 @@ namespace
                 << (settings.preserveVanillaStars ? L"true" : L"false")
                 << L" explicit=" << settings.explicitAssignments.size()
                 << L" retry=" << g_retryLimit
+                << L" geometry_retry=" << g_geometryRetryLimit
+                << L" geometry_budget_ms=" << g_geometryRetryBudgetMs
                 << L" contour_fallback=" << (g_contourFallback ? L"true" : L"false")
                 << L" geometry=" << (g_hexEnabled ? L"hex_grid_test" : L"vanilla")
                 << L" hex_columns=" << g_hexColumns
@@ -499,6 +522,8 @@ namespace
         {
             g_sectorCount = 20;
             g_retryLimit = 1;
+            g_geometryRetryLimit = 1000;
+            g_geometryRetryBudgetMs = 20000;
             g_contourFallback = 1;
             g_starCount = 73;
             g_hexColumns = 0;
@@ -715,6 +740,23 @@ namespace
         }
     }
 
+    __declspec(naked) void SectorStubEbx()
+    {
+        __asm {
+            pushfd
+            pushad
+            push ebx
+            call BeginGalaxy
+            popad
+            popfd
+            push ecx
+            mov ecx, dword ptr [g_sectorCount]
+            mov dword ptr [ebx+160h], ecx
+            pop ecx
+            jmp dword ptr [g_sectorContinue]
+        }
+    }
+
     __declspec(naked) void ContourStub()
     {
         __asm {
@@ -740,24 +782,157 @@ namespace
         __asm {
             pushfd
             pushad
-            mov eax, dword ptr [ebp-04h]
+            mov ecx, dword ptr [g_frameSelf]
+            mov eax, dword ptr [ebp+ecx]
             push eax
-            mov eax, dword ptr [ebp-0Ch]
+            mov ecx, dword ptr [g_frameStarIndex]
+            mov eax, dword ptr [ebp+ecx]
             push eax
             call SelectSector
-            mov dword ptr [ebp-64h], eax
+            mov ecx, dword ptr [g_frameSector]
+            mov dword ptr [ebp+ecx], eax
             popad
             popfd
             jmp dword ptr [g_distributionComplete]
         }
     }
 
+    // TGalaxy.Constellations, TConstellation.OutlinePolygons and the
+    // TPolygon2D/TList fields are laid out identically in every supported
+    // Rangers.exe build (legacy and optimized).
+    constexpr size_t kGalaxyConstellationsOffset = 0x164;
+    constexpr size_t kConstellationOutlineOffset = 0x80;
+    constexpr size_t kPolygonNextOffset = 0x04;
+    constexpr size_t kPolygonPointsOffset = 0x0C;
+    constexpr size_t kListItemsOffset = 0x04;
+    constexpr size_t kListCountOffset = 0x08;
+
+    template <typename T>
+    T ReadField(const void* object, size_t offset)
+    {
+        return *reinterpret_cast<const T*>(static_cast<const unsigned char*>(object) + offset);
+    }
+
+    // Copies every sector outline chain of the galaxy being generated.
+    bool ReadSectorOutlines(
+        void* galaxy,
+        std::vector<xgg::OutlinePoint>& points,
+        std::vector<xgg::OutlineRing>& rings)
+    {
+        __try
+        {
+            const void* constellations = ReadField<void*>(galaxy, kGalaxyConstellationsOffset);
+            const int count = ReadField<int>(constellations, kListCountOffset);
+            void* const* items = ReadField<void* const*>(constellations, kListItemsOffset);
+            if (count <= 0 || count > 256 || !items)
+            {
+                return false;
+            }
+            for (int sector = 0; sector < count; ++sector)
+            {
+                const void* polygon = ReadField<void*>(items[sector], kConstellationOutlineOffset);
+                for (int depth = 0; polygon && depth < 64; ++depth)
+                {
+                    const void* list = ReadField<void*>(polygon, kPolygonPointsOffset);
+                    const int pointCount = list ? ReadField<int>(list, kListCountOffset) : 0;
+                    const float* const* pointItems = list
+                        ? ReadField<const float* const*>(list, kListItemsOffset)
+                        : nullptr;
+                    if (pointCount < 0 || pointCount > 100000 || (pointCount && !pointItems))
+                    {
+                        return false;
+                    }
+                    xgg::OutlineRing ring;
+                    ring.sector = sector;
+                    ring.first = points.size();
+                    ring.count = static_cast<size_t>(pointCount);
+                    for (int index = 0; index < pointCount; ++index)
+                    {
+                        const float* point = pointItems[index];
+                        points.push_back({ point[0], point[1] });
+                    }
+                    rings.push_back(ring);
+                    polygon = ReadField<void*>(polygon, kPolygonNextOffset);
+                }
+            }
+            return true;
+        }
+        __except (EXCEPTION_EXECUTE_HANDLER)
+        {
+            return false;
+        }
+    }
+
+    // Called at the stock "until (Attempts > 1000) or not InvalidLayout"
+    // check. Returns 1 to accept the current layout, 0 to let the stock code
+    // regenerate it when it flagged the layout as invalid.
+    int DecideLayoutRetryImpl(void* galaxy, int attempts)
+    {
+        if (attempts <= 1)
+        {
+            g_layoutStartTick = GetTickCount64();
+            g_layoutGeometryRejects = 0;
+        }
+        if (attempts <= static_cast<int>(g_retryLimit))
+        {
+            return 0;
+        }
+        const ULONGLONG elapsed = GetTickCount64() - g_layoutStartTick;
+        if (g_geometryRetryLimit == 0)
+        {
+            return 1;
+        }
+        std::vector<xgg::OutlinePoint> points;
+        std::vector<xgg::OutlineRing> rings;
+        if (!ReadSectorOutlines(galaxy, points, rings))
+        {
+            Log(L"layout_geometry=unreadable action=accept attempts=" + std::to_wstring(attempts));
+            return 1;
+        }
+        const xgg::OutlineCrossingReport report = xgg::FindOutlineCrossings(points, rings, 0);
+        const bool clean = report.crossings == 0;
+        const bool exhausted = attempts > static_cast<int>(g_geometryRetryLimit) ||
+            elapsed >= g_geometryRetryBudgetMs;
+        if (!clean && !exhausted)
+        {
+            ++g_layoutGeometryRejects;
+            return 0;
+        }
+        std::wostringstream message;
+        message << L"layout_geometry=" << (clean ? L"clean" : L"accepted_with_crossings")
+                << L" attempts=" << attempts
+                << L" geometry_rejects=" << g_layoutGeometryRejects
+                << L" elapsed_ms=" << elapsed
+                << L" sectors=" << (rings.empty() ? 0 : rings.back().sector + 1)
+                << L" outline_points=" << points.size();
+        if (!clean)
+        {
+            message << L" crossings=" << report.crossings
+                    << L" first_pair=" << report.firstSector << L"/" << report.secondSector;
+        }
+        Log(message.str());
+        return 1;
+    }
+
+    // Defined after the namespace so native tests can drive it directly.
+    extern "C" int __stdcall XggDecideLayoutRetry(void* galaxy, int attempts);
+
+    // Replaces "cmp [Attempts], 1000"; the following stock jg leaves the
+    // generation loop when XggDecideLayoutRetry returns 1.
     __declspec(naked) void RetryStub()
     {
         __asm {
             push eax
-            mov eax, dword ptr [g_retryLimit]
-            cmp dword ptr [ebp-0B0h], eax
+            push ecx
+            push edx
+            mov ecx, dword ptr [g_frameRetryCount]
+            push dword ptr [ebp+ecx]
+            mov ecx, dword ptr [g_frameSelf]
+            push dword ptr [ebp+ecx]
+            call XggDecideLayoutRetry
+            cmp eax, 0
+            pop edx
+            pop ecx
             pop eax
             jmp dword ptr [g_retryContinue]
         }
@@ -827,9 +1002,16 @@ namespace
         g_retryContinue = reinterpret_cast<uintptr_t>(g_points.retry + 10);
         g_geometryOriginalTarget = reinterpret_cast<uintptr_t>(
             g_points.geometryOriginalTarget);
+        g_frameSelf = g_points.frameSelf;
+        g_frameStarIndex = g_points.frameStarIndex;
+        g_frameSector = g_points.frameSector;
+        g_frameRetryCount = g_points.frameRetryCount;
         g_runtimeHooks = {
             { L"sector", g_points.sector, 10,
-                reinterpret_cast<void*>(&SectorStub), {}, false },
+                g_points.sectorInEbx
+                    ? reinterpret_cast<void*>(&SectorStubEbx)
+                    : reinterpret_cast<void*>(&SectorStub),
+                {}, false },
             { L"contour", g_points.contour, 6,
                 reinterpret_cast<void*>(&ContourStub), {}, false },
             { L"distribution", g_points.distribution, 7,
@@ -995,6 +1177,18 @@ namespace
     }
 }
 
+extern "C" int __stdcall XggDecideLayoutRetry(void* galaxy, int attempts)
+{
+    try
+    {
+        return DecideLayoutRetryImpl(galaxy, attempts);
+    }
+    catch (...)
+    {
+        return 1;
+    }
+}
+
 extern "C" BOOL WINAPI XenoPlugin_Query(XenoPluginInfoV1* info)
 {
     if (!info || info->size < XENO_PLUGIN_INFO_V1_BASE_SIZE)
@@ -1003,7 +1197,7 @@ extern "C" BOOL WINAPI XenoPlugin_Query(XenoPluginInfoV1* info)
     }
     info->requiredHostApi = XENO_NATIVE_HOST_API_V1;
     lstrcpynW(info->id, kPluginId, static_cast<int>(_countof(info->id)));
-    lstrcpynW(info->version, L"1.4.0", static_cast<int>(_countof(info->version)));
+    lstrcpynW(info->version, L"1.6.0", static_cast<int>(_countof(info->version)));
     lstrcpynW(
         info->description,
         L"Data-driven and externally replaceable SRHD galaxy generator",
@@ -1042,6 +1236,11 @@ extern "C" DWORD WINAPI XenoPlugin_Initialize(const XenoPluginHostV1* host)
     {
         Log(L"bridge=SolEngine foreign_generator=accepted stages_only=true");
     }
+    Log(std::wstring(L"runtime_profile=") + g_points.profile +
+        L" frame_self=" + std::to_wstring(g_points.frameSelf) +
+        L" frame_star=" + std::to_wstring(g_points.frameStarIndex) +
+        L" frame_sector=" + std::to_wstring(g_points.frameSector) +
+        L" frame_retry=" + std::to_wstring(g_points.frameRetryCount));
     Log(L"full_generator=" + Hex(g_points.fullGenerator));
     Log(L"config_root_slot=" + Hex(g_points.configRootSlot));
     Log(L"geometry_call=" + Hex(g_points.geometryCall));
@@ -1074,7 +1273,7 @@ extern "C" DWORD WINAPI XenoPlugin_Initialize(const XenoPluginHostV1* host)
              << L" reference_stars=" << g_runtimeBaseThrottleSettings.referenceStars
              << L" first_day=" << g_runtimeBaseThrottleSettings.firstGameplayDay;
     Log(throttle.str());
-    Log(L"runtime=installed version=1.4.0");
+    Log(L"runtime=installed version=1.6.0");
     return 0;
 }
 

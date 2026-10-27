@@ -89,6 +89,7 @@ try {
     $generatorSources = @(
         (Join-Path $generatorSource "generator_plan.cpp"),
         (Join-Path $generatorSource "hex_sector_layout.cpp"),
+        (Join-Path $generatorSource "layout_geometry.cpp"),
         (Join-Path $generatorSource "runtime_base_throttle.cpp"),
         (Join-Path $generatorSource "runtime_scan.cpp"),
         (Join-Path $generatorSource "xeno_galaxy_generator.cpp")

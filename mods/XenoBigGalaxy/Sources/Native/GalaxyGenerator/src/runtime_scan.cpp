@@ -14,12 +14,22 @@ namespace xgg
 {
     namespace
     {
+        // Legacy builds use $O-; the 2026-10 prerelease uses $O+. Patterns
+        // without an "Optimized" twin match both, with frame slots wildcarded
+        // and read back from the matched instructions.
         const int kSectorPattern[] = {
             0x8B, 0x45, 0xF8, 0xC7, 0x40, 0x6C, 0x00, 0x00, 0x80, 0x3F,
             0x8B, 0x45, 0xF8, 0xC7, 0x80, 0x60, 0x01, 0x00, 0x00,
             -1, -1, -1, -1, 0xB2, 0x01, 0xA1, -1, -1, -1, -1,
             0xE8, -1, -1, -1, -1, 0x8B, 0x55, 0xF8,
             0x89, 0x82, 0x64, 0x01, 0x00, 0x00
+        };
+        const int kSectorOptimizedPattern[] = {
+            0xC7, 0x43, 0x6C, 0x00, 0x00, 0x80, 0x3F,
+            0xC7, 0x83, 0x60, 0x01, 0x00, 0x00, 0x14, 0x00, 0x00, 0x00,
+            0xB2, 0x01, 0xA1, -1, -1, -1, -1,
+            0xE8, -1, -1, -1, -1,
+            0x89, 0x83, 0x64, 0x01, 0x00, 0x00
         };
         const int kContourPattern[] = {
             0x80, 0xBD, 0xC7, 0xFE, 0xFF, 0xFF, 0x00,
@@ -30,20 +40,38 @@ namespace xgg
             0xE9, 0xDC, 0x02, 0x00, 0x00,
             0x8B, 0x85, 0x48, 0xFF, 0xFF, 0xFF
         };
+        // Starts at the forced-removal block of a flagged ear-trimming loop.
+        // Both such loops match; the second is the legacy contour hook.
+        const int kContourOptimizedPattern[] = {
+            0x8B, 0xD5, 0x8B, 0xC6, 0xE8, -1, -1, -1, -1,
+            0x8B, 0xD5, 0x8B, 0x84, 0x24, -1, -1, -1, -1,
+            0xE8, -1, -1, -1, -1,
+            0xC6, 0x84, 0x24, -1, -1, -1, -1, 0x01,
+            0xEB, -1,
+            0xFF, 0x44, 0x24, -1,
+            0xFF, 0x8C, 0x24, -1, -1, -1, -1,
+            0x0F, 0x85, -1, -1, -1, -1,
+            0x80, 0xBC, 0x24, -1, -1, -1, -1, 0x00,
+            0x0F, 0x85, -1, -1, -1, -1,
+            0x83, 0x7E, 0x08, 0x02,
+            0x0F, 0x8F, -1, -1, -1, -1,
+            0xE9
+        };
+        const size_t kContourOptimizedHookOffset = 68;
         const int kDistributionPattern[] = {
-            0x83, 0x7D, 0xF4, 0x46, 0x74, 0x06,
-            0x83, 0x7D, 0xF4, 0x47, 0x75, 0x15,
-            0x8B, 0x45, 0xFC, 0x8B, 0x80, 0x64, 0x01, 0x00, 0x00,
-            0x8B, 0x40, 0x08, 0x48, 0x89, 0x45, 0x9C,
-            0xE9, 0x23, 0x01, 0x00, 0x00,
-            0x83, 0x7D, 0xF4, 0x41, 0x7D, 0x10,
-            0x8B, 0x45, 0xF4, 0xB9, 0x12, 0x00, 0x00, 0x00
+            0x83, 0x7D, -1, 0x46, 0x74, 0x06,
+            0x83, 0x7D, -1, 0x47, 0x75, 0x15,
+            0x8B, 0x45, -1, 0x8B, 0x80, 0x64, 0x01, 0x00, 0x00,
+            0x8B, 0x40, 0x08, 0x48, 0x89, 0x45, -1,
+            0xE9, -1, -1, -1, -1,
+            0x83, 0x7D, -1, 0x41, 0x7D, 0x10,
+            0x8B, 0x45, -1, 0xB9, 0x12, 0x00, 0x00, 0x00
         };
         const int kRetryPattern[] = {
-            0xFF, 0x85, 0x50, 0xFF, 0xFF, 0xFF,
-            0x81, 0xBD, 0x50, 0xFF, 0xFF, 0xFF, 0xE8, 0x03, 0x00, 0x00,
-            0x7F, 0x0A, 0x80, 0x7D, 0xCB, 0x00,
-            0x0F, 0x85, 0x3C, 0xF2, 0xFF, 0xFF
+            0xFF, 0x85, -1, -1, -1, -1,
+            0x81, 0xBD, -1, -1, -1, -1, 0xE8, 0x03, 0x00, 0x00,
+            0x7F, 0x0A, 0x80, 0x7D, -1, 0x00,
+            0x0F, 0x85, -1, -1, -1, -1
         };
         const int kConfigPattern[] = {
             0xA1, -1, -1, -1, -1, 0x8B, 0x00,
@@ -66,6 +94,14 @@ namespace xgg
             0xE8, -1, -1, -1, -1,
             0xC6, 0x45, 0xCB, 0x00
         };
+        const int kGeometryOptimizedPattern[] = {
+            0x8B, 0x55, -1,
+            0x8B, 0x45, -1,
+            0xE8, -1, -1, -1, -1,
+            0x8B, 0x45, -1,
+            0xE8, -1, -1, -1, -1,
+            0xC6, 0x45, -1, 0x00
+        };
         const int kMapDimensionsPattern[] = {
             0xA1, -1, -1, -1, -1,
             0xDB, 0x00,
@@ -74,7 +110,7 @@ namespace xgg
             0xA1, -1, -1, -1, -1,
             0xDB, 0x00,
             0xDE, 0xC9,
-            0x8B, 0x45, 0xFC,
+            0x8B, 0x45, -1,
             0x8B, 0x80, 0x60, 0x01, 0x00, 0x00
         };
         const int kInitialBaseSchedulerPattern[] = {
@@ -94,43 +130,52 @@ namespace xgg
             0x8B, 0x45, 0xFC,
             0xE8, -1, -1, -1, -1
         };
-        const int kInitialBaseSchedulerCallPattern[] = {
-            0x8B, 0x45, 0xFC,
-            0xFF, 0x40, 0x4C,
-            0xC7, 0x45, 0xD0, 0x08, 0x00, 0x00, 0x00,
-            0x8B, 0x45, 0xFC,
-            0xE8, -1, -1, -1, -1,
-            0xC7, 0x45, 0xD0, 0x09, 0x00, 0x00, 0x00
+        // TGalaxy.ProcessStationSpawning with Self kept at [ESP].
+        const int kInitialBaseSchedulerOptimizedPattern[] = {
+            0x43, 0x80, 0xFB, 0x0D, 0x75, -1,
+            0x8B, 0x04, 0x24,
+            0x8B, 0x40, 0x4C,
+            0x83, 0xC0, 0x64,
+            0xB9, 0x07, 0x00, 0x00, 0x00,
+            0x99, 0xF7, 0xF9,
+            0x80, 0xC2, 0x06,
+            0x8B, 0x04, 0x24,
+            0xE8
         };
+        // TGalaxy.NextDay stage 8 call; Self and Stage slots vary per build.
+        const int kInitialBaseSchedulerCallPattern[] = {
+            0x8B, 0x45, -1,
+            0xFF, 0x40, 0x4C,
+            0xC7, 0x45, -1, 0x08, 0x00, 0x00, 0x00,
+            0x8B, 0x45, -1,
+            0xE8, -1, -1, -1, -1,
+            0xC7, 0x45, -1, 0x09, 0x00, 0x00, 0x00
+        };
+        // TThreadCreateNewGame.Execute; the zeroed frame size varies per build.
         const int kFullGeneratorPattern[] = {
-            0x55, 0x8B, 0xEC, 0xB9, 0x6E, 0x00, 0x00, 0x00,
+            0x55, 0x8B, 0xEC, 0xB9, -1, 0x00, 0x00, 0x00,
             0x6A, 0x00, 0x6A, 0x00, 0x49, 0x75, 0xF9,
             0x53, 0x56, 0x57, 0x89, 0x45, 0xF8, 0x33, 0xC0,
             0x55, 0x68, -1, -1, -1, -1, 0x64, 0xFF, 0x30, 0x64, 0x89, 0x20,
-            0x33, 0xC0, 0x89, 0x45, 0xA4, 0x33, 0xC0,
-            0x55, 0x68, -1, -1, -1, -1, 0x64, 0xFF, 0x30, 0x64, 0x89, 0x20,
+            0x33, 0xC0, 0x89, 0x45, -1, 0x33, -1,
+            0x55, 0x68, -1, -1, -1, -1, 0x64, 0xFF, -1, 0x64, 0x89, -1,
             0x66, 0xC7, 0x45, 0xFE, 0x3F, 0x13, 0x9B, 0xDB, 0xE2,
             0x66, 0x81, 0x65, 0xFE, 0xFF, 0xFC, 0xD9, 0x6D, 0xFE,
-            0xA1, -1, -1, -1, -1, 0x33, 0xD2, 0x89, 0x10,
-            0xA1, -1, -1, -1, -1, 0xC6, 0x00, 0x01,
-            0xB2, 0x01, 0xA1, -1, -1, -1, -1,
-            0xE8, -1, -1, -1, -1, 0x8B, 0x15, -1, -1, -1, -1, 0x89, 0x02
+            0xA1, -1, -1, -1, -1, 0x33, 0xD2, 0x89, 0x10
         };
 
         const unsigned char kSectorOriginal[] = {
             0xC7, 0x80, 0x60, 0x01, 0x00, 0x00, 0x14, 0x00, 0x00, 0x00
         };
+        const unsigned char kSectorOptimizedOriginal[] = {
+            0xC7, 0x83, 0x60, 0x01, 0x00, 0x00, 0x14, 0x00, 0x00, 0x00
+        };
         const unsigned char kContourOriginal[] = {
             0x0F, 0x8F, 0x2D, 0xFD, 0xFF, 0xFF
         };
-        const unsigned char kDistributionOriginal[] = {
-            0x83, 0x7D, 0xF4, 0x46, 0x74, 0x06, 0x83
-        };
-        const unsigned char kRetryOriginal[] = {
-            0x81, 0xBD, 0x50, 0xFF, 0xFF, 0xFF, 0xE8, 0x03, 0x00, 0x00
-        };
-        const unsigned char kFullGeneratorOriginal[] = {
-            0x55, 0x8B, 0xEC, 0xB9, 0x6E, 0x00, 0x00, 0x00
+        // push ebp; mov ebp, esp; mov ecx, imm32: relocatable 8-byte prologue.
+        const int kFullGeneratorOriginal[] = {
+            0x55, 0x8B, 0xEC, 0xB9, -1, 0x00, 0x00, 0x00
         };
         const unsigned char kGeometryCallOriginal[] = { 0xE8 };
         const unsigned char kNearCallOriginal[] = { 0xE8 };
@@ -366,6 +411,104 @@ namespace xgg
             error = message.str();
             return false;
         }
+
+        bool MatchesAt(const unsigned char* address, const int* pattern, size_t length)
+        {
+            for (size_t index = 0; index < length; ++index)
+            {
+                if (pattern[index] >= 0 &&
+                    address[index] != static_cast<unsigned char>(pattern[index]))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        std::int32_t ReadInt32(const unsigned char* address)
+        {
+            std::int32_t value = 0;
+            std::memcpy(&value, address, sizeof(value));
+            return value;
+        }
+
+        bool DiscoverSectorAndContour(
+            void* imageBase,
+            RuntimePoints& points,
+            std::wstring& error)
+        {
+            const auto legacySector = FindMatches(
+                imageBase, kSectorPattern, _countof(kSectorPattern), error);
+            const auto legacyContour = FindMatches(
+                imageBase, kContourPattern, _countof(kContourPattern), error);
+            if (legacySector.size() == 1 && legacyContour.size() == 1)
+            {
+                points.profile = L"legacy";
+                points.sector = legacySector[0] + 13;
+                points.sectorInEbx = false;
+                points.contour = legacyContour[0] + 23;
+                points.contourRemove = points.contour - 0x4B;
+                const unsigned char contourRemoveExpected[] = {
+                    0x8B, 0x55, 0xDC, 0x8B, 0x85, 0x48, 0xFF, 0xFF, 0xFF
+                };
+                return RequireOriginal(points.sector, kSectorOriginal,
+                        sizeof(kSectorOriginal), L"sector hook", error) &&
+                    RequireOriginal(points.contour, kContourOriginal,
+                        sizeof(kContourOriginal), L"contour hook", error) &&
+                    RequireOriginal(points.contourRemove, contourRemoveExpected,
+                        sizeof(contourRemoveExpected), L"contour fallback destination", error);
+            }
+            const auto optimizedSector = FindMatches(
+                imageBase, kSectorOptimizedPattern, _countof(kSectorOptimizedPattern), error);
+            const auto optimizedContour = FindMatches(
+                imageBase, kContourOptimizedPattern, _countof(kContourOptimizedPattern), error);
+            if (optimizedSector.size() == 1 && optimizedContour.size() == 2 &&
+                optimizedContour[1] > optimizedContour[0] &&
+                optimizedContour[1] - optimizedContour[0] < 0x1000)
+            {
+                points.profile = L"optimized";
+                points.sector = optimizedSector[0] + 7;
+                points.sectorInEbx = true;
+                points.contourRemove = optimizedContour[1];
+                points.contour = optimizedContour[1] + kContourOptimizedHookOffset;
+                return RequireOriginal(points.sector, kSectorOptimizedOriginal,
+                    sizeof(kSectorOptimizedOriginal), L"sector hook", error);
+            }
+            std::wostringstream message;
+            message << L"signature counts: sector=" << legacySector.size()
+                    << L"/" << optimizedSector.size()
+                    << L", contour=" << legacyContour.size()
+                    << L"/" << optimizedContour.size();
+            error = message.str();
+            return false;
+        }
+
+        std::vector<unsigned char*> FindGeometry(
+            void* imageBase,
+            size_t& callOffset,
+            std::wstring& error)
+        {
+            auto geometry = FindMatches(
+                imageBase, kGeometryPattern, _countof(kGeometryPattern), error);
+            if (geometry.size() == 1)
+            {
+                callOffset = 9;
+                return geometry;
+            }
+            geometry = FindMatches(
+                imageBase, kGeometryOptimizedPattern, _countof(kGeometryOptimizedPattern), error);
+            // WorkingPolygon is both the argument and the object freed next.
+            std::vector<unsigned char*> consistent;
+            for (unsigned char* candidate : geometry)
+            {
+                if (candidate[2] == candidate[13])
+                {
+                    consistent.push_back(candidate);
+                }
+            }
+            callOffset = 6;
+            return consistent;
+        }
     }
 
     bool DiscoverRuntimePoints(
@@ -374,15 +517,12 @@ namespace xgg
         std::wstring& error,
         const XenoPluginHostV1* host)
     {
+        points = {};
         if (HasSection(imageBase, ".xbg"))
         {
             error = L"EXE already contains the legacy .xbg embedded patch";
             return false;
         }
-        const auto sector = FindMatches(
-            imageBase, kSectorPattern, _countof(kSectorPattern), error);
-        const auto contour = FindMatches(
-            imageBase, kContourPattern, _countof(kContourPattern), error);
         const auto distribution = FindMatches(
             imageBase, kDistributionPattern, _countof(kDistributionPattern), error);
         const auto retry = FindMatches(
@@ -396,8 +536,8 @@ namespace xgg
         {
             foreignFull = ResolveSolEngineGenerator(imageBase, host);
         }
-        const auto geometry = FindMatches(
-            imageBase, kGeometryPattern, _countof(kGeometryPattern), error);
+        size_t geometryCallOffset = 0;
+        const auto geometry = FindGeometry(imageBase, geometryCallOffset, error);
         const auto dimensions = FindMatches(
             imageBase, kMapDimensionsPattern, _countof(kMapDimensionsPattern), error);
         const IMAGE_NT_HEADERS32* nt = nullptr;
@@ -423,15 +563,13 @@ namespace xgg
                 config.push_back(candidate);
             }
         }
-        if (sector.size() != 1 || contour.size() != 1 || distribution.size() != 1 ||
+        if (distribution.size() != 1 ||
             retry.size() != 1 || config.size() != 1 ||
             (full.size() != 1 && foreignFull == nullptr) ||
             geometry.size() != 1 || dimensions.size() != 1)
         {
             std::wostringstream message;
-            message << L"signature counts: sector=" << sector.size()
-                    << L", contour=" << contour.size()
-                    << L", distribution=" << distribution.size()
+            message << L"signature counts: distribution=" << distribution.size()
                     << L", retry=" << retry.size()
                     << L", config=" << config.size()
                     << L", full=" << full.size()
@@ -440,10 +578,30 @@ namespace xgg
             error = message.str();
             return false;
         }
+        if (!DiscoverSectorAndContour(imageBase, points, error))
+        {
+            return false;
+        }
 
-        points.sector = sector[0] + 13;
-        points.contour = contour[0] + 23;
-        points.contourRemove = points.contour - 0x4B;
+        const unsigned char starSlot = distribution[0][2];
+        if (distribution[0][8] != starSlot || distribution[0][35] != starSlot ||
+            distribution[0][41] != starSlot ||
+            dimensions[0][26] != distribution[0][14])
+        {
+            error = L"inconsistent generator frame slots";
+            return false;
+        }
+        points.frameStarIndex = static_cast<signed char>(starSlot);
+        points.frameSelf = static_cast<signed char>(distribution[0][14]);
+        points.frameSector = static_cast<signed char>(distribution[0][27]);
+        points.frameRetryCount = ReadInt32(retry[0] + 2);
+        if (ReadInt32(retry[0] + 8) != points.frameRetryCount ||
+            points.frameRetryCount >= 0 || points.frameRetryCount < -0x1000)
+        {
+            error = L"inconsistent retry counter slot";
+            return false;
+        }
+
         points.contourOriginalTarget = RelativeTarget(points.contour, 6);
         points.distribution = distribution[0];
         unsigned char* completeJump = distribution[0] + 37 + 16;
@@ -451,7 +609,7 @@ namespace xgg
             ? completeJump + 2 + static_cast<signed char>(completeJump[1])
             : nullptr;
         points.retry = retry[0] + 6;
-        points.geometryCall = geometry[0] + 9;
+        points.geometryCall = geometry[0] + geometryCallOffset;
         points.geometryOriginalTarget = RelativeTarget(points.geometryCall, 5);
         points.fullGenerator = full.size() == 1 ? full[0] : foreignFull;
         points.fullGeneratorForeign = full.empty();
@@ -473,32 +631,21 @@ namespace xgg
         points.parCount = RelativeTarget(config[0] + 12, 5);
         points.parGet = RelativeTarget(config[0] + 36, 5);
 
-        const unsigned char contourRemoveExpected[] = {
-            0x8B, 0x55, 0xDC, 0x8B, 0x85, 0x48, 0xFF, 0xFF, 0xFF
-        };
-        const unsigned char completeExpected[] = { 0xDB, 0x45, 0xF4 };
+        const unsigned char completeExpected[] = { 0xDB, 0x45, starSlot };
         return rootA == rootB && pathA == pathB && points.configRootSlot &&
             points.mapWidthSlot && points.mapHeightSlot &&
-            RequireOriginal(points.sector, kSectorOriginal, sizeof(kSectorOriginal),
-                L"sector hook", error) &&
-            RequireOriginal(points.contour, kContourOriginal, sizeof(kContourOriginal),
-                L"contour hook", error) &&
-            RequireOriginal(points.contourRemove, contourRemoveExpected,
-                sizeof(contourRemoveExpected), L"contour fallback destination", error) &&
-            RequireOriginal(points.distribution, kDistributionOriginal,
-                sizeof(kDistributionOriginal), L"distribution hook", error) &&
             RequireOriginal(points.distributionComplete, completeExpected,
                 sizeof(completeExpected), L"distribution completion", error) &&
-            RequireOriginal(points.retry, kRetryOriginal, sizeof(kRetryOriginal),
-                L"retry hook", error) &&
             RequireOriginal(points.geometryCall, kGeometryCallOriginal,
                 sizeof(kGeometryCallOriginal), L"geometry call", error) &&
             (points.fullGeneratorForeign
                 ? (IsSolEngineDetour(points.fullGenerator)
                     ? true
                     : (error = L"unexpected foreign hook at full generator entry", false))
-                : RequireOriginal(points.fullGenerator, kFullGeneratorOriginal,
-                    sizeof(kFullGeneratorOriginal), L"full generator entry", error));
+                : (MatchesAt(points.fullGenerator, kFullGeneratorOriginal,
+                        _countof(kFullGeneratorOriginal))
+                    ? true
+                    : (error = L"unexpected machine code at full generator entry", false)));
     }
 
     bool DiscoverRuntimeBaseSchedulerPoint(
@@ -506,33 +653,50 @@ namespace xgg
         RuntimeBaseSchedulerPoint& point,
         std::wstring& error)
     {
-        const auto scheduler = FindMatches(
+        const auto legacyScheduler = FindMatches(
             imageBase,
             kInitialBaseSchedulerPattern,
             _countof(kInitialBaseSchedulerPattern),
+            error);
+        const auto optimizedScheduler = FindMatches(
+            imageBase,
+            kInitialBaseSchedulerOptimizedPattern,
+            _countof(kInitialBaseSchedulerOptimizedPattern),
             error);
         const auto caller = FindMatches(
             imageBase,
             kInitialBaseSchedulerCallPattern,
             _countof(kInitialBaseSchedulerCallPattern),
             error);
-        if (scheduler.size() != 1 || caller.size() != 1)
+        const bool legacy = legacyScheduler.size() == 1;
+        if ((legacyScheduler.size() + optimizedScheduler.size()) != 1 ||
+            caller.size() != 1 ||
+            caller[0][2] != caller[0][15] || caller[0][8] != caller[0][23])
         {
             std::wostringstream message;
             message << L"runtime-base signature counts: scheduler="
-                    << scheduler.size() << L", caller=" << caller.size();
+                    << legacyScheduler.size() << L"/" << optimizedScheduler.size()
+                    << L", caller=" << caller.size();
             error = message.str();
             return false;
         }
 
         point.call = caller[0] + 16;
         point.originalTarget = RelativeTarget(point.call, 5);
-        return point.originalTarget == scheduler[0] - 0xA5 &&
-            RequireOriginal(
-                point.call,
-                kNearCallOriginal,
-                sizeof(kNearCallOriginal),
-                L"runtime-base scheduler call",
-                error);
+        const unsigned char* scheduler = legacy ? legacyScheduler[0] : optimizedScheduler[0];
+        const bool targetMatches = legacy
+            ? point.originalTarget == scheduler - 0xA5
+            : point.originalTarget < scheduler && scheduler - point.originalTarget < 0x200;
+        if (!targetMatches)
+        {
+            error = L"runtime-base scheduler call does not target the scheduler";
+            return false;
+        }
+        return RequireOriginal(
+            point.call,
+            kNearCallOriginal,
+            sizeof(kNearCallOriginal),
+            L"runtime-base scheduler call",
+            error);
     }
 }

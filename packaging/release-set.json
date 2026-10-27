@@ -3,29 +3,29 @@
   "category": "XenoMods",
   "loader": {
     "name": "XenoNativeLoader",
-    "version": "0.7.2",
+    "version": "0.8.0",
     "package": "runtime/XenoNativeLoader/package",
     "bundledPlugins": [
       {
         "name": "XenoStable",
-        "version": "1.4.12"
+        "version": "1.5.0"
       }
     ]
   },
   "mods": [
     {
       "name": "XenoBigGalaxy",
-      "version": "0.10.5",
+      "version": "0.11.0",
       "includeInArchive": true
     },
     {
       "name": "XenoEquipmentInflation",
-      "version": "3.0.2",
+      "version": "3.1.0",
       "includeInArchive": true
     },
     {
       "name": "XenoHangarPaging",
-      "version": "1.1.18",
+      "version": "1.2.0",
       "includeInArchive": true
     },
     {
@@ -79,7 +79,7 @@
     },
     {
       "name": "XenoDomRangers",
-      "version": "2.2.1-native",
+      "version": "2.3.0-native",
       "includeInArchive": true
     },
     {

@@ -149,10 +149,25 @@ namespace
         }
         const auto rva = static_cast<std::uintptr_t>(
             points.chameleonConfusion - image.data());
-        Require(
-            rva == 0x1CECA8 || rva == 0x1EF330,
-            "unexpected chameleon check RVA");
+        if (std::wstring(points.profile) == L"legacy")
+        {
+            Require(points.hookLength == 6, "unexpected legacy hook length");
+            Require(
+                rva == 0x1CECA8 || rva == 0x1EF330,
+                "unexpected chameleon check RVA");
+        }
+        else
+        {
+            // The $O+ prerelease relinks between builds; verify the routine.
+            const unsigned char prologue[] = { 0x53, 0x56, 0x57, 0x8B, 0xF2, 0x8B, 0xF8 };
+            Require(std::wstring(points.profile) == L"optimized", "unknown profile");
+            Require(points.hookLength == sizeof(prologue), "unexpected optimized hook length");
+            Require(
+                std::memcmp(points.chameleonConfusion, prologue, sizeof(prologue)) == 0,
+                "unexpected optimized chameleon prologue");
+        }
         std::wcout << L"signature_test=ok file=" << path
+                   << L" profile=" << points.profile
                    << L" chameleon_rva=0x" << std::hex << std::uppercase
                    << rva << std::dec << L"\n";
     }

@@ -22,32 +22,36 @@ ML ^{
                 Name=PanelDown
             }
             Panel ^{
+                // Stock FormUnknown2 arrows with a transparent 1px frame: the
+                // scaled UI samples across texture edges, so the bare images
+                // bled their semi-transparent flat side onto the tip. Pos is
+                // shifted by the frame so the arrows stay where they were.
                 GraphButton ^{
                     Active=True
-                    ImageDisable=GI,Bm.FormUnknown2.2LeftH
-                    ImageDown=GI,Bm.FormUnknown2.2LeftD
-                    ImageNormal=GI,Bm.FormUnknown2.2LeftN
-                    ImageNormalA=GI,Bm.FormUnknown2.2LeftA
+                    ImageDisable=GI,Bm.XenoHangarPaging.PrevH
+                    ImageDown=GI,Bm.XenoHangarPaging.PrevD
+                    ImageNormal=GI,Bm.XenoHangarPaging.PrevN
+                    ImageNormalA=GI,Bm.XenoHangarPaging.PrevA
                     Kind=Normal
                     KindHit=Rect
                     MouseBlocking=True
                     Name=HangarPagePrev
-                    Pos=69,5,8
-                    Size=21,36
+                    Pos=68,4,8
+                    Size=23,38
                     Style=Style.GB.SoundNormal
                 }
                 GraphButton ^{
                     Active=True
-                    ImageDisable=GI,Bm.FormUnknown2.2RightH
-                    ImageDown=GI,Bm.FormUnknown2.2RightD
-                    ImageNormal=GI,Bm.FormUnknown2.2RightN
-                    ImageNormalA=GI,Bm.FormUnknown2.2RightA
+                    ImageDisable=GI,Bm.XenoHangarPaging.NextH
+                    ImageDown=GI,Bm.XenoHangarPaging.NextD
+                    ImageNormal=GI,Bm.XenoHangarPaging.NextN
+                    ImageNormalA=GI,Bm.XenoHangarPaging.NextA
                     Kind=Normal
                     KindHit=Rect
                     MouseBlocking=True
                     Name=HangarPageNext
-                    Pos=130,5,8
-                    Size=20,36
+                    Pos=129,4,8
+                    Size=22,38
                     Style=Style.GB.SoundNormal
                 }
                 Image ^{

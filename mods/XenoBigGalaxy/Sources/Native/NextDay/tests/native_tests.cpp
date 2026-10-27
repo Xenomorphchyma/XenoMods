@@ -127,7 +127,7 @@ namespace
         Require(info.exclusiveCapabilities == XENO_NEXTDAY_EXCLUSIVE_CAPABILITY,
             "NextDay capability was not declared");
         Require(wcscmp(info.id, L"XenoNextDay") == 0, "plugin id mismatch");
-        Require(wcscmp(info.version, L"0.4.1") == 0, "plugin version mismatch");
+        Require(wcscmp(info.version, L"0.5.0") == 0, "plugin version mismatch");
 
         OldPluginInfoV1 oldInfo = {};
         oldInfo.size = sizeof(oldInfo);

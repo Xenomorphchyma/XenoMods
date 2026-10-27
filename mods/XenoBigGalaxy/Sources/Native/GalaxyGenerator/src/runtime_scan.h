@@ -11,7 +11,16 @@ namespace xgg
 {
     struct RuntimePoints
     {
+        // "legacy" ($O- release builds) or "optimized" ($O+ 2026-10 prerelease).
+        const wchar_t* profile = L"";
         unsigned char* sector = nullptr;
+        // The optimized TGalaxy.Create keeps Self in EBX instead of EAX.
+        bool sectorInEbx = false;
+        // EBP-relative GenerateGalaxyLayout locals used by the stubs.
+        int frameSelf = -0x04;
+        int frameStarIndex = -0x0C;
+        int frameSector = -0x64;
+        int frameRetryCount = -0xB0;
         unsigned char* contour = nullptr;
         unsigned char* contourRemove = nullptr;
         unsigned char* contourOriginalTarget = nullptr;

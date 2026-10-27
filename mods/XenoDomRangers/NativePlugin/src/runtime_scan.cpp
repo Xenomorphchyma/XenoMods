@@ -34,6 +34,20 @@ namespace xdr
             0x55, 0x8B, 0xEC, 0x83, 0xC4, 0xF4
         };
 
+        // TKling.IsPlayerCamouflageEffective in the $O+ 2026-10 prerelease:
+        // Self in EDI, Ship in ESI, Result in BL.
+        const int kChameleonConfusionOptimizedPattern[] = {
+            0x53, 0x56, 0x57, 0x8B, 0xF2, 0x8B, 0xF8, 0x33, 0xDB,
+            0xE8, -1, -1, -1, -1, 0x85, 0xC0, 0x0F, 0x84, -1, -1, -1, -1,
+            0xE8, -1, -1, -1, -1, 0x3B, 0xF0, 0x75, -1,
+            0x8B, 0xC7, 0xE8, -1, -1, -1, -1, 0x84, 0xC0, 0x75, -1,
+            0x8B, 0xC6, 0xE8, -1, -1, -1, -1, 0x84, 0xC0, 0x75, -1,
+            0x0F, 0xB6, 0x87, 0xD1, 0x04, 0x00, 0x00,
+            0x80, 0xBC, 0x06, 0x68, 0x04, 0x00, 0x00, 0x00
+        };
+        // push ebx; push esi; push edi; mov esi, edx; mov edi, eax.
+        const size_t kOptimizedHookLength = 7;
+
         bool ParseImage(
             const void* imageBase,
             const IMAGE_NT_HEADERS32*& nt,
@@ -124,11 +138,31 @@ namespace xdr
         RuntimePoints& points,
         std::wstring& error)
     {
+        points = {};
         const auto matches = FindMatches(
             imageBase,
             kChameleonConfusionPattern,
             _countof(kChameleonConfusionPattern),
             error);
+        if (matches.empty())
+        {
+            const auto optimized = FindMatches(
+                imageBase,
+                kChameleonConfusionOptimizedPattern,
+                _countof(kChameleonConfusionOptimizedPattern),
+                error);
+            if (optimized.size() == 1)
+            {
+                points.chameleonConfusion = optimized[0];
+                points.hookLength = kOptimizedHookLength;
+                points.profile = L"optimized";
+                return true;
+            }
+            std::wostringstream message;
+            message << L"chameleon confusion signature count=0/" << optimized.size();
+            error = message.str();
+            return false;
+        }
         if (matches.size() != 1)
         {
             std::wostringstream message;
@@ -147,6 +181,8 @@ namespace xdr
             return false;
         }
         points.chameleonConfusion = matches[0];
+        points.hookLength = sizeof(kExpectedPrologue);
+        points.profile = L"legacy";
         return true;
     }
 }

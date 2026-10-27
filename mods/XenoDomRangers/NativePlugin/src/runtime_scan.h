@@ -10,6 +10,9 @@ namespace xdr
     struct RuntimePoints
     {
         unsigned char* chameleonConfusion = nullptr;
+        // Whole prologue instructions relocated into the trampoline.
+        size_t hookLength = 0;
+        const wchar_t* profile = L"";
     };
 
     bool DiscoverRuntimePoints(

@@ -1,0 +1,12 @@
+Bm ^{
+    XenoHangarPaging ^{
+        NextA=Mods\XenoMods\XenoHangarPaging\DATA\Arrows\NextA.gi
+        NextD=Mods\XenoMods\XenoHangarPaging\DATA\Arrows\NextD.gi
+        NextH=Mods\XenoMods\XenoHangarPaging\DATA\Arrows\NextH.gi
+        NextN=Mods\XenoMods\XenoHangarPaging\DATA\Arrows\NextN.gi
+        PrevA=Mods\XenoMods\XenoHangarPaging\DATA\Arrows\PrevA.gi
+        PrevD=Mods\XenoMods\XenoHangarPaging\DATA\Arrows\PrevD.gi
+        PrevH=Mods\XenoMods\XenoHangarPaging\DATA\Arrows\PrevH.gi
+        PrevN=Mods\XenoMods\XenoHangarPaging\DATA\Arrows\PrevN.gi
+    }
+}

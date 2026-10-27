@@ -24,6 +24,49 @@ const BYTE kRefreshSignature[] = {
     0x89, 0x55, 0xe4, 0x89, 0x45, 0xfc, 0x33, 0xc0
 };
 
+// TfHangar.RefreshDockedShips in the $O+ 2026-10 prerelease keeps Self in
+// EBX and starts with the turn-calculation wait and the ShipSlots[I] scan.
+const BYTE kRefreshOptimizedSignature[] = {
+    0x55, 0x8b, 0xec, 0x83, 0xc4, 0x00, 0x53, 0x56,
+    0x57, 0x33, 0xd2, 0x89, 0x55, 0xfc, 0x8b, 0xd8,
+    0x33, 0xc0, 0x55, 0x68, 0x00, 0x00, 0x00, 0x00,
+    0x64, 0xff, 0x30, 0x64, 0x89, 0x20, 0xe8, 0x00,
+    0x00, 0x00, 0x00, 0x84, 0xc0, 0x74, 0x05, 0xe8,
+    0x00, 0x00, 0x00, 0x00, 0x33, 0xc0, 0x89, 0x45,
+    0xf8, 0x8b, 0x75, 0xf8, 0x8d, 0x34, 0xb6, 0x83,
+    0xbc, 0xb3, 0xf8, 0x00, 0x00, 0x00, 0x02
+};
+const char kRefreshOptimizedMask[] =
+    "xxxxx?xxxxxxxxxxxxxx????xxxxxxx????xxxx????xxxxxxxxxxxxxxxxxxxx";
+static_assert(sizeof(kRefreshOptimizedMask) - 1 == sizeof(kRefreshOptimizedSignature),
+    "optimized refresh signature and mask length must match");
+
+// Offsets of the first call to each stock helper inside the refresh body.
+// Source order is the same in every build; only code generation differs.
+struct RefreshCallLayout {
+    const WCHAR* profile;
+    size_t getCurrent;
+    size_t isPlanet;
+    size_t isStation;
+    size_t clearUnicodeString;
+    size_t buildShipImage;
+    size_t calcShipScale;
+    size_t bindShipImage;
+    size_t drawShip;
+    size_t listItem;
+};
+
+const RefreshCallLayout kLegacyRefreshLayout = {
+    L"legacy", 0x06d, 0x072, 0x090, 0x1d4, 0x1e3, 0x23a, 0x24f, 0x26a, 0x370
+};
+const RefreshCallLayout kOptimizedRefreshLayout = {
+    L"optimized", 0x05c, 0x061, 0x07c, 0x16b, 0x179, 0x1b7, 0x1cb, 0x1dd, 0x2be
+};
+
+// Raised by TMessageLoopGI.GetByName when a control is missing; anchors the
+// lookup routine in builds where its code generation changed.
+const WCHAR kGetByNameMessage[] = L"TMessageLoopGI.GetByName. Name=";
+
 // TBaseForm.FindControl has the same instruction layout in the supported
 // executables, while three embedded exception/string addresses move with the
 // linker.  The first moving address is wildcarded; the remaining 36 bytes are
@@ -75,6 +118,7 @@ struct GatherDiagnostics {
 
 BYTE* gBase = nullptr;
 HINSTANCE gModule = nullptr;
+const WCHAR* gRuntimeProfile = L"unresolved";
 uintptr_t gRefreshAddress = 0;
 uintptr_t gGetCurrentAddress = 0;
 uintptr_t gIsPlanetAddress = 0;
@@ -760,7 +804,8 @@ BOOL CALLBACK FindGameWindow(HWND window, LPARAM data) {
 
 DWORD WINAPI WindowInstallerThread(void*) {
     LogLine(
-        L"runtime 1.1.18 loaded; paging controls stay visible in empty, single-page, and multi-page hangars; arrows are half-gap aligned to the page number; vanilla ranger info positioning is untouched and its InfoPanel layer stays above paging; matching state 2 records remain stable; signatures resolved dynamically; refresh-rva=0x%08x; current-rva=0x%08x",
+        L"runtime 1.2.0 loaded; paging controls stay visible in empty, single-page, and multi-page hangars; arrows are half-gap aligned to the page number; vanilla ranger info positioning is untouched and its InfoPanel layer stays above paging; matching state 2 records remain stable; signatures resolved dynamically; profile=%s; refresh-rva=0x%08x; current-rva=0x%08x",
+        gRuntimeProfile,
         static_cast<unsigned>(gRefreshAddress - reinterpret_cast<uintptr_t>(gBase)),
         static_cast<unsigned>(gGetCurrentAddress - reinterpret_cast<uintptr_t>(gBase)));
     for (;;) {
@@ -864,8 +909,54 @@ bool PatchJump(BYTE* target, void* hook, size_t stolenBytes) {
     return true;
 }
 
-bool InstallHooks() {
-    gBase = reinterpret_cast<BYTE*>(GetModuleHandleW(nullptr));
+// TMessageLoopGI.GetByName: the routine that loads the missing-control message.
+BYTE* FindGetByNameByMessage(IMAGE_NT_HEADERS* headers) {
+    BYTE* message = nullptr;
+    int messageCount = 0;
+    IMAGE_SECTION_HEADER* section = IMAGE_FIRST_SECTION(headers);
+    const size_t messageBytes = sizeof(kGetByNameMessage) - sizeof(WCHAR);
+    for (WORD sectionIndex = 0; sectionIndex < headers->FileHeader.NumberOfSections;
+         ++sectionIndex, ++section) {
+        BYTE* start = gBase + section->VirtualAddress;
+        size_t size = section->Misc.VirtualSize;
+        for (size_t offset = 0; offset + messageBytes <= size; ++offset) {
+            if (memcmp(start + offset, kGetByNameMessage, messageBytes) == 0) {
+                message = start + offset;
+                ++messageCount;
+            }
+        }
+    }
+    if (messageCount != 1) {
+        return nullptr;
+    }
+    // mov edx, offset message (the image is unrelocated during probes).
+    const DWORD messageAddress = headers->OptionalHeader.ImageBase +
+        static_cast<DWORD>(message - gBase);
+    BYTE load[5] = { 0xba };
+    memcpy(load + 1, &messageAddress, sizeof(messageAddress));
+    BYTE* reference = FindUniqueExecutablePattern(headers, load, nullptr, sizeof(load));
+    if (!reference) {
+        return nullptr;
+    }
+    const BYTE prologue[] = { 0x55, 0x8b, 0xec };
+    for (BYTE* cursor = reinterpret_cast<BYTE*>(
+             reinterpret_cast<uintptr_t>(reference) & ~static_cast<uintptr_t>(3));
+         cursor > reference - 0x80; cursor -= 4) {
+        if (memcmp(cursor, prologue, sizeof(prologue)) == 0) {
+            return cursor;
+        }
+    }
+    return nullptr;
+}
+
+bool HasPrefix(uintptr_t address, const BYTE* prefix, size_t length) {
+    return memcmp(reinterpret_cast<const void*>(address), prefix, length) == 0;
+}
+
+// Resolves every game routine used by the paging runtime for the image at
+// `base`.  Shared by the in-process installer and the offline signature probe.
+bool ResolveRuntimeAddresses(BYTE* base) {
+    gBase = base;
     if (!gBase) {
         return false;
     }
@@ -880,27 +971,40 @@ bool InstallHooks() {
     }
     size_t imageSize = headers->OptionalHeader.SizeOfImage;
 
+    const RefreshCallLayout* layout = &kLegacyRefreshLayout;
     BYTE* refresh = FindUniqueExecutablePattern(
         headers, kRefreshSignature, nullptr, sizeof(kRefreshSignature));
+    if (!refresh) {
+        layout = &kOptimizedRefreshLayout;
+        refresh = FindUniqueExecutablePattern(
+            headers, kRefreshOptimizedSignature, kRefreshOptimizedMask,
+            sizeof(kRefreshOptimizedSignature));
+    }
     BYTE* findControl = FindUniqueExecutablePattern(
         headers, kFindControlSignature, kFindControlMask, sizeof(kFindControlSignature));
+    if (!findControl) {
+        findControl = FindGetByNameByMessage(headers);
+    }
     if (!refresh || !findControl) {
         return false;
     }
     gRefreshAddress = reinterpret_cast<uintptr_t>(refresh);
+    gRuntimeProfile = layout->profile;
 
     // These calls are part of the verified stock hangar refresh body.  Their
-    // relative positions are identical in the classic 2.1.2500 executable,
-    // the Stable/BigGalaxy variants and the reordered Rangers1 build.
-    gGetCurrentAddress = ResolveRelativeCall(refresh + 0x06d);
-    gIsPlanetAddress = ResolveRelativeCall(refresh + 0x072);
-    gIsStationAddress = ResolveRelativeCall(refresh + 0x090);
-    gClearUnicodeStringAddress = ResolveRelativeCall(refresh + 0x1d4);
-    gBuildShipImageAddress = ResolveRelativeCall(refresh + 0x1e3);
-    gCalcShipScaleAddress = ResolveRelativeCall(refresh + 0x23a);
-    gBindShipImageAddress = ResolveRelativeCall(refresh + 0x24f);
-    gDrawShipAddress = ResolveRelativeCall(refresh + 0x26a);
-    gListItemAddress = ResolveRelativeCall(refresh + 0x370);
+    // relative positions are identical within one code-generation profile:
+    // the classic 2.1.2500 executable, the Stable/BigGalaxy variants and the
+    // reordered Rangers1 build share the legacy layout, both 2026-10
+    // prerelease builds share the optimized one.
+    gGetCurrentAddress = ResolveRelativeCall(refresh + layout->getCurrent);
+    gIsPlanetAddress = ResolveRelativeCall(refresh + layout->isPlanet);
+    gIsStationAddress = ResolveRelativeCall(refresh + layout->isStation);
+    gClearUnicodeStringAddress = ResolveRelativeCall(refresh + layout->clearUnicodeString);
+    gBuildShipImageAddress = ResolveRelativeCall(refresh + layout->buildShipImage);
+    gCalcShipScaleAddress = ResolveRelativeCall(refresh + layout->calcShipScale);
+    gBindShipImageAddress = ResolveRelativeCall(refresh + layout->bindShipImage);
+    gDrawShipAddress = ResolveRelativeCall(refresh + layout->drawShip);
+    gListItemAddress = ResolveRelativeCall(refresh + layout->listItem);
     gFindControlAddress = reinterpret_cast<uintptr_t>(findControl);
 
     const uintptr_t resolved[] = {
@@ -920,6 +1024,19 @@ bool InstallHooks() {
             return false;
         }
     }
+    // System.@WStrClr and Classes.TList.Get are precompiled RTL routines with
+    // identical code in every build; they confirm the call layout matched.
+    const BYTE wideStringClear[] = { 0x8b, 0x10, 0x85, 0xd2, 0x74 };
+    const BYTE listGet[] = { 0x53, 0x56, 0x8b, 0xf2, 0x8b, 0xd8 };
+    return HasPrefix(gClearUnicodeStringAddress, wideStringClear, sizeof(wideStringClear)) &&
+        HasPrefix(gListItemAddress, listGet, sizeof(listGet));
+}
+
+bool InstallHooks() {
+    if (!ResolveRuntimeAddresses(reinterpret_cast<BYTE*>(GetModuleHandleW(nullptr)))) {
+        return false;
+    }
+    BYTE* refresh = reinterpret_cast<BYTE*>(gRefreshAddress);
 
     gRefreshTrampoline = MakeTrampoline(refresh, 6);
     if (!gRefreshTrampoline) {

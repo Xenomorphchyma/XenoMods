@@ -28,6 +28,17 @@ namespace xsr
             -1, -1, -1, -1, 0x89, 0x45, 0xE4, 0x83,
             0x7D, 0xE4, 0x00, 0x0F, 0x8C
         };
+        // TryRestartScript in the $O+ 2026-10 prerelease: Script stays in ESI.
+        const int kRestartOptimizedPattern[] = {
+            0x55, 0x8B, 0xEC, 0x83, 0xC4, -1, 0x53, 0x56,
+            0x57, 0x33, 0xDB, 0x89, 0x5D, -1, 0x89, 0x4D,
+            -1, 0x89, 0x55, -1, 0x8B, 0xF0, 0x33, 0xC0,
+            0x55, 0x68, -1, -1, -1, -1, 0x64, 0xFF,
+            0x30, 0x64, 0x89, 0x20, 0xC6, 0x45, -1, 0x00,
+            0x85, 0xF6, 0x0F, 0x84, -1, -1, -1, -1,
+            0x8B, 0x46, 0x08, 0xE8, -1, -1, -1, -1,
+            0x8B, 0xD8, 0x85, 0xDB, 0x0F, 0x8C
+        };
 
         bool ParseImage(
             const unsigned char* base,
@@ -59,17 +70,24 @@ namespace xsr
             return true;
         }
 
-        bool PatternMatches(const unsigned char* data)
+        bool PatternMatchesAt(const unsigned char* data, const int* pattern, size_t length)
         {
-            for (size_t i = 0; i < _countof(kRestartPattern); ++i)
+            for (size_t i = 0; i < length; ++i)
             {
-                if (kRestartPattern[i] >= 0 &&
-                    data[i] != static_cast<unsigned char>(kRestartPattern[i]))
+                if (pattern[i] >= 0 && data[i] != static_cast<unsigned char>(pattern[i]))
                 {
                     return false;
                 }
             }
             return true;
+        }
+
+        // Each build matches exactly one of the two layouts.
+        bool PatternMatches(const unsigned char* data)
+        {
+            return PatternMatchesAt(data, kRestartPattern, _countof(kRestartPattern)) ||
+                PatternMatchesAt(
+                    data, kRestartOptimizedPattern, _countof(kRestartOptimizedPattern));
         }
 
         std::vector<unsigned char*> FindRuntimeMatches(
@@ -131,6 +149,14 @@ namespace xsr
                 std::memcpy(&candidate, restart + i + 1, sizeof(std::uint32_t));
                 const auto begin = reinterpret_cast<std::uintptr_t>(imageBase);
                 const auto end = begin + nt->OptionalHeader.SizeOfImage;
+                const std::uintptr_t preferred = nt->OptionalHeader.ImageBase;
+                // An unrelocated mapping still holds preferred-base addresses.
+                if ((candidate < begin || candidate + sizeof(void*) > end) &&
+                    candidate >= preferred &&
+                    candidate + sizeof(void*) <= preferred + nt->OptionalHeader.SizeOfImage)
+                {
+                    candidate = begin + (candidate - preferred);
+                }
                 if (candidate < begin || candidate + sizeof(void*) > end)
                 {
                     continue;

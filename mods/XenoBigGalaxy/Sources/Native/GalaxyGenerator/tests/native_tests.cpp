@@ -4,12 +4,14 @@
 
 #include "../src/generator_plan.h"
 #include "../src/hex_sector_layout.h"
+#include "../src/layout_geometry.h"
 #include "../src/runtime_base_throttle.h"
 #include "../src/runtime_scan.h"
 #include "../include/xeno_plugin_api.h"
 
 #include <algorithm>
 #include <cstdint>
+#include <cstring>
 #include <cwchar>
 #include <cmath>
 #include <fstream>
@@ -19,6 +21,7 @@
 #include <vector>
 
 extern "C" BOOL WINAPI XenoPlugin_Query(XenoPluginInfoV1* info);
+extern "C" int __stdcall XggDecideLayoutRetry(void* galaxy, int attempts);
 
 namespace
 {
@@ -172,6 +175,127 @@ namespace
         Require(layout.rows == 7, "custom hex row count mismatch");
     }
 
+    void AddRing(
+        std::vector<xgg::OutlinePoint>& points,
+        std::vector<xgg::OutlineRing>& rings,
+        int sector,
+        std::initializer_list<xgg::OutlinePoint> ring)
+    {
+        rings.push_back({ sector, points.size(), ring.size() });
+        points.insert(points.end(), ring.begin(), ring.end());
+    }
+
+    void TestLayoutGeometry()
+    {
+        // Two squares sharing the edge x=10 plus a T-junction vertex on it.
+        std::vector<xgg::OutlinePoint> points;
+        std::vector<xgg::OutlineRing> rings;
+        AddRing(points, rings, 0, { { 0, 0 }, { 10, 0 }, { 10, 10 }, { 0, 10 } });
+        AddRing(points, rings, 1, { { 10, 0 }, { 20, 0 }, { 20, 10 }, { 10, 10 }, { 10, 5 } });
+        Require(xgg::FindOutlineCrossings(points, rings, 0).crossings == 0,
+            "adjacent sectors with shared border must not cross");
+
+        // A third sector poking through the shared border crosses both.
+        AddRing(points, rings, 2, { { 8, 4 }, { 12, 4 }, { 12, 6 }, { 8, 6 } });
+        const xgg::OutlineCrossingReport overlap =
+            xgg::FindOutlineCrossings(points, rings, 0);
+        Require(overlap.crossings > 0, "overlapping sector must be reported");
+        Require(overlap.firstSector == 0 && overlap.secondSector == 2,
+            "crossing pair must name the overlapping sector");
+        Require(xgg::FindOutlineCrossings(points, rings, 1).crossings == 1,
+            "stopAfter must limit the scan");
+
+        // A bow-tie polygon crosses itself.
+        points.clear();
+        rings.clear();
+        AddRing(points, rings, 0, { { 0, 0 }, { 10, 10 }, { 10, 0 }, { 0, 10 } });
+        Require(xgg::FindOutlineCrossings(points, rings, 0).crossings == 1,
+            "self-crossing outline must be reported");
+
+        // Separate chain polygons of one sector that cross are reported too.
+        points.clear();
+        rings.clear();
+        AddRing(points, rings, 4, { { 0, 0 }, { 6, 0 }, { 6, 6 }, { 0, 6 } });
+        AddRing(points, rings, 4, { { 3, 3 }, { 9, 3 }, { 9, 9 }, { 3, 9 } });
+        Require(xgg::FindOutlineCrossings(points, rings, 0).crossings == 2,
+            "crossing chain polygons must be reported");
+    }
+
+    // Minimal in-memory TGalaxy/TConstellation/TPolygon2D/TList objects with
+    // the field offsets the runtime reads.
+    struct FakeList
+    {
+        void* vmt = nullptr;
+        void** items = nullptr;
+        int count = 0;
+    };
+
+    struct FakePolygon
+    {
+        void* vmt = nullptr;
+        FakePolygon* next = nullptr;
+        FakePolygon* previous = nullptr;
+        FakeList* points = nullptr;
+    };
+
+    struct FakeGalaxy
+    {
+        std::vector<std::vector<float>> coordinates;
+        std::vector<std::vector<void*>> pointItems;
+        std::vector<FakeList> pointLists;
+        std::vector<FakePolygon> polygons;
+        std::vector<std::vector<unsigned char>> constellations;
+        std::vector<void*> constellationItems;
+        FakeList constellationList;
+        std::vector<unsigned char> galaxy = std::vector<unsigned char>(0x200, 0);
+
+        explicit FakeGalaxy(const std::vector<std::vector<float>>& squares)
+        {
+            const size_t count = squares.size();
+            coordinates = squares;
+            pointItems.resize(count);
+            pointLists.resize(count);
+            polygons.resize(count);
+            constellations.assign(count, std::vector<unsigned char>(0x100, 0));
+            for (size_t index = 0; index < count; ++index)
+            {
+                for (size_t point = 0; point + 1 < coordinates[index].size(); point += 2)
+                {
+                    pointItems[index].push_back(&coordinates[index][point]);
+                }
+                pointLists[index].items = pointItems[index].data();
+                pointLists[index].count = static_cast<int>(pointItems[index].size());
+                polygons[index].points = &pointLists[index];
+                FakePolygon* polygon = &polygons[index];
+                std::memcpy(constellations[index].data() + 0x80, &polygon, sizeof(polygon));
+                constellationItems.push_back(constellations[index].data());
+            }
+            constellationList.items = constellationItems.data();
+            constellationList.count = static_cast<int>(count);
+            FakeList* list = &constellationList;
+            std::memcpy(galaxy.data() + 0x164, &list, sizeof(list));
+        }
+    };
+
+    void TestLayoutRetryDecision()
+    {
+        FakeGalaxy clean({ { 0, 0, 10, 0, 10, 10, 0, 10 }, { 10, 0, 20, 0, 20, 10, 10, 10 } });
+        FakeGalaxy crossing({ { 0, 0, 10, 0, 10, 10, 0, 10 }, { 5, 5, 15, 5, 15, 15, 5, 15 } });
+        // Without a loaded config the stock RetryLimit of 1 applies: the
+        // first attempt always keeps the stock retry behaviour.
+        Require(XggDecideLayoutRetry(crossing.galaxy.data(), 1) == 0,
+            "first attempt must defer to the stock check");
+        Require(XggDecideLayoutRetry(crossing.galaxy.data(), 2) == 0,
+            "crossing borders must be regenerated");
+        Require(XggDecideLayoutRetry(clean.galaxy.data(), 3) == 1,
+            "clean borders must be accepted");
+        Require(XggDecideLayoutRetry(crossing.galaxy.data(), 1001) == 1,
+            "stock attempt cap must stop the retries");
+        std::vector<unsigned char> broken(0x200, 0);
+        Require(XggDecideLayoutRetry(broken.data(), 2) == 1,
+            "unreadable galaxy must keep the old accept behaviour");
+    }
+
     void TestRuntimeBaseThrottle()
     {
         xgg::RuntimeBaseThrottleSettings settings;
@@ -228,7 +352,7 @@ namespace
             info.exclusiveCapabilities == 0,
             "galaxy plugin must not claim an order-dependent exclusive capability");
         Require(wcscmp(info.id, L"XenoGalaxyGenerator") == 0, "plugin id mismatch");
-        Require(wcscmp(info.version, L"1.4.0") == 0, "plugin version mismatch");
+        Require(wcscmp(info.version, L"1.6.0") == 0, "plugin version mismatch");
 
         OldPluginInfoV1 oldInfo = {};
         oldInfo.size = sizeof(oldInfo);
@@ -303,6 +427,9 @@ int wmain(int argc, wchar_t** argv)
         std::cout << "plan_tests=ok\n";
         TestHexLayout();
         std::cout << "hex_layout_tests=ok\n";
+        TestLayoutGeometry();
+        TestLayoutRetryDecision();
+        std::cout << "layout_geometry_tests=ok\n";
         TestRuntimeBaseThrottle();
         std::cout << "runtime_base_throttle_tests=ok\n";
         TestPluginMetadata();

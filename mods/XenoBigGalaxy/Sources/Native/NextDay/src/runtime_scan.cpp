@@ -126,11 +126,20 @@ namespace xnd
             return found;
         }
 
+        // push ebp; mov ebp, esp; add esp, -frame; push ebx; push esi; push edi.
+        // The frame size differs between the $O- releases and the $O+ prerelease;
+        // both hooks relocate the same nine bytes.
+        bool IsLargeFrameProlog(const unsigned char* address)
+        {
+            static const unsigned char head[] = { 0x55, 0x8B, 0xEC, 0x81, 0xC4 };
+            static const unsigned char tail[] = { 0x53, 0x56, 0x57 };
+            return std::memcmp(address, head, sizeof(head)) == 0 &&
+                std::memcmp(address + 9, tail, sizeof(tail)) == 0;
+        }
+
         unsigned char* FindPrologBefore(
             const ImageView& view,
             unsigned char* before,
-            const unsigned char* prolog,
-            size_t prologSize,
             size_t window)
         {
             if (!before || before < view.code || before >= view.code + view.codeSize)
@@ -141,14 +150,50 @@ namespace xnd
                 ? before - window
                 : view.code;
             unsigned char* found = nullptr;
-            for (unsigned char* cursor = start; cursor + prologSize <= before; ++cursor)
+            for (unsigned char* cursor = start; cursor + 12 <= before; ++cursor)
             {
-                if (std::memcmp(cursor, prolog, prologSize) == 0)
+                if (IsLargeFrameProlog(cursor))
                 {
                     found = cursor;
                 }
             }
             return found;
+        }
+
+        // Star.NextDay(False) for stars without the player:
+        // xor edx, edx; mov eax, <star>; call TStar.NextDay.
+        unsigned char* FindInactiveStarCall(
+            const ImageView& view,
+            unsigned char* begin,
+            unsigned char* end)
+        {
+            unsigned char* found = nullptr;
+            int count = 0;
+            for (unsigned char* cursor = begin; cursor + 10 <= end; ++cursor)
+            {
+                if (cursor[0] != 0x33 || cursor[1] != 0xD2 || cursor[2] != 0x8B)
+                {
+                    continue;
+                }
+                // mov eax, reg (8B C0+r) or mov eax, [ebp+disp8] (8B 45 xx).
+                unsigned char* call = (cursor[3] & 0xF8) == 0xC0 ? cursor + 4
+                    : cursor[3] == 0x45 ? cursor + 5
+                    : nullptr;
+                if (!call || call[0] != 0xE8 || call + 5 > end)
+                {
+                    continue;
+                }
+                std::int32_t displacement = 0;
+                std::memcpy(&displacement, call + 1, sizeof(displacement));
+                unsigned char* target = call + 5 + displacement;
+                if (!InRange(view, target, 12) || !IsLargeFrameProlog(target))
+                {
+                    continue;
+                }
+                found = call;
+                ++count;
+            }
+            return count == 1 ? found : nullptr;
         }
     }
 
@@ -201,26 +246,17 @@ namespace xnd
             return false;
         }
 
-        static const unsigned char nextDayProlog[] = {
-            0x55, 0x8B, 0xEC, 0x81, 0xC4, 0xB4, 0xFE, 0xFF, 0xFF,
-            0x53, 0x56, 0x57
-        };
-        unsigned char* nextDay = FindPrologBefore(
-            view,
-            stringReference,
-            nextDayProlog,
-            sizeof(nextDayProlog),
-            0x1000);
+        unsigned char* nextDay = FindPrologBefore(view, stringReference, 0x1000);
         if (!nextDay)
         {
             error = L"TGalaxy.NextDay prolog was not found";
             return false;
         }
 
-        // Both supported executables use the same instruction layout. This
-        // call is the inactive-star TStar.NextDay invocation in stage 2.
-        unsigned char* starCall = nextDay + 0x302;
-        if (!InRange(view, starCall, 5) || starCall[0] != 0xE8)
+        // The inactive-star TStar.NextDay invocation in stage 2 is the only
+        // Star.NextDay(False) call before the diagnostic handler.
+        unsigned char* starCall = FindInactiveStarCall(view, nextDay, stringReference);
+        if (!starCall)
         {
             error = L"TStar.NextDay call site validation failed";
             return false;
@@ -228,16 +264,6 @@ namespace xnd
         std::int32_t displacement = 0;
         std::memcpy(&displacement, starCall + 1, sizeof(displacement));
         unsigned char* starNextDay = starCall + 5 + displacement;
-        static const unsigned char starProlog[] = {
-            0x55, 0x8B, 0xEC, 0x81, 0xC4, 0xC4, 0xFC, 0xFF, 0xFF,
-            0x53, 0x56, 0x57
-        };
-        if (!InRange(view, starNextDay, sizeof(starProlog)) ||
-            std::memcmp(starNextDay, starProlog, sizeof(starProlog)) != 0)
-        {
-            error = L"TStar.NextDay target validation failed";
-            return false;
-        }
 
         points.nextDay = nextDay;
         points.starNextDay = starNextDay;

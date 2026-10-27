@@ -4,7 +4,12 @@ param(
     [string]$WindowsSdkRoot = '',
     [string]$WindowsSdkVersion = '',
     [string]$ModKitPath = '',
-    [string]$WorkspaceRoot = $env:SRHD_WORKSPACE_ROOT
+    [string]$WorkspaceRoot = $env:SRHD_WORKSPACE_ROOT,
+    # Rangers executables for the offline signature probe; the installed
+    # Steam Rangers.exe is used when none are given and it exists.
+    [string[]]$ProbeExecutables = @(),
+    # In the public repository also rebuild CFG\*.dat and DATA\Arrows.
+    [switch]$Resources
 )
 
 $ErrorActionPreference = 'Stop'
@@ -56,13 +61,22 @@ if([string]::IsNullOrWhiteSpace($WindowsSdkVersion)) {
         Select-Object -First 1 -ExpandProperty Name
 }
 if([string]::IsNullOrWhiteSpace($WindowsSdkVersion)) { throw 'Windows 10 SDK was not found; pass -WindowsSdkRoot and -WindowsSdkVersion.' }
-$modRoot = Join-Path $projectRoot 'XenoHangarPaging'
+# The workspace keeps the mod in a subfolder; the public repository builds in place.
+$modRoot = if (Test-Path -LiteralPath (Join-Path $projectRoot 'XenoHangarPaging\ModuleInfo.txt') -PathType Leaf) {
+    Join-Path $projectRoot 'XenoHangarPaging'
+} else {
+    $projectRoot
+}
 $sourceRoot = Join-Path $projectRoot 'Sources'
 $buildRoot = Join-Path $projectRoot 'Build'
 $runtimeSource = Join-Path $sourceRoot 'Runtime\XenoHangarPaging.Runtime.cpp'
 $runtimeOutput = Join-Path $modRoot 'XenoHangarPaging.Runtime.dll'
 $mainSource = Join-Path $sourceRoot 'Main.txt'
 $mainOutput = Join-Path $modRoot 'CFG\Main.dat'
+$cacheDataSource = Join-Path $sourceRoot 'CacheData.txt'
+$cacheDataOutput = Join-Path $modRoot 'CFG\CacheData.dat'
+$arrowSource = Join-Path $sourceRoot 'Assets\Arrows'
+$arrowOutput = Join-Path $modRoot 'DATA\Arrows'
 $moduleInfoSource = Join-Path $sourceRoot 'ModuleInfo.txt'
 $moduleInfoOutput = Join-Path $modRoot 'ModuleInfo.txt'
 $nativeManifestSource = Join-Path $sourceRoot 'XenoNativePlugin.ini'
@@ -85,11 +99,48 @@ $env:LIB = (Join-Path $vcTools 'lib\x86') + ';' +
     (Join-Path $windowsSdk "Lib\$WindowsSdkVersion\um\x86")
 $compiler = Join-Path $vcTools 'bin\Hostx86\x86\cl.exe'
 $objectOutput = Join-Path $buildRoot 'XenoHangarPaging.Runtime.obj'
+$probeSource = Join-Path $sourceRoot 'Tests\signature_probe.cpp'
+$probeOutput = Join-Path $buildRoot 'XenoHangarPagingSignatureProbe.exe'
+& $compiler /nologo /O2 /MT /EHsc /W4 /DUNICODE /D_UNICODE `
+    /Fo:(Join-Path $buildRoot 'signature_probe.obj') $probeSource user32.lib oleaut32.lib /link /OUT:$probeOutput
+if ($LASTEXITCODE -ne 0) { throw "Signature probe build failed: $LASTEXITCODE" }
+if ($ProbeExecutables.Count -eq 0) {
+    $steamRangers = 'D:\Steam\steamapps\common\Space Rangers HD A War Apart\Rangers.exe'
+    if (Test-Path -LiteralPath $steamRangers -PathType Leaf) { $ProbeExecutables = @($steamRangers) }
+}
+if ($ProbeExecutables.Count -gt 0) {
+    & $probeOutput @ProbeExecutables
+    if ($LASTEXITCODE -ne 0) { throw "Hangar signature probe failed: $LASTEXITCODE" }
+}
+
 & $compiler /nologo /LD /O2 /MT /EHsc /W4 /DUNICODE /D_UNICODE /Fo:$objectOutput $runtimeSource user32.lib oleaut32.lib /link /OUT:$runtimeOutput
 if ($LASTEXITCODE -ne 0) { throw "Native build failed: $LASTEXITCODE" }
 
+$inPlace = $modRoot -eq $projectRoot
+if ($inPlace -and -not $Resources) {
+    # In the public repository CFG and ModuleInfo.txt are release artifacts
+    # (DAT encoding uses a fresh key each time); rebuild them only on request.
+    Get-Item -LiteralPath $runtimeOutput | Select-Object FullName, Length, LastWriteTime
+    return
+}
+
+New-Item -ItemType Directory -Force -Path $arrowOutput | Out-Null
+$arrowPngs = @(Get-ChildItem -LiteralPath $arrowSource -Filter '*.png' -File | ForEach-Object FullName)
+if ($arrowPngs.Count -ne 8) { throw "Expected 8 arrow PNGs in $arrowSource, found $($arrowPngs.Count)." }
+# Type 0 (32-bit) keeps the padded arrows lossless; stock forms use it too.
+python -B $modkit convert png-gi @arrowPngs -o $arrowOutput --mode 0_32 --overwrite
+if ($LASTEXITCODE -ne 0) { throw "Arrow GI conversion failed: $LASTEXITCODE" }
+
 python -B $modkit dat encode $mainSource $mainOutput --overwrite
 if ($LASTEXITCODE -ne 0) { throw "Main.dat encode failed: $LASTEXITCODE" }
+python -B $modkit dat encode $cacheDataSource $cacheDataOutput --overwrite
+if ($LASTEXITCODE -ne 0) { throw "CacheData.dat encode failed: $LASTEXITCODE" }
+
+if ($inPlace) {
+    Get-Item -LiteralPath $runtimeOutput, $mainOutput, $cacheDataOutput |
+        Select-Object FullName, Length, LastWriteTime
+    return
+}
 
 $moduleInfoText = [IO.File]::ReadAllText($moduleInfoSource, [Text.Encoding]::UTF8)
 [IO.File]::WriteAllText(
@@ -99,5 +150,5 @@ $moduleInfoText = [IO.File]::ReadAllText($moduleInfoSource, [Text.Encoding]::UTF
 Copy-Item -LiteralPath $nativeManifestSource -Destination $nativeManifestOutput -Force
 
 Get-Item -LiteralPath `
-    $runtimeOutput, $mainOutput, $moduleInfoOutput, $nativeManifestOutput |
+    $runtimeOutput, $mainOutput, $cacheDataOutput, $moduleInfoOutput, $nativeManifestOutput |
     Select-Object FullName, Length, LastWriteTime

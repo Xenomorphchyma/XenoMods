@@ -22,7 +22,7 @@
 namespace
 {
     const wchar_t* kPluginId = L"XenoNextDay";
-    const wchar_t* kVersion = L"0.4.1";
+    const wchar_t* kVersion = L"0.5.0";
 
     enum class RuntimeMode
     {

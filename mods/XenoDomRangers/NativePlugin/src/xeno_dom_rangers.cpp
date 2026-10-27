@@ -27,9 +27,8 @@ namespace
     const wchar_t* kPluginDescription =
         L"Native NPC chameleon runtime for XenoDomRangers";
 #endif
-    const wchar_t* kPluginVersion = L"2.2.1";
+    const wchar_t* kPluginVersion = L"2.3.0";
 
-    constexpr size_t kHookLength = 6;
     constexpr size_t kMaxSessions = 8;
     constexpr size_t kShipTypeOffset = 0x10;
     constexpr size_t kChameleonOffset = 0x461;
@@ -444,14 +443,15 @@ namespace
     bool BuildAndInstallHook(std::wstring& error)
     {
         unsigned char* address = g_points.chameleonConfusion;
-        if (!address)
+        const size_t hookLength = g_points.hookLength;
+        if (!address || hookLength < 5 || hookLength > 16)
         {
             error = L"chameleon hook address is null";
             return false;
         }
         auto* trampoline = static_cast<unsigned char*>(VirtualAlloc(
             nullptr,
-            kHookLength + 5,
+            hookLength + 5,
             MEM_COMMIT | MEM_RESERVE,
             PAGE_EXECUTE_READWRITE));
         if (!trampoline)
@@ -459,10 +459,10 @@ namespace
             error = L"VirtualAlloc failed: " + std::to_wstring(GetLastError());
             return false;
         }
-        std::memcpy(trampoline, address, kHookLength);
-        trampoline[kHookLength] = 0xE9;
-        const intptr_t backRelative = (address + kHookLength) -
-            (trampoline + kHookLength + 5);
+        std::memcpy(trampoline, address, hookLength);
+        trampoline[hookLength] = 0xE9;
+        const intptr_t backRelative = (address + hookLength) -
+            (trampoline + hookLength + 5);
         if (backRelative < std::numeric_limits<std::int32_t>::min() ||
             backRelative > std::numeric_limits<std::int32_t>::max())
         {
@@ -471,8 +471,8 @@ namespace
             return false;
         }
         const auto backEncoded = static_cast<std::int32_t>(backRelative);
-        std::memcpy(trampoline + kHookLength + 1, &backEncoded, sizeof(backEncoded));
-        FlushInstructionCache(GetCurrentProcess(), trampoline, kHookLength + 5);
+        std::memcpy(trampoline + hookLength + 1, &backEncoded, sizeof(backEncoded));
+        FlushInstructionCache(GetCurrentProcess(), trampoline, hookLength + 5);
 
         const intptr_t hookRelative =
             reinterpret_cast<unsigned char*>(&ChameleonConfusionStub) - (address + 5);
@@ -483,9 +483,9 @@ namespace
             error = L"hook stub is outside x86 near-jump range";
             return false;
         }
-        g_original.assign(address, address + kHookLength);
+        g_original.assign(address, address + hookLength);
         DWORD oldProtect = 0;
-        if (!VirtualProtect(address, kHookLength, PAGE_EXECUTE_READWRITE, &oldProtect))
+        if (!VirtualProtect(address, hookLength, PAGE_EXECUTE_READWRITE, &oldProtect))
         {
             VirtualFree(trampoline, 0, MEM_RELEASE);
             error = L"VirtualProtect failed: " + std::to_wstring(GetLastError());
@@ -494,10 +494,13 @@ namespace
         address[0] = 0xE9;
         const auto hookEncoded = static_cast<std::int32_t>(hookRelative);
         std::memcpy(address + 1, &hookEncoded, sizeof(hookEncoded));
-        address[5] = 0x90;
-        FlushInstructionCache(GetCurrentProcess(), address, kHookLength);
+        for (size_t index = 5; index < hookLength; ++index)
+        {
+            address[index] = 0x90;
+        }
+        FlushInstructionCache(GetCurrentProcess(), address, hookLength);
         DWORD ignored = 0;
-        VirtualProtect(address, kHookLength, oldProtect, &ignored);
+        VirtualProtect(address, hookLength, oldProtect, &ignored);
         g_trampoline = reinterpret_cast<uintptr_t>(trampoline);
         return true;
     }
@@ -585,8 +588,9 @@ extern "C" DWORD WINAPI XenoPlugin_Initialize(const XenoPluginHostV1* host)
         return 5;
     }
     InterlockedExchange(&g_ready, 1);
-    Log(L"runtime=installed version=2.2.1 chameleon_check=" +
-        Hex(g_points.chameleonConfusion) +
+    Log(std::wstring(L"runtime=installed version=") + kPluginVersion +
+        L" profile=" + g_points.profile +
+        L" chameleon_check=" + Hex(g_points.chameleonConfusion) +
         L" max_specialists=" + std::to_wstring(g_userConfig.maximumSpecialists) +
         L" recruit_chance=" + std::to_wstring(g_userConfig.recruitmentChancePercent) +
         L" salvage_turns=" + std::to_wstring(g_userConfig.maximumSalvageTurns));
