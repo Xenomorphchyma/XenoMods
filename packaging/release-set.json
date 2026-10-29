@@ -3,7 +3,7 @@
   "category": "XenoMods",
   "loader": {
     "name": "XenoNativeLoader",
-    "version": "0.8.0",
+    "version": "0.8.1",
     "package": "runtime/XenoNativeLoader/package",
     "bundledPlugins": [
       {
@@ -30,7 +30,7 @@
     },
     {
       "name": "XenoZeroSignalQuest",
-      "version": "1.4.0",
+      "version": "1.5.0",
       "includeInArchive": true
     },
     {
@@ -83,9 +83,19 @@
       "includeInArchive": true
     },
     {
+      "name": "XenoPBEngineFix",
+      "version": "1.0.0",
+      "includeInArchive": true
+    },
+    {
+      "name": "XenoMusicFlow",
+      "version": "1.0.0",
+      "includeInArchive": true
+    },
+    {
       "name": "XenoScriptHotReload",
       "version": "0.1.0",
-      "includeInArchive": false,
+      "includeInArchive": true,
       "source": "developer-tools/XenoScriptHotReload"
     }
   ]

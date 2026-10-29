@@ -1,0 +1,22 @@
+PlanetQuest ~{
+    ItemForPlanetQuest ~{
+        937=none
+    }
+    List ~{
+        937 ^{
+            Access=5
+            Dif=55
+            Genre=investigation and horror
+            Group=2
+            Image=Bm.PQI.XZS_00
+            Length=4
+            Name=Zero Signal
+        }
+    }
+    PlanetQuest ~{
+        937=Mods\XenoMods\XenoZeroSignalQuest\DATA\Quest\Eng\ZeroSignal.qmm
+    }
+    StartText ~{
+        937=The ranger has to find out why the research station "Nostrom-13" has sent neither routine reports nor a distress signal for eighteen days.
+    }
+}

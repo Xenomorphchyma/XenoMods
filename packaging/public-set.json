@@ -21,7 +21,7 @@
     },
     {
       "name": "XenoHangarPaging",
-      "runtimeEntries": ["ModuleInfo.txt", "CFG", "XenoHangarPaging.Runtime.dll", "XenoNativePlugin.ini"]
+      "runtimeEntries": ["ModuleInfo.txt", "CFG", "DATA", "XenoHangarPaging.Runtime.dll", "XenoNativePlugin.ini"]
     },
     {
       "name": "XenoZeroSignalQuest",
@@ -56,6 +56,19 @@
     {
       "name": "XenoDomRangers",
       "runtimeEntries": ["ModuleInfo.txt", "CFG", "DATA", "Native"]
+    },
+    {
+      "name": "XenoPBEngineFix",
+      "runtimeEntries": ["ModuleInfo.txt", "Native"]
+    },
+    {
+      "name": "XenoMusicFlow",
+      "runtimeEntries": ["ModuleInfo.txt", "Native"]
+    },
+    {
+      "name": "XenoScriptHotReload",
+      "source": "developer-tools/XenoScriptHotReload/XenoScriptHotReload",
+      "runtimeEntries": ["ModuleInfo.txt", "Native"]
     }
   ]
 }

@@ -61,7 +61,8 @@ foreach ($entry in $config.loaderEntries) {
 
 $categoryRoot = Join-Path $outputFull ('Mods\' + $config.category)
 foreach ($mod in $config.mods) {
-    $modSource = Join-Path (Join-Path $repoRoot 'mods') $mod.name
+    # Developer tools live outside mods/ and name their runtime folder.
+    $modSource = if ($mod.source) { Join-Path $repoRoot $mod.source } else { Join-Path (Join-Path $repoRoot 'mods') $mod.name }
     $modTarget = Join-Path $categoryRoot $mod.name
     foreach ($entry in $mod.runtimeEntries) {
         Copy-ExactEntry (Join-Path $modSource $entry) (Join-Path $modTarget $entry)
