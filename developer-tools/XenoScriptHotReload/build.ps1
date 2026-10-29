@@ -97,10 +97,12 @@ try {
         -Destination $modNativeRoot -Force
     $moduleInfoText = Get-Content -LiteralPath `
         (Join-Path $projectRoot "ModuleInfo.source.txt") -Raw -Encoding UTF8
+    # UTF-16 with BOM: without it the game decodes the file with the system
+    # code page, and on a UTF-8 Windows the Cyrillic text comes out blank.
     [IO.File]::WriteAllText(
         (Join-Path $modRoot "ModuleInfo.txt"),
         $moduleInfoText,
-        [Text.Encoding]::GetEncoding(1251))
+        [Text.Encoding]::Unicode)
 
     if (Test-Path -LiteralPath $zipPath -PathType Leaf) {
         Remove-Item -LiteralPath $zipPath -Force
