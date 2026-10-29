@@ -1,0 +1,4 @@
+LIBRARY "XenoPBEngineFix.XenoPlugin.dll"
+EXPORTS
+    XenoPlugin_Query=_XenoPlugin_Query@4
+    XenoPlugin_Initialize=_XenoPlugin_Initialize@4

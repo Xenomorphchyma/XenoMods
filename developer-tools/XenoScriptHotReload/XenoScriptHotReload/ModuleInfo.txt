@@ -1,5 +1,6 @@
 Name=XenoScriptHotReload
 Author=Xenomorphchyma
+NoNormalResources=1
 Conflict=
 Dependence=
 Priority=999
