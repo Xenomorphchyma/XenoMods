@@ -4,17 +4,20 @@ NoNormalResources=1
 Conflict=
 Dependence=
 Priority=999
-Languages=Rus
+Languages=Rus,Eng
 Section=XenoMods
 SectionEng=XenoMods
 
-SmallDescription=Перезагрузка SCR, кэшированных в тестовых сохранениях
-FullDescription=Инструмент разработчика для обновления активных модовых SCR после загрузки старого SAV. F10 перезапускает разрешённые ScriptName через штатный механизм игры; изменённые во время работы .scr отслеживаются автоматически.
+SmallDescription=Перезапуск скриптов модов в загруженной игре, для мододелов
+FullDescription=Инструмент для авторов модов. Сохранение запоминает скрипты модов вместе с их кодом, поэтому старый сейв продолжает работать со старой версией скрипта, даже если файл .scr уже исправлен.
 FullDescription=<br>
-FullDescription=<color=230,20,0>Перезапуск сбрасывает состояние экземпляра скрипта и не заменяет явную миграцию данных. Используйте копии тестовых сохранений. Требуется XenoNativeLoader 0.6.0 или новее.</color>
+FullDescription=Мод перезапускает скрипты прямо в загруженной игре, и они заново читаются из файлов мода. По F10 перезапускаются все активные скрипты модов (с именем на Mod_). Если во время игры сохранить новый .scr, этот скрипт перезапустится сам. Если скрипт в этот момент занят, перезапуск выполнится, как только он освободится. Клавишу и список скриптов можно поменять в Native\XenoScriptHotReload.XenoPlugin.ini.
+FullDescription=<br>
+FullDescription=<color=230,20,0>Перезапуск начинает скрипт с нуля: его переменные и прогресс сбрасываются. Проверяйте на копиях сохранений. Для обычной игры мод не нужен. Требуется XenoNativeLoader 0.6.0 или новее.</color>
 
-SmallDescriptionEng=Reload SCR instances cached in development saves
-FullDescriptionEng=Developer tool for refreshing active mod SCR instances after an old SAV is loaded. F10 restarts allowed ScriptName values through the game's native restart path; .scr files changed while the game is running are watched automatically.
+SmallDescriptionEng=Restart mod scripts in a loaded game, for modders
+FullDescriptionEng=A tool for mod authors. A save stores mod scripts together with their code, so an old save keeps running the old version of a script even after its .scr file has been fixed.
 FullDescriptionEng=<br>
-FullDescriptionEng=<color=230,20,0>Restarting resets the script instance state and does not replace explicit data migration. Use copies of development saves. XenoNativeLoader 0.6.0 or newer is required.</color>
-
+FullDescriptionEng=The mod restarts scripts right in the loaded game, and they are read again from the mod files. F10 restarts every active mod script (named Mod_...). Saving a new .scr while the game runs restarts that script automatically. A script that is busy at that moment is restarted as soon as it is free. The key and the script list can be changed in Native\XenoScriptHotReload.XenoPlugin.ini.
+FullDescriptionEng=<br>
+FullDescriptionEng=<color=230,20,0>A restart starts the script from scratch: its variables and progress are reset. Test on copies of your saves. The mod is not needed for normal play. XenoNativeLoader 0.6.0 or newer is required.</color>
