@@ -3,12 +3,12 @@
   "category": "XenoMods",
   "loader": {
     "name": "XenoNativeLoader",
-    "version": "0.8.1",
+    "version": "0.8.2",
     "package": "runtime/XenoNativeLoader/package",
     "bundledPlugins": [
       {
         "name": "XenoStable",
-        "version": "1.5.0"
+        "version": "1.5.1"
       }
     ]
   },
